@@ -30,3 +30,4 @@ config.yaml
 .env.*
 .claude/
 .docs/
+.next/

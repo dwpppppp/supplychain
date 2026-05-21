@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 18, "column": 0}, "map": {"version":3,"sources":["file:///F:/supplychain-claude/frontend/web/app/%28platform%29/assistant/page.tsx"],"sourcesContent":["import { AssistantWorkspace } from \"../../../features/assistant/components/assistant-workspace\";\n\nexport default function AssistantPage() {\n  return <AssistantWorkspace />;\n}\n"],"names":[],"mappings":";;;;;;;;;;;;AAEe,SAAS;IACtB,qBAAO,8OAAC;;;;;AACV"}}]
+}

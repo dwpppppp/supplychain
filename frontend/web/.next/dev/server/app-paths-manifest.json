@@ -1,0 +1,9 @@
+{
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(platform)/assistant/page": "app/(platform)/assistant/page.js",
+  "/(platform)/course/page": "app/(platform)/course/page.js",
+  "/(platform)/overview/page": "app/(platform)/overview/page.js",
+  "/(platform)/training/page": "app/(platform)/training/page.js",
+  "/privacy/page": "app/privacy/page.js",
+  "/terms/page": "app/terms/page.js"
+}

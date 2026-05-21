@@ -1,0 +1,17 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(platform)/layout,_N_T_/(platform)/training/layout,_N_T_/(platform)/training/admin/layout,_N_T_/(platform)/training/admin/page,_N_T_/training/admin"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/!KHBsYXRmb3JtKQ/training/admin/__PAGE__",
+    "/!KHBsYXRmb3JtKQ/training/admin",
+    "/!KHBsYXRmb3JtKQ/training",
+    "/!KHBsYXRmb3JtKQ",
+    "/_index",
+    "/_head"
+  ]
+}
