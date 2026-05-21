@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Motor supplier A">
+  <rect width="640" height="360" fill="#eef6ff"/>
+  <rect x="60" y="96" width="340" height="148" rx="18" fill="#2563eb"/>
+  <circle cx="428" cy="170" r="78" fill="#1e293b"/>
+  <circle cx="428" cy="170" r="42" fill="#cbd5e1"/>
+  <rect x="492" y="154" width="88" height="30" rx="15" fill="#94a3b8"/>
+  <text x="60" y="310" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#0f172a">A · Huadong Motor</text>
+</svg>

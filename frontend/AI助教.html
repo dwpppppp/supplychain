@@ -1,0 +1,1498 @@
+<!DOCTYPE html><html lang="zh-CN" style="--blue: #161616; --blue-ink: #000000; --blue-hover: #000000;"><head>
+
+
+<meta charset="utf-8">
+<title>AI 助教 — 线框图</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@300;400;600&amp;family=Kalam:wght@400;700&amp;family=Caveat:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #161616;
+    --ink-2: #525252;
+    --ink-3: #6f6f6f;
+    --paper: #ffffff;
+    --paper-2: #f4f4f4;
+    --paper-3: #e0e0e0;
+    --rule: #c6c6c6;
+    --rule-strong: #8d8d8d;
+    --blue: #0f62fe;
+    --blue-ink: #0043ce;
+    --blue-hover: #0353e9;
+    --success: #24a148;
+    --error: #da1e28;
+    --hand: 'Kalam', 'Caveat', 'IBM Plex Sans', sans-serif;
+    --sans: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    --mono: 'IBM Plex Mono', Menlo, Courier, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper-2); color: var(--ink); font-family: var(--sans); }
+
+  /* Top toolbar */
+  .toolbar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; padding: 14px 24px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+  }
+  .toolbar-brand { display: flex; align-items: baseline; gap: 12px; }
+  .toolbar-brand .logo {
+    font-family: var(--hand); font-size: 22px; font-weight: 700;
+    letter-spacing: -.5px;
+  }
+  .toolbar-brand .tag {
+    font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+    letter-spacing: .32px; text-transform: uppercase;
+  }
+  .toolbar-tabs {
+    display: flex; gap: 0; flex: 1; justify-content: center;
+    background: var(--paper-2); border: 1px solid var(--rule);
+  }
+  .toolbar-tabs button {
+    appearance: none; background: transparent; border: 0;
+    padding: 10px 18px;
+    font-family: var(--hand); font-size: 16px; color: var(--ink);
+    border-right: 1px solid var(--rule);
+    cursor: pointer;
+  }
+  .toolbar-tabs button:last-child { border-right: 0; }
+  .toolbar-tabs button .n {
+    font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+    margin-right: 8px;
+  }
+  .toolbar-tabs button[aria-selected="true"] {
+    background: var(--paper);
+    color: var(--blue);
+    box-shadow: inset 0 -3px 0 var(--blue);
+  }
+  .toolbar-tabs button[aria-selected="true"] .n { color: var(--blue); }
+  .toolbar-meta {
+    font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+    letter-spacing: .32px;
+  }
+  .toolbar-meta b { color: var(--ink); font-weight: 500; }
+
+  /* Canvas + sheets */
+  .canvas { padding: 28px 32px 64px; max-width: 1440px; margin: 0 auto; }
+  .sheet {
+    background: var(--paper); border: 1px solid var(--rule);
+    position: relative;
+  }
+  .sheet::before {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(22,22,22,.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(22,22,22,.04) 1px, transparent 1px);
+    background-size: 24px 24px; pointer-events: none;
+  }
+  .sheet-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 16px; padding: 20px 24px 14px;
+    border-bottom: 1px dashed var(--rule-strong);
+    position: relative; z-index: 1;
+  }
+  .sheet-head h2 {
+    margin: 0; font-family: var(--hand); font-weight: 700; font-size: 22px;
+    letter-spacing: -.2px;
+  }
+  .sheet-head .subtitle { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+  .sheet-head .meta {
+    font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+    letter-spacing: .32px; text-transform: uppercase;
+  }
+  .sheet-body { padding: 24px; position: relative; z-index: 1; }
+
+  /* Mock shell */
+  .mock {
+    background: var(--paper); border: 1.5px solid var(--ink);
+    display: grid; position: relative;
+  }
+  .mock-header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 14px 20px;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .mock-brand { display: flex; align-items: center; gap: 12px; }
+  .mock-brand .dot { width: 22px; height: 22px; background: var(--ink); }
+  .mock-brand .label { font-family: var(--hand); font-size: 17px; font-weight: 700; }
+  .mock-brand .sub {
+    font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+    letter-spacing: .32px;
+  }
+  .mock-nav { display: flex; gap: 6px; }
+  .mock-nav span {
+    font-family: var(--hand); font-size: 14px;
+    padding: 6px 12px; border: 1.2px solid var(--rule-strong);
+  }
+  .mock-nav span.on { border-color: var(--blue); color: var(--blue); }
+  .mock-user {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--hand); font-size: 14px;
+  }
+  .mock-user .av {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--paper-2); border: 1.5px solid var(--ink);
+  }
+
+  /* Two-column chat layout */
+  .chat-layout {
+    display: grid; grid-template-columns: 300px 1fr;
+    height: 780px; min-height: 0;
+  }
+  .history-pane {
+    border-right: 1.5px dashed var(--ink);
+    display: grid; grid-template-rows: auto auto 1fr auto;
+    min-height: 0; background: var(--paper-2);
+  }
+  .history-head {
+    padding: 16px 18px;
+    display: flex; align-items: baseline; justify-content: space-between;
+    border-bottom: 1px dashed var(--rule-strong);
+  }
+  .history-head h3 {
+    margin: 0; font-family: var(--hand); font-size: 17px; font-weight: 700;
+  }
+  .history-head .meta {
+    font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+    letter-spacing: .32px;
+  }
+  .history-search {
+    padding: 12px 18px;
+    border-bottom: 1px dashed var(--rule-strong);
+  }
+  .history-search .search-box {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px;
+    background: var(--paper);
+    border-bottom: 2px solid var(--rule-strong);
+    font-family: var(--hand); font-size: 13px; color: var(--ink-3);
+  }
+  .history-list {
+    overflow-y: auto; padding: 12px 12px; display: grid; gap: 8px;
+    min-height: 0;
+  }
+  .history-item {
+    background: var(--paper); border: 1px solid var(--rule);
+    padding: 12px 12px; display: grid; gap: 6px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+  }
+  .history-item.on {
+    border-color: var(--blue); border-left-color: var(--blue);
+  }
+  .history-item .t1 {
+    font-family: var(--hand); font-size: 14px; font-weight: 700;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .history-item .t2 {
+    font-size: 12px; color: var(--ink-2); line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .history-item .t3 {
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+    letter-spacing: .32px;
+  }
+  .history-foot {
+    padding: 12px 18px;
+    border-top: 1px dashed var(--rule-strong);
+    display: grid; gap: 8px;
+  }
+  .history-group-label {
+    padding: 6px 12px 0;
+    font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+    letter-spacing: .32px; text-transform: uppercase;
+  }
+
+  /* Chat pane */
+  .chat-pane {
+    display: grid; grid-template-rows: auto 1fr auto;
+    min-height: 0;
+  }
+  .chat-head {
+    padding: 14px 20px;
+    border-bottom: 1px dashed var(--rule-strong);
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .chat-head .title { display: grid; gap: 2px; }
+  .chat-head .title h3 {
+    margin: 0; font-family: var(--hand); font-size: 18px; font-weight: 700;
+  }
+  .chat-head .title .meta {
+    font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+    letter-spacing: .32px;
+  }
+  .chat-head .actions { display: flex; gap: 8px; align-items: center; }
+  .chat-scroll {
+    overflow-y: auto; padding: 24px 28px;
+    display: grid; gap: 18px; align-content: start;
+    background: var(--paper);
+    min-height: 0;
+  }
+  .msg {
+    max-width: 78%; padding: 14px 16px;
+    background: var(--paper-2); border: 1px solid var(--rule);
+    position: relative;
+  }
+  .msg.user { justify-self: end; background: var(--paper); }
+  .msg.ai { justify-self: start; border-left: 3px solid var(--blue); }
+  .msg-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 12px; margin-bottom: 8px;
+  }
+  .msg-speaker {
+    font-family: var(--hand); font-size: 14px; font-weight: 700;
+  }
+  .msg.ai .msg-speaker { color: var(--blue); }
+  .msg-time {
+    font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+    letter-spacing: .32px;
+  }
+  .msg-body {
+    font-size: 14px; line-height: 1.6; color: var(--ink);
+    white-space: pre-wrap;
+  }
+  .msg-refs {
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px dashed var(--rule);
+    display: flex; gap: 8px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+    letter-spacing: .32px;
+  }
+  .msg-refs .chip {
+    padding: 3px 7px; border: 1px dashed var(--rule-strong);
+    color: var(--ink-2);
+  }
+  .msg-audio {
+    margin-top: 10px; display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 10px; background: var(--paper);
+    border: 1px solid var(--rule);
+    font-family: var(--mono); font-size: 11px; color: var(--ink-2);
+  }
+  .msg-audio .play {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--blue); color: #fff;
+    display: inline-grid; place-items: center; font-size: 10px;
+  }
+  .msg-audio .bar {
+    width: 120px; height: 2px; background: var(--rule);
+    position: relative;
+  }
+  .msg-audio .bar::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 40%; background: var(--blue);
+  }
+
+  .typing {
+    display: inline-flex; gap: 4px; align-items: center;
+    font-family: var(--hand); font-size: 13px; color: var(--ink-3);
+  }
+  .typing .d {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--blue);
+    animation: bl 1.4s infinite ease-in-out;
+  }
+  .typing .d:nth-child(2) { animation-delay: .2s; }
+  .typing .d:nth-child(3) { animation-delay: .4s; }
+  @keyframes bl { 0%,80%,100% { opacity: .3; } 40% { opacity: 1; } }
+
+  .composer {
+    border-top: 1px dashed var(--rule-strong);
+    padding: 14px 20px;
+    background: var(--paper-2);
+    display: grid; gap: 10px;
+  }
+  .composer-row {
+    display: flex; gap: 10px; align-items: flex-end;
+  }
+  .composer-box {
+    flex: 1;
+    border: 1px solid var(--rule-strong);
+    background: var(--paper);
+    padding: 10px 12px;
+    min-height: 56px;
+    font-family: var(--sans); font-size: 14px; color: var(--ink-3);
+  }
+  .composer-box .hint { color: var(--ink-3); }
+  .composer-meta {
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+    letter-spacing: .32px;
+  }
+  .composer-meta .k {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 6px; border: 1px solid var(--rule);
+    color: var(--ink-2);
+  }
+  .composer-prompts {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .prompt-chip {
+    padding: 6px 10px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    font-family: var(--hand); font-size: 13px;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .prompt-chip::before { content: "✦  "; color: var(--blue); }
+
+  /* Empty state */
+  .empty {
+    display: grid; place-items: center;
+    padding: 60px 20px; gap: 16px;
+    text-align: center; color: var(--ink-3);
+  }
+  .empty h4 {
+    margin: 0; font-family: var(--hand); font-size: 22px; font-weight: 700;
+    color: var(--ink);
+  }
+  .empty p { margin: 0; max-width: 380px; line-height: 1.5; font-size: 14px; }
+  .empty-cards {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+    margin-top: 20px; max-width: 560px; width: 100%;
+  }
+  .empty-card {
+    padding: 14px; background: var(--paper-2); border: 1px solid var(--rule);
+    text-align: left; display: grid; gap: 6px; cursor: pointer;
+  }
+  .empty-card .kw { font-family: var(--mono); font-size: 10px; color: var(--blue); letter-spacing: .32px; }
+  .empty-card .q { font-family: var(--hand); font-size: 14px; font-weight: 700; }
+  .empty-card .d { font-size: 12px; color: var(--ink-2); line-height: 1.5; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 36px; padding: 0 14px;
+    font-family: var(--hand); font-size: 14px;
+    border: 1.5px solid var(--ink);
+    background: var(--paper); color: var(--ink);
+    cursor: pointer;
+  }
+  .btn.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .btn.primary:hover { background: var(--blue-hover); border-color: var(--blue-hover); }
+  .btn.ghost { border-color: var(--rule-strong); color: var(--ink-2); }
+  .btn.sm { height: 28px; padding: 0 10px; font-size: 12px; }
+  .btn.full { width: 100%; justify-content: center; }
+  .btn.send { background: var(--blue); border-color: var(--blue); color: #fff; height: 44px; padding: 0 18px; }
+
+  .presence {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 10px; border: 1px solid var(--rule-strong);
+    background: var(--paper);
+    font-family: var(--mono); font-size: 11px; color: var(--ink-2);
+    letter-spacing: .32px; text-transform: uppercase;
+  }
+  .presence .dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--rule-strong);
+  }
+  .presence.idle .dot { background: var(--success); }
+  .presence.thinking .dot, .presence.speaking .dot { background: var(--blue); animation: blink 1.4s infinite; }
+  @keyframes blink { 0%,100% { opacity: .5; } 50% { opacity: 1; } }
+
+  /* Avatar launcher (FAB on chat page) */
+  .avatar-fab {
+    position: absolute; right: 18px; bottom: 18px;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    background: var(--ink); color: var(--paper);
+    border: 0; cursor: pointer;
+    font-family: var(--hand); font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.3);
+    z-index: 10;
+  }
+  .avatar-fab .bubble {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff, var(--paper-3));
+    border: 1.5px solid var(--paper);
+    display: inline-grid; place-items: center;
+    color: var(--ink); font-family: var(--hand); font-size: 14px; font-weight: 700;
+  }
+  .avatar-fab .cap { display: grid; gap: 2px; text-align: left; }
+  .avatar-fab .cap .l1 { font-size: 14px; }
+  .avatar-fab .cap .l2 { font-family: var(--mono); font-size: 10px; color: var(--paper-3); letter-spacing: .32px; }
+
+  /* Modal / popup for digital human */
+  .modal-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(22, 22, 22, .5);
+    display: grid; place-items: center;
+    z-index: 20;
+    padding: 24px;
+  }
+  .modal {
+    width: 520px; max-width: 100%;
+    background: var(--paper); border: 1.5px solid var(--ink);
+    box-shadow: 0 2px 6px rgba(0,0,0,.3);
+    display: grid; grid-template-rows: auto 1fr auto;
+    max-height: 100%;
+  }
+  .modal-head {
+    padding: 12px 18px;
+    background: var(--ink); color: var(--paper);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .modal-head .lbl {
+    display: grid; gap: 2px;
+  }
+  .modal-head .lbl .l1 { font-family: var(--hand); font-size: 16px; font-weight: 700; }
+  .modal-head .lbl .l2 { font-family: var(--mono); font-size: 10px; color: var(--paper-3); letter-spacing: .32px; }
+  .modal-head .xs { display: flex; gap: 8px; align-items: center; }
+  .modal-head .xs button {
+    appearance: none; border: 1px solid var(--paper-3); background: transparent;
+    color: var(--paper); cursor: pointer;
+    width: 28px; height: 28px;
+    font-family: var(--mono); font-size: 12px;
+  }
+
+  .avatar-stage {
+    position: relative;
+    min-height: 360px;
+    display: grid; place-items: center;
+    background:
+      linear-gradient(180deg, rgba(15, 98, 254, 0.06), rgba(15, 98, 254, 0)),
+      var(--paper-2);
+    border-bottom: 1px dashed var(--rule-strong);
+  }
+  .avatar-stage .figure {
+    width: 220px; height: 300px;
+    border: 1.5px solid var(--ink);
+    background:
+      radial-gradient(circle at 50% 30%, rgba(15, 98, 254, 0.18), transparent 55%),
+      linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
+    position: relative;
+  }
+  .avatar-stage .figure::before {
+    content: "Live2D · Haru-2";
+    position: absolute; bottom: 10px; left: 0; right: 0;
+    text-align: center;
+    font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+    letter-spacing: .32px;
+  }
+  .avatar-stage .figure::after {
+    /* simple "face" placeholder */
+    content: ""; position: absolute;
+    left: 50%; top: 30%; transform: translate(-50%,-50%);
+    width: 90px; height: 90px; border-radius: 50%;
+    border: 2px solid var(--ink);
+    background:
+      radial-gradient(circle at 30% 40%, #000 2px, transparent 3px) no-repeat,
+      radial-gradient(circle at 70% 40%, #000 2px, transparent 3px) no-repeat,
+      linear-gradient(to right, transparent 35%, var(--blue) 35%, var(--blue) 65%, transparent 65%) no-repeat,
+      #fff;
+    background-size: 100% 100%, 100% 100%, 20% 3px;
+    background-position: 0 0, 0 0, center 68%;
+  }
+  .avatar-caption {
+    position: absolute; bottom: 12px; right: 14px;
+    padding: 4px 8px;
+    background: var(--paper); border: 1px solid var(--rule);
+    font-family: var(--mono); font-size: 10px; color: var(--ink-2);
+    letter-spacing: .32px;
+  }
+  .avatar-annot {
+    position: absolute;
+    font-family: var(--hand); font-size: 13px; color: var(--blue-ink);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .avatar-annot .arrow {
+    display: inline-block; width: 28px; height: 1.5px; background: var(--blue-ink);
+    position: relative;
+  }
+  .avatar-annot .arrow::after {
+    content: ""; position: absolute; right: -1px; top: -4px;
+    border-top: 4.5px solid transparent; border-bottom: 4.5px solid transparent;
+    border-left: 8px solid var(--blue-ink);
+  }
+
+  .modal-chat {
+    padding: 12px 18px;
+    background: var(--paper-2);
+    border-top: 1px dashed var(--rule);
+    max-height: 160px; overflow-y: auto;
+    display: grid; gap: 10px;
+  }
+  .modal-chat .mm {
+    font-size: 13px; line-height: 1.5;
+  }
+  .modal-chat .mm .who {
+    font-family: var(--hand); font-weight: 700; color: var(--blue);
+    margin-right: 6px;
+  }
+  .modal-chat .mm.user .who { color: var(--ink); }
+  .modal-foot {
+    padding: 12px 18px;
+    display: flex; gap: 8px; align-items: center;
+    border-top: 1px solid var(--rule);
+  }
+  .modal-foot input {
+    flex: 1;
+    border: 0; border-bottom: 2px solid var(--rule-strong);
+    background: transparent;
+    padding: 10px 4px; font-family: var(--sans); font-size: 14px;
+  }
+  .modal-foot input:focus {
+    outline: 0; border-bottom-color: var(--blue);
+  }
+  .modal-foot .tools {
+    display: flex; gap: 4px;
+  }
+  .modal-foot .tools button {
+    width: 32px; height: 32px;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    cursor: pointer;
+    font-family: var(--mono); font-size: 12px;
+  }
+
+  /* Variation panes */
+  .variation { display: none; }
+  .variation.active { display: block; }
+
+  /* V2: docked side panel avatar (alternative popup style) */
+  .v2-layout .chat-layout { grid-template-columns: 260px 1fr 340px; }
+  .v2-avatar-dock {
+    border-left: 1.5px dashed var(--ink);
+    background: var(--paper-2);
+    display: grid; grid-template-rows: auto 1fr auto;
+    min-height: 0;
+  }
+  .v2-avatar-dock .dock-head {
+    padding: 14px 16px;
+    border-bottom: 1px dashed var(--rule-strong);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .v2-avatar-dock .dock-head h3 {
+    margin: 0; font-family: var(--hand); font-size: 15px; font-weight: 700;
+  }
+  .v2-avatar-dock .dock-body {
+    padding: 14px;
+    display: grid; gap: 14px; align-content: start;
+    overflow-y: auto;
+  }
+  .v2-avatar-dock .avatar-stage {
+    border: 1px solid var(--rule);
+    min-height: 260px;
+  }
+  .v2-avatar-dock .note {
+    font-family: var(--hand); font-size: 12px; color: var(--ink-3);
+    line-height: 1.5;
+  }
+
+  /* V3: floating bubble avatar */
+  .v3-bubble {
+    position: absolute; right: 20px; bottom: 70px;
+    width: 320px;
+    background: var(--paper); border: 1.5px solid var(--ink);
+    box-shadow: 0 2px 6px rgba(0,0,0,.2);
+    z-index: 11;
+    display: grid; grid-template-rows: auto 1fr auto;
+  }
+  .v3-bubble .bbl-head {
+    padding: 10px 14px;
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--rule);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .v3-bubble .bbl-head .t {
+    font-family: var(--hand); font-size: 14px; font-weight: 700;
+  }
+  .v3-bubble .avatar-stage {
+    min-height: 220px; border-bottom: 1px solid var(--rule);
+  }
+  .v3-bubble .avatar-stage .figure {
+    width: 150px; height: 210px;
+  }
+  .v3-bubble .bbl-foot {
+    padding: 10px 12px;
+    display: flex; gap: 8px; align-items: center;
+  }
+  .v3-bubble .bbl-foot input {
+    flex: 1;
+    border: 0; border-bottom: 2px solid var(--rule-strong);
+    background: transparent; padding: 8px 4px; font-size: 13px;
+  }
+  .v3-bubble .bbl-foot input:focus { outline: 0; border-bottom-color: var(--blue); }
+
+  /* V4: fullscreen avatar takeover */
+  .v4-takeover {
+    position: absolute; inset: 0;
+    z-index: 20;
+    background: var(--paper);
+    display: grid; grid-template-columns: 1fr 420px;
+  }
+  .v4-takeover .stage {
+    position: relative;
+    background:
+      linear-gradient(180deg, rgba(15, 98, 254, 0.08), rgba(15, 98, 254, 0)),
+      var(--paper-2);
+    display: grid; place-items: center;
+    border-right: 1.5px solid var(--ink);
+  }
+  .v4-takeover .stage .figure {
+    width: 340px; height: 460px;
+    border: 1.5px solid var(--ink);
+    background:
+      radial-gradient(circle at 50% 30%, rgba(15, 98, 254, 0.18), transparent 55%),
+      linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
+    position: relative;
+  }
+  .v4-takeover .stage .figure::after {
+    content: ""; position: absolute;
+    left: 50%; top: 30%; transform: translate(-50%,-50%);
+    width: 140px; height: 140px; border-radius: 50%;
+    border: 2px solid var(--ink);
+    background:
+      radial-gradient(circle at 30% 40%, #000 3px, transparent 4px) no-repeat,
+      radial-gradient(circle at 70% 40%, #000 3px, transparent 4px) no-repeat,
+      linear-gradient(to right, transparent 35%, var(--blue) 35%, var(--blue) 65%, transparent 65%) no-repeat,
+      #fff;
+    background-size: 100% 100%, 100% 100%, 20% 4px;
+    background-position: 0 0, 0 0, center 68%;
+  }
+  .v4-takeover .stage .figure::before {
+    content: "Live2D · Haru-2 · 语音驱动口型"; 
+    position: absolute; bottom: 12px; left: 0; right: 0; text-align: center;
+    font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+    letter-spacing: .32px;
+  }
+  .v4-takeover .side {
+    display: grid; grid-template-rows: auto 1fr auto;
+    min-height: 0;
+  }
+  .v4-takeover .side .sh {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--rule);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .v4-takeover .side .sh h3 {
+    margin: 0; font-family: var(--hand); font-size: 18px; font-weight: 700;
+  }
+  .v4-takeover .side .sb {
+    padding: 14px 20px; overflow-y: auto;
+    display: grid; gap: 14px; align-content: start;
+  }
+  .v4-takeover .side .sf {
+    padding: 12px 20px;
+    border-top: 1px solid var(--rule);
+    display: flex; gap: 8px; align-items: center;
+  }
+
+  /* Footer notes */
+  .notes-row {
+    margin-top: 20px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  }
+  .note-card {
+    padding: 14px; background: var(--paper);
+  }
+  .note-card .chip {
+    display: inline-block; padding: 3px 8px;
+    border: 1px dashed var(--rule-strong);
+    font-family: var(--mono); font-size: 10px;
+    color: var(--ink-2); letter-spacing: .32px;
+  }
+  .note-card p {
+    margin: 8px 0 0;
+    font-family: var(--hand); font-size: 14px; color: var(--ink-2);
+    line-height: 1.5;
+  }
+
+  /* Tweaks panel */
+  .tweaks {
+    position: fixed; right: 20px; bottom: 20px;
+    width: 280px; background: var(--paper); border: 1.5px solid var(--ink);
+    font-size: 13px; z-index: 100; display: none;
+  }
+  .tweaks.open { display: block; }
+  .tweaks-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--ink); color: var(--paper);
+    font-family: var(--hand); font-size: 15px;
+  }
+  .tweaks-head .close {
+    cursor: pointer; background: none; border: 0; color: var(--paper);
+    font-size: 16px;
+  }
+  .tweaks-body { padding: 14px; display: grid; gap: 14px; }
+  .tweak-row { display: grid; gap: 6px; }
+  .tweak-row label {
+    font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+    letter-spacing: .32px; text-transform: uppercase;
+  }
+  .seg { display: flex; border: 1px solid var(--rule-strong); }
+  .seg button {
+    flex: 1; appearance: none; background: var(--paper); color: var(--ink);
+    border: 0; border-right: 1px solid var(--rule-strong);
+    padding: 8px 6px;
+    font-family: var(--hand); font-size: 13px; cursor: pointer;
+  }
+  .seg button:last-child { border-right: 0; }
+  .seg button.on { background: var(--blue); color: #fff; }
+
+  @media (max-width: 980px) {
+    .chat-layout { grid-template-columns: 1fr !important; }
+    .history-pane { display: none; }
+    .toolbar-tabs { display: none; }
+    .v4-takeover { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body data-cc-id="cc-1" style="cursor: crosshair; font-family: Arial;">
+
+<!-- =================== TOP TOOLBAR =================== -->
+<div class="toolbar">
+  <div class="toolbar-brand">
+    <span class="logo">AI 助教 · 线框图</span>
+    <span class="tag">ASSISTANT / CHAT + DIGITAL HUMAN · v0.1</span>
+  </div>
+  <div class="toolbar-tabs" role="tablist" style="display:none;">
+    <button role="tab" aria-selected="true" data-var="A"><span class="n">A</span>弹窗式数字人</button>
+  </div>
+  <div class="toolbar-meta">
+    AI 助教 · <b>4 种布局</b>
+  </div>
+</div>
+
+<div class="canvas">
+
+<!-- =================== VARIATION A — MODAL =================== -->
+<section class="variation active" data-variation="A">
+  <div class="sheet">
+    <div class="sheet-head">
+      <div>
+        <h2>A — 模态弹窗式 · Chat + Digital Human Modal</h2>
+        <div class="subtitle">左：历史对话　右：当前对话框　右下角按钮唤起数字人弹窗（居中 modal，可拖/可缩）</div>
+      </div>
+      <div class="meta">LAYOUT A · MODAL</div>
+    </div>
+    <div class="sheet-body">
+
+      <div class="mock" style="position: relative;">
+        <!-- shared header -->
+        <div class="mock-header">
+          <div class="mock-brand">
+            <div class="dot"></div>
+            <div>
+              <div class="label">供应链寻源学习平台</div>
+              <div class="sub">SOURCING · LEARN</div>
+            </div>
+          </div>
+          <div class="mock-nav">
+            <span>首页</span>
+            <span class="on">AI 助教</span>
+            <span>课程文档</span>
+            <span>实训教学</span>
+          </div>
+          <div class="mock-user">
+            <div class="av"></div>
+            <div>张同学 · 采购 22 级</div>
+          </div>
+        </div>
+
+        <div class="chat-layout">
+          <!-- LEFT : history -->
+          <aside class="history-pane">
+            <div class="history-head">
+              <h3>历史对话</h3>
+              <div class="meta">12 · 本月</div>
+            </div>
+            <div class="history-search">
+              <div class="search-box">
+                <span style="color: var(--ink-2);">⌕</span>
+                <span>搜索会话或关键词…</span>
+              </div>
+            </div>
+            <div class="history-list">
+              <div class="history-group-label">今天</div>
+              <div class="history-item on">
+                <div class="t1">寻源流程五步法</div>
+                <div class="t2">问：寻源流程到底有哪五步？每一步的关键产出是什么？</div>
+                <div class="t3"><span>10:12</span><span>8 条</span></div>
+              </div>
+              <div class="history-item">
+                <div class="t1">TCO 案例：果酱采购</div>
+                <div class="t2">问：果酱案例里的 TCO 是怎么拆的？包不包含 QA 成本？</div>
+                <div class="t3"><span>09:40</span><span>6 条</span></div>
+              </div>
+              <div class="history-group-label">昨天</div>
+              <div class="history-item">
+                <div class="t1">BATNA 是什么</div>
+                <div class="t2">问：BATNA 在谈判里具体怎么用，举个例子？</div>
+                <div class="t3"><span>昨日</span><span>4 条</span></div>
+              </div>
+              <div class="history-item">
+                <div class="t1">Kraljic 矩阵应用</div>
+                <div class="t2">问：Kraljic 的四个象限分别对应什么策略？</div>
+                <div class="t3"><span>昨日</span><span>10 条</span></div>
+              </div>
+              <div class="history-item">
+                <div class="t1">供应商评估权重</div>
+                <div class="t2">问：合规、质量、成本、交期、谈判 5 个维度怎么定权重？</div>
+                <div class="t3"><span>昨日</span><span>5 条</span></div>
+              </div>
+              <div class="history-group-label">更早</div>
+              <div class="history-item">
+                <div class="t1">邀标书怎么写</div>
+                <div class="t2">问：RFP 和 RFQ 的差别，以及一份 RFP 应该包含哪些章节？</div>
+                <div class="t3"><span>04-15</span><span>7 条</span></div>
+              </div>
+            </div>
+            <div class="history-foot">
+              <button class="btn primary full">＋ 开启新对话</button>
+              <div style="font-family: var(--mono); font-size: 10px; color: var(--ink-3); text-align: center; letter-spacing: .32px;">
+                POST /chat/conversations
+              </div>
+            </div>
+          </aside>
+
+          <!-- RIGHT : chat pane -->
+          <section class="chat-pane">
+            <div class="chat-head">
+              <div class="title">
+                <h3>寻源流程五步法</h3>
+                <div class="meta">CONV_7F3A · 8 MESSAGES · UPDATED 10:12</div>
+              </div>
+              <div class="actions">
+                <span class="presence speaking"><span class="dot"></span>AI · 空闲</span>
+                <button class="btn ghost sm">↗ 导出</button>
+                <button class="btn ghost sm">⋯</button>
+              </div>
+            </div>
+
+            <div class="chat-scroll">
+              <article class="msg user">
+                <div class="msg-head">
+                  <span class="msg-speaker">张同学</span>
+                  <span class="msg-time">10:08</span>
+                </div>
+                <div class="msg-body">寻源流程到底有哪五步？每一步的关键产出是什么？</div>
+              </article>
+
+              <article class="msg ai">
+                <div class="msg-head">
+                  <span class="msg-speaker">AI 助教</span>
+                  <span class="msg-time">10:08</span>
+                </div>
+                <div class="msg-body">经典寻源流程分为 5 步：
+① 需求分析 — 产出《采购需求说明书》
+② 市场与供应商调研 — 产出候选供应商清单
+③ RFI/RFP/RFQ 发布与评估 — 产出评估矩阵
+④ 谈判与合同 — 产出合同草案与价格条款
+⑤ 供应商管理与复盘 — 产出 SRM 档案与 KPI 基线
+
+每一步都有明确的"准入准出"标准，下一步开始前需要通过评审门。</div>
+                <div class="msg-refs">
+                  <span class="chip">§1.3 寻源流程</span>
+                  <span class="chip">§2.1 RFP/RFQ 差异</span>
+                  <span class="chip">§4.2 SRM 基础</span>
+                </div>
+              </article>
+
+              <article class="msg user">
+                <div class="msg-head">
+                  <span class="msg-speaker">张同学</span>
+                  <span class="msg-time">10:10</span>
+                </div>
+                <div class="msg-body">第二步的"候选供应商清单"一般多长？10 家还是 30 家？</div>
+              </article>
+
+              <article class="msg ai">
+                <div class="msg-head">
+                  <span class="msg-speaker">AI 助教 · 正在思考</span>
+                  <span class="msg-time">10:12</span>
+                </div>
+                <div class="typing">
+                  <span class="d"></span><span class="d"></span><span class="d"></span>
+                  <span style="margin-left: 6px;">正在检索教材与案例…</span>
+                </div>
+              </article>
+            </div>
+
+            <div class="composer">
+              <div class="composer-prompts">
+                <span class="prompt-chip">给我一个果酱采购的例子</span>
+                <span class="prompt-chip">对比 RFP 与 RFQ</span>
+                <span class="prompt-chip">我要进入实训</span>
+              </div>
+              <div class="composer-row">
+                <div class="composer-box">
+                  <span class="hint">向 AI 助教提问（Shift + Enter 换行，Enter 发送）…</span>
+                </div>
+                <button class="btn send">发送 →</button>
+              </div>
+              <div class="composer-meta">
+                <span class="k">⎚ 清空</span>
+                <span class="k">🎙 语音</span>
+                <span class="k">📎 附章节</span>
+                <span style="flex:1;"></span>
+                <span>POST /chat/messages · 纯文本 · 限频 5 条/分钟</span>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- floating FAB that opens the modal -->
+        <button class="avatar-fab" id="openAvatar">
+          <span class="bubble">海</span>
+          <span class="cap">
+            <span class="l1">唤起数字人</span>
+            <span class="l2">Live2D · Haru-2</span>
+          </span>
+        </button>
+
+        <!-- MODAL -->
+        <div class="modal-backdrop" id="modalA" style="display: none;">
+          <div class="modal">
+            <div class="modal-head">
+              <div class="lbl">
+                <div class="l1">AI 数字人 · 海桐</div>
+                <div class="l2">STATE · SPEAKING · 12s</div>
+              </div>
+              <div class="xs">
+                <button title="最小化">—</button>
+                <button title="画中画">◳</button>
+                <button title="关闭" id="closeAvatar">×</button>
+              </div>
+            </div>
+
+            <div class="avatar-stage">
+              <div class="figure"></div>
+              <div class="avatar-caption">状态：说话中</div>
+              <div class="avatar-annot" style="top: 30px; right: 30px;">
+                <span>口型同步音频</span>
+                <span class="arrow"></span>
+              </div>
+              <div class="avatar-annot" style="bottom: 60px; left: 30px;">
+                <span class="arrow" style="transform: scaleX(-1);"></span>
+                <span>音量 → 张嘴幅度</span>
+              </div>
+            </div>
+
+            <div class="modal-chat">
+              <div class="mm user"><span class="who">你：</span>第二步的候选供应商清单一般多长？</div>
+              <div class="mm"><span class="who">海桐：</span>通常 8–15 家，初筛过滤到 5 家左右进入 RFP。果酱案例里筛到了 6 家——</div>
+            </div>
+
+            <div class="modal-foot">
+              <div class="tools">
+                <button title="静音">🔇</button>
+                <button title="录音">●</button>
+              </div>
+              <input placeholder="对海桐说…">
+              <button class="btn primary sm">发送</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notes-row">
+        <div class="note-card" style="border-left: 3px solid var(--blue);">
+          <span class="chip">优点</span>
+          <p>数字人彻底独立、不挤压聊天内容；需要时唤起，不需要时隐藏，和"助教"本身的隐喻一致。</p>
+        </div>
+        <div class="note-card" style="border-left: 3px solid var(--rule-strong);">
+          <span class="chip">代价</span>
+          <p>弹窗打开时会遮挡聊天；需要处理最小化、拖动、键盘退出等交互细节。</p>
+        </div>
+        <div class="note-card" style="border-left: 3px solid var(--ink);">
+          <span class="chip">适合</span>
+          <p>重文字 / 弱数字人的场景，数字人作为锦上添花。推荐主线方案。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VARIATION B/C/D removed — only modal digital-human variant kept -->
+<section class="variation" data-variation="B" hidden="" style="display:none;">
+  <div class="sheet">
+    <div class="sheet-head">
+      <div>
+        <h2>B — 右侧停靠 · Docked Avatar Panel</h2>
+        <div class="subtitle">数字人常驻右侧面板，可收起为抽屉；适合"有画面感"的学习陪伴</div>
+      </div>
+      <div class="meta">LAYOUT B · DOCK</div>
+    </div>
+    <div class="sheet-body">
+      <div class="mock v2-layout" style="position: relative;">
+        <div class="mock-header">
+          <div class="mock-brand">
+            <div class="dot"></div>
+            <div><div class="label">供应链寻源学习平台</div><div class="sub">SOURCING · LEARN</div></div>
+          </div>
+          <div class="mock-nav">
+            <span>首页</span><span class="on">AI 助教</span><span>课程文档</span><span>实训教学</span>
+          </div>
+          <div class="mock-user"><div class="av"></div><div>张同学</div></div>
+        </div>
+
+        <div class="chat-layout">
+          <!-- history -->
+          <aside class="history-pane">
+            <div class="history-head"><h3>历史对话</h3><div class="meta">12</div></div>
+            <div class="history-search"><div class="search-box"><span>⌕</span><span>搜索…</span></div></div>
+            <div class="history-list">
+              <div class="history-item on"><div class="t1">寻源流程五步法</div><div class="t2">问：寻源流程到底有哪五步…</div><div class="t3"><span>10:12</span><span>8 条</span></div></div>
+              <div class="history-item"><div class="t1">TCO 果酱采购</div><div class="t2">问：TCO 怎么拆？</div><div class="t3"><span>09:40</span><span>6 条</span></div></div>
+              <div class="history-item"><div class="t1">BATNA 是什么</div><div class="t2">问：BATNA 具体怎么用…</div><div class="t3"><span>昨日</span><span>4 条</span></div></div>
+              <div class="history-item"><div class="t1">Kraljic 矩阵</div><div class="t2">问：四象限策略…</div><div class="t3"><span>昨日</span><span>10 条</span></div></div>
+              <div class="history-item"><div class="t1">评估权重</div><div class="t2">问：5 维权重…</div><div class="t3"><span>昨日</span><span>5 条</span></div></div>
+            </div>
+            <div class="history-foot">
+              <button class="btn primary full">＋ 开启新对话</button>
+            </div>
+          </aside>
+
+          <!-- chat -->
+          <section class="chat-pane">
+            <div class="chat-head">
+              <div class="title">
+                <h3>寻源流程五步法</h3>
+                <div class="meta">CONV_7F3A · 8 MESSAGES</div>
+              </div>
+              <div class="actions">
+                <span class="presence speaking"><span class="dot"></span>AI · 说话中</span>
+                <button class="btn ghost sm">⋯</button>
+              </div>
+            </div>
+            <div class="chat-scroll">
+              <article class="msg user">
+                <div class="msg-head"><span class="msg-speaker">张同学</span><span class="msg-time">10:08</span></div>
+                <div class="msg-body">寻源流程到底有哪五步？</div>
+              </article>
+              <article class="msg ai">
+                <div class="msg-head"><span class="msg-speaker">AI 助教</span><span class="msg-time">10:08</span></div>
+                <div class="msg-body">经典 5 步：需求分析 → 市场调研 → RFP/RFQ 评估 → 谈判签约 → SRM 管理。</div>
+                <div class="msg-refs"><span class="chip">§1.3</span><span class="chip">§2.1</span></div>
+              </article>
+              <article class="msg user">
+                <div class="msg-head"><span class="msg-speaker">张同学</span><span class="msg-time">10:10</span></div>
+                <div class="msg-body">候选供应商清单一般多长？</div>
+              </article>
+              <article class="msg ai">
+                <div class="msg-head"><span class="msg-speaker">AI 助教</span><span class="msg-time">10:12</span></div>
+                <div class="msg-body">一般 8–15 家进入初筛，再精选到 5 家左右做 RFP。</div>
+              </article>
+            </div>
+            <div class="composer">
+              <div class="composer-row">
+                <div class="composer-box"><span class="hint">向 AI 助教提问…</span></div>
+                <button class="btn send">发送 →</button>
+              </div>
+              <div class="composer-meta">
+                <span class="k">🎙</span><span class="k">📎</span>
+                <span style="flex:1;"></span>
+                <span>POST /chat/messages</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- docked avatar -->
+          <aside class="v2-avatar-dock">
+            <div class="dock-head">
+              <h3>AI 数字人</h3>
+              <button class="btn ghost sm">↔ 收起</button>
+            </div>
+            <div class="dock-body">
+              <div class="avatar-stage">
+                <div class="figure"></div>
+                <div class="avatar-caption">STATE · SPEAKING</div>
+              </div>
+              <div style="display: grid; gap: 6px;">
+                <div class="presence speaking" style="justify-content: center;">
+                  <span class="dot"></span>当前状态：说话中
+                </div>
+                <button class="btn sm full">🔇 静音</button>
+                <button class="btn sm full ghost">切换形象</button>
+              </div>
+              <div class="note">
+                数字人常驻，文字回复时自动播放语音 + 驱动口型；点击上方"收起"可折叠为右侧抽屉条。
+              </div>
+            </div>
+            <div style="padding: 12px 16px; border-top: 1px dashed var(--rule-strong); font-family: var(--mono); font-size: 10px; color: var(--ink-3); letter-spacing: .32px;">
+              pixi-live2d-display · Haru-2
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="notes-row">
+        <div class="note-card" style="border-left: 3px solid var(--blue);">
+          <span class="chip">优点</span>
+          <p>数字人全程陪伴感强；状态无需唤起，助教语气更连续。</p>
+        </div>
+        <div class="note-card" style="border-left: 3px solid var(--rule-strong);">
+          <span class="chip">代价</span>
+          <p>挤占聊天区宽度 340px；在 1366 以下屏幕体验会紧张。</p>
+        </div>
+        <div class="note-card" style="border-left: 3px solid var(--ink);">
+          <span class="chip">适合</span>
+          <p>强调数字人 IP 的定位；也可以作为 A 方案弹窗"展开后"的样式。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="variation" data-variation="C" hidden="" style="display:none;">
+  <div class="sheet">
+    <div class="sheet-head">
+      <div>
+        <h2>C — 浮动气泡 · Floating Bubble</h2>
+        <div class="subtitle">右下角永久小气泡（数字人胸像）；点击展开为聊天气泡，不遮挡主界面</div>
+      </div>
+      <div class="meta">LAYOUT C · FLOATING</div>
+    </div>
+    <div class="sheet-body">
+      <div class="mock" style="position: relative;">
+        <div class="mock-header">
+          <div class="mock-brand">
+            <div class="dot"></div>
+            <div><div class="label">供应链寻源学习平台</div><div class="sub">SOURCING · LEARN</div></div>
+          </div>
+          <div class="mock-nav">
+            <span>首页</span><span class="on">AI 助教</span><span>课程文档</span><span>实训教学</span>
+          </div>
+          <div class="mock-user"><div class="av"></div><div>张同学</div></div>
+        </div>
+
+        <div class="chat-layout">
+          <aside class="history-pane">
+            <div class="history-head"><h3>历史对话</h3><div class="meta">12</div></div>
+            <div class="history-search"><div class="search-box"><span>⌕</span><span>搜索…</span></div></div>
+            <div class="history-list">
+              <div class="history-item on"><div class="t1">寻源流程五步法</div><div class="t2">问：寻源流程到底有哪五步？</div><div class="t3"><span>10:12</span><span>8 条</span></div></div>
+              <div class="history-item"><div class="t1">TCO 果酱采购</div><div class="t2">问：TCO 怎么拆？</div><div class="t3"><span>09:40</span><span>6 条</span></div></div>
+              <div class="history-item"><div class="t1">BATNA 是什么</div><div class="t2">问：BATNA 具体怎么用…</div><div class="t3"><span>昨日</span><span>4 条</span></div></div>
+              <div class="history-item"><div class="t1">Kraljic 矩阵</div><div class="t2">问：四象限策略…</div><div class="t3"><span>昨日</span><span>10 条</span></div></div>
+            </div>
+            <div class="history-foot"><button class="btn primary full">＋ 开启新对话</button></div>
+          </aside>
+
+          <section class="chat-pane">
+            <div class="chat-head">
+              <div class="title">
+                <h3>寻源流程五步法</h3>
+                <div class="meta">CONV_7F3A · 8 MESSAGES</div>
+              </div>
+              <div class="actions">
+                <span class="presence speaking"><span class="dot"></span>AI · 空闲</span>
+                <button class="btn ghost sm">↗</button>
+              </div>
+            </div>
+            <div class="chat-scroll">
+              <article class="msg user">
+                <div class="msg-head"><span class="msg-speaker">张同学</span><span class="msg-time">10:08</span></div>
+                <div class="msg-body">寻源流程到底有哪五步？每一步的关键产出是什么？</div>
+              </article>
+              <article class="msg ai">
+                <div class="msg-head"><span class="msg-speaker">AI 助教</span><span class="msg-time">10:08</span></div>
+                <div class="msg-body">5 步：需求 → 调研 → RFP → 谈判 → SRM。关键产出依次是：需求说明书、候选清单、评估矩阵、合同、KPI 基线。</div>
+                <div class="msg-refs"><span class="chip">§1.3</span><span class="chip">§2.1</span><span class="chip">§4.2</span></div>
+              </article>
+              <article class="msg user">
+                <div class="msg-head"><span class="msg-speaker">张同学</span><span class="msg-time">10:10</span></div>
+                <div class="msg-body">能给我一个果酱采购的完整例子吗？</div>
+              </article>
+              <article class="msg ai">
+                <div class="msg-head"><span class="msg-speaker">AI 助教</span><span class="msg-time">10:11</span></div>
+                <div class="msg-body">好的。背景：某零售商 2026 年计划采购 120 吨草莓果酱，需求说明书关键点如下：
+• 规格：250g PET 瓶
+• 交付：季度平均 30 吨
+• 合规：GB 7101 + HACCP
+• 预算：单价 ≤ 12 元/瓶
+
+进入调研后…</div>
+              </article>
+            </div>
+            <div class="composer">
+              <div class="composer-row">
+                <div class="composer-box"><span class="hint">向 AI 助教提问…</span></div>
+                <button class="btn send">发送 →</button>
+              </div>
+              <div class="composer-meta">
+                <span class="k">🎙</span><span class="k">📎</span>
+                <span style="flex:1;"></span>
+                <span>POST /chat/messages</span>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- floating bubble open -->
+        <div class="v3-bubble">
+          <div class="bbl-head">
+            <span class="t">海桐 · AI 数字人</span>
+            <div style="display:flex; gap:6px;">
+              <button class="btn ghost sm" style="padding: 0 8px;">—</button>
+              <button class="btn ghost sm" style="padding: 0 8px;">×</button>
+            </div>
+          </div>
+          <div class="avatar-stage">
+            <div class="figure" style="width: 150px; height: 210px;"></div>
+            <div class="avatar-caption">IDLE · 呼吸</div>
+          </div>
+          <div class="bbl-foot">
+            <input placeholder="和海桐简单聊两句…">
+            <button class="btn primary sm">发送</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="notes-row">
+        <div class="note-card" style="border-left: 3px solid var(--blue);">
+          <span class="chip">优点</span>
+          <p>不遮挡主聊天；轻量、可拖动；用户随时可把数字人折叠成一枚圆形头像。</p>
+        </div>
+        <div class="note-card" style="border-left: 3px solid var(--rule-strong);">
+          <span class="chip">代价</span>
+          <p>数字人展示面积最小，口型表情的细节不易看清；容易被误认为客服机器人。</p>
+        </div>
+        <div class="note-card" style="border-left: 3px solid var(--ink);">
+          <span class="chip">适合</span>
+          <p>面向"能答就行、不 care 数字人样貌"的用户；也适合移动端后续复用。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="variation" data-variation="D" hidden="" style="display:none;">
+  <div class="sheet">
+    <div class="sheet-head">
+      <div>
+        <h2>D — 沉浸式接管 · Fullscreen Avatar Mode</h2>
+        <div class="subtitle">点击"面对面"按钮 → 整个助教页切换为数字人主视角，右侧为紧凑聊天栏，退出可回到 A 视图</div>
+      </div>
+      <div class="meta">LAYOUT D · TAKEOVER</div>
+    </div>
+    <div class="sheet-body">
+      <div class="mock" style="position: relative;">
+        <div class="mock-header">
+          <div class="mock-brand">
+            <div class="dot"></div>
+            <div><div class="label">供应链寻源学习平台</div><div class="sub">SOURCING · LEARN</div></div>
+          </div>
+          <div class="mock-nav">
+            <span>首页</span><span class="on">AI 助教</span><span>课程文档</span><span>实训教学</span>
+          </div>
+          <div class="mock-user"><div class="av"></div><div>张同学</div></div>
+        </div>
+
+        <!-- base layout (dim) -->
+        <div class="chat-layout" style="opacity: .25; filter: grayscale(1); pointer-events: none; min-height: 720px;">
+          <aside class="history-pane">
+            <div class="history-head"><h3>历史对话</h3></div>
+            <div class="history-list">
+              <div class="history-item on"><div class="t1">寻源流程五步法</div><div class="t2">问：…</div><div class="t3"><span>10:12</span></div></div>
+              <div class="history-item"><div class="t1">TCO 果酱</div><div class="t2">问：…</div><div class="t3"><span>09:40</span></div></div>
+            </div>
+          </aside>
+          <section class="chat-pane">
+            <div class="chat-head"><div class="title"><h3>寻源流程五步法</h3></div></div>
+            <div class="chat-scroll">
+              <article class="msg ai"><div class="msg-head"><span class="msg-speaker">AI 助教</span></div><div class="msg-body">…</div></article>
+            </div>
+          </section>
+        </div>
+
+        <!-- takeover -->
+        <div class="v4-takeover">
+          <div class="stage">
+            <div class="figure"></div>
+            <div class="avatar-annot" style="top: 40px; left: 40px;">
+              <span class="arrow" style="transform: scaleX(-1);"></span>
+              <span>全尺寸 Live2D · 支持呼吸/眨眼/头部追踪</span>
+            </div>
+            <div style="position:absolute; bottom: 20px; left: 20px; display: flex; gap: 10px;">
+              <span class="presence speaking"><span class="dot"></span>SPEAKING · 00:12</span>
+              <span class="presence speaking"><span class="dot"></span>语速 1.0×</span>
+            </div>
+            <div style="position:absolute; top: 20px; right: 20px; display:flex; gap:8px;">
+              <button class="btn ghost sm">🔇 静音</button>
+              <button class="btn ghost sm">⇱ 返回聊天</button>
+            </div>
+          </div>
+          <aside class="side">
+            <div class="sh">
+              <h3>对话 · 简栏</h3>
+              <span class="presence speaking"><span class="dot"></span>说话中</span>
+            </div>
+            <div class="sb">
+              <article class="msg user" style="max-width: 100%;">
+                <div class="msg-head"><span class="msg-speaker">张同学</span><span class="msg-time">10:08</span></div>
+                <div class="msg-body">寻源流程到底有哪五步？</div>
+              </article>
+              <article class="msg ai" style="max-width: 100%;">
+                <div class="msg-head"><span class="msg-speaker">海桐</span><span class="msg-time">10:08</span></div>
+                <div class="msg-body">五步：需求分析 → 市场调研 → RFP 评估 → 谈判签约 → SRM 管理。</div>
+              </article>
+              <article class="msg user" style="max-width: 100%;">
+                <div class="msg-head"><span class="msg-speaker">张同学</span><span class="msg-time">10:10</span></div>
+                <div class="msg-body">候选供应商清单一般多长？</div>
+              </article>
+              <article class="msg ai" style="max-width: 100%;">
+                <div class="msg-head"><span class="msg-speaker">海桐 · 正在说</span><span class="msg-time">10:12</span></div>
+                <div class="typing"><span class="d"></span><span class="d"></span><span class="d"></span><span style="margin-left:6px;">字幕逐字滚动…</span></div>
+              </article>
+            </div>
+            <div class="sf">
+              <input style="flex:1; border:0; border-bottom: 2px solid var(--rule-strong); padding: 10px 4px; font-size: 14px;" placeholder="对海桐说…">
+              <button class="btn primary sm">🎙 按住说话</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="notes-row">
+        <div class="note-card" style="border-left: 3px solid var(--blue);">
+          <span class="chip">优点</span>
+          <p>最有"面对面辅导"的感觉；适合问答、口语练习等重语音场景。</p>
+        </div>
+        <div class="note-card" style="border-left: 3px solid var(--rule-strong);">
+          <span class="chip">代价</span>
+          <p>历史对话入口暂时隐藏；Live2D 全尺寸渲染对低端机压力大。</p>
+        </div>
+        <div class="note-card" style="border-left: 3px solid var(--ink);">
+          <span class="chip">适合</span>
+          <p>作为 A/B 基础上的一个"全屏模式"入口，而不是默认形态。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<!-- Tweaks -->
+<div class="tweaks" id="tweaksPanel">
+  <div class="tweaks-head">
+    <span>Tweaks</span>
+    <button class="close" id="tweaksClose">×</button>
+  </div>
+  <div class="tweaks-body">
+    <div class="tweak-row">
+      <label>数字人弹窗 MODAL</label>
+      <div class="seg" data-key="modal">
+        <button data-val="open" class="">打开</button>
+        <button data-val="closed" class="on">关闭</button>
+      </div>
+    </div>
+    <div class="tweak-row">
+      <label>数字人状态 PRESENCE</label>
+      <div class="seg" data-key="presence">
+        <button data-val="idle">空闲</button>
+        <button data-val="thinking">思考</button>
+        <button data-val="speaking" class="on">说话</button>
+      </div>
+    </div>
+    <div class="tweak-row">
+      <label>强调色 ACCENT</label>
+      <div class="seg" data-key="accent">
+        <button data-val="blue">IBM Blue</button>
+        <button data-val="ink" class="on">纯黑白</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const tabs = document.querySelectorAll('.toolbar-tabs button');
+  const vars = document.querySelectorAll('.variation');
+  function show(key){
+    tabs.forEach(t => t.setAttribute('aria-selected', t.dataset.var === key ? 'true':'false'));
+    vars.forEach(v => v.classList.toggle('active', v.dataset.variation === key));
+    try { localStorage.setItem('ai.variation', key); } catch(e){}
+    state.variation = key;
+    refreshSeg();
+  }
+  tabs.forEach(t => t.addEventListener('click', () => show(t.dataset.var)));
+  try {
+    const saved = localStorage.getItem('ai.variation');
+    if (saved) show(saved);
+  } catch(e){}
+
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "variation": "A",
+    "modal": "closed",
+    "presence": "speaking",
+    "accent": "ink"
+  }/*EDITMODE-END*/;
+  const state = Object.assign({}, TWEAK_DEFAULTS);
+
+  const panel = document.getElementById('tweaksPanel');
+  const closeBtn = document.getElementById('tweaksClose');
+  const segs = panel.querySelectorAll('.seg');
+  segs.forEach(seg => {
+    const key = seg.dataset.key;
+    seg.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => setTweak(key, b.dataset.val, true));
+    });
+  });
+  function refreshSeg(){
+    segs.forEach(seg => {
+      const key = seg.dataset.key;
+      seg.querySelectorAll('button').forEach(b => {
+        b.classList.toggle('on', b.dataset.val === state[key]);
+      });
+    });
+  }
+  let applying = false;
+  function setTweak(key, val, persist){
+    state[key] = val;
+    refreshSeg();
+    apply();
+    if (persist) {
+      try {
+        window.parent.postMessage({type:'__edit_mode_set_keys', edits:{[key]: val}}, '*');
+      } catch(e){}
+    }
+  }
+  function apply(){
+    if (applying) return;
+    applying = true;
+    if (state.variation) show(state.variation);
+    // modal visibility (variation A)
+    const m = document.getElementById('modalA');
+    if (m) m.style.display = state.modal === 'open' ? 'grid' : 'none';
+    // accent swap
+    document.documentElement.style.setProperty('--blue', state.accent === 'ink' ? '#161616' : '#0f62fe');
+    document.documentElement.style.setProperty('--blue-ink', state.accent === 'ink' ? '#000000' : '#0043ce');
+    document.documentElement.style.setProperty('--blue-hover', state.accent === 'ink' ? '#000000' : '#0353e9');
+    // presence chips
+    document.querySelectorAll('.presence').forEach(p => {
+      p.classList.remove('idle','thinking','speaking');
+      p.classList.add(state.presence);
+      const t = p.querySelector(':scope > :last-child');
+      // leave the text labels — only repaint the dot
+    });
+    applying = false;
+  }
+
+  // Modal local toggles
+  const openBtn = document.getElementById('openAvatar');
+  const closeAvatar = document.getElementById('closeAvatar');
+  if (openBtn) openBtn.addEventListener('click', () => setTweak('modal','open', true));
+  if (closeAvatar) closeAvatar.addEventListener('click', () => setTweak('modal','closed', true));
+
+  window.addEventListener('message', (e) => {
+    const d = e.data || {};
+    if (d.type === '__activate_edit_mode') panel.classList.add('open');
+    else if (d.type === '__deactivate_edit_mode') panel.classList.remove('open');
+  });
+  try { window.parent.postMessage({type:'__edit_mode_available'}, '*'); } catch(e){}
+  closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+
+  refreshSeg();
+  apply();
+})();
+</script>
+
+
+
+</body></html>

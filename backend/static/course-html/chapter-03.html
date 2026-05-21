@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第三章 供应商的选择</title>
+<style>
+.main {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    color: #2c3e50;
+}
+
+.main h1 {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0.8em 0 0.5em 0;
+    border-bottom: 2px solid #3a6b8c;
+    padding-bottom: 0.35em;
+}
+
+.main h2 {
+    font-size: 1.45em;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 1.2em 0 0.5em 0;
+}
+
+.main h3 {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 1em 0 0.4em 0;
+}
+
+.main h4 {
+    font-size: 1.05em;
+    font-weight: 600;
+    color: #3a3a3a;
+    margin: 0.9em 0 0.35em 0;
+}
+
+.main p {
+    margin: 0.6em 0;
+    text-indent: 0;
+}
+
+.main ul,
+.main ol {
+    margin: 0.5em 0 0.5em 1.2em;
+    padding-left: 0.8em;
+}
+
+.main li {
+    margin: 0.3em 0;
+}
+
+.main table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.8em 0;
+    font-size: 0.92em;
+}
+
+.main table th,
+.main table td {
+    border: 1px solid #d0d6dc;
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.main table th {
+    background-color: #eef3f7;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.main table td {
+    background-color: #fafbfc;
+}
+
+.main figure {
+    margin: 1em 0;
+}
+
+.main figcaption {
+    font-weight: 600;
+    color: #3a6b8c;
+    margin-bottom: 0.35em;
+    font-size: 0.95em;
+}
+
+.main img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+.main .objective-card {
+    background: #eaf2f8;
+    border-left: 4px solid #3a6b8c;
+    padding: 14px 18px;
+    margin: 1em 0;
+    border-radius: 4px;
+    font-weight: 600;
+    color: #1a3a4e;
+}
+
+.main .thinking-box {
+    background: #fdf8f0;
+    border: 1px solid #e8d5b0;
+    padding: 14px 18px;
+    margin: 1em 0;
+    border-radius: 6px;
+}
+
+.main .thinking-box::before {
+    content: "💡 想一想";
+    display: block;
+    font-weight: 700;
+    color: #b8751e;
+    margin-bottom: 6px;
+    font-size: 0.95em;
+}
+
+.main .case-box {
+    background: #f5f7fa;
+    border: 1px solid #d5dce6;
+    padding: 16px 20px;
+    margin: 1em 0;
+    border-radius: 6px;
+}
+
+.main .case-box::before {
+    content: "📋 案例";
+    display: block;
+    font-weight: 700;
+    color: #3a6b8c;
+    margin-bottom: 6px;
+    font-size: 0.95em;
+}
+
+.main .supp-box {
+    background: #f8fafb;
+    border: 1px dashed #bcc7d3;
+    padding: 14px 18px;
+    margin: 1em 0;
+    border-radius: 6px;
+}
+
+.main .supp-box::before {
+    content: "📎 补充资料";
+    display: block;
+    font-weight: 700;
+    color: #5a7d9a;
+    margin-bottom: 6px;
+    font-size: 0.95em;
+}
+
+.main ol.steps-list {
+    list-style: none;
+    counter-reset: step;
+    padding-left: 0;
+    margin: 0.8em 0;
+}
+
+.main ol.steps-list>li {
+    counter-increment: step;
+    margin: 0.6em 0;
+    padding-left: 2.4em;
+    position: relative;
+}
+
+.main ol.steps-list>li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #3a6b8c;
+    color: #fff;
+    width: 1.8em;
+    height: 1.8em;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 1.8em;
+    font-weight: 700;
+    font-size: 0.85em;
+}
+
+.main ol.steps-list>li strong {
+    display: block;
+    margin-bottom: 2px;
+}
+
+.main .highlight-box {
+    background: #fef9e7;
+    border: 1px solid #f0d87e;
+    padding: 12px 16px;
+    margin: 0.8em 0;
+    border-radius: 4px;
+}
+
+.main .definition-list {
+    margin: 0.6em 0;
+}
+
+.main .definition-list dt {
+    font-weight: 700;
+    color: #1a3a4e;
+    margin-top: 0.5em;
+}
+
+.main .definition-list dd {
+    margin-left: 1.2em;
+    color: #3a3a3a;
+}
+
+.main hr {
+    border: none;
+    border-top: 1px solid #e0e5ea;
+    margin: 1.2em 0;
+}
+
+/* ====== Chapter 01 visual alignment ====== */
+:root {
+    --bg: #fbfaf7;
+    --bg-elevated: #ffffff;
+    --bg-subtle: #f3f1ec;
+    --ink: #1a1a1a;
+    --ink-soft: #4a4a4a;
+    --ink-muted: #8a8580;
+    --line: #e6e2da;
+    --line-strong: #d4cfc4;
+    --accent: #b91c4d;
+    --accent-soft: #fdf2f5;
+    --accent-line: #f4d7e0;
+    --highlight: #fff8e7;
+    --highlight-line: #ead9a8;
+    --serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
+    --sans: "Noto Sans SC", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    --mono: "JetBrains Mono", "SF Mono", Menlo, monospace;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+}
+
+.main {
+    font-family: var(--sans);
+    color: var(--ink);
+    line-height: 1.8;
+    font-size: 16px;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 56px 8px 120px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.main h1 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 44px;
+    line-height: 1.2;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin: 0 0 56px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--line);
+}
+
+.main .chapter-header {
+    margin-bottom: 56px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--line);
+}
+
+.main .chapter-eyebrow {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding: 4px 10px;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-line);
+}
+
+.main h1.chapter-title {
+    margin: 0 0 16px;
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+.main .chapter-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-top: 20px;
+}
+
+.main .chapter-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.main .chapter-meta-item svg {
+    opacity: 0.6;
+}
+
+.main h2 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 30px;
+    color: var(--ink);
+    margin: 64px 0 24px;
+    padding-left: 16px;
+    border-left: 4px solid var(--accent);
+    line-height: 1.3;
+}
+
+.main h3 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--ink);
+    margin: 40px 0 16px;
+}
+
+.main h4 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--ink);
+    margin: 28px 0 10px;
+}
+
+.main p {
+    font-size: 16px;
+    line-height: 1.85;
+    color: var(--ink-soft);
+    margin: 0 0 16px;
+    text-align: justify;
+    text-justify: inter-ideograph;
+}
+
+.main p strong,
+.main li strong,
+.main td strong {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.main ul,
+.main ol {
+    margin: 0 0 18px 1.2em;
+    padding-left: 1em;
+    color: var(--ink-soft);
+}
+
+.main li {
+    margin: 8px 0;
+    line-height: 1.75;
+}
+
+.main .objective-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--accent-line);
+    border-left: 4px solid var(--accent);
+    padding: 24px 28px;
+    margin: 0 0 28px;
+    border-radius: 0;
+    box-shadow: 0 1px 2px rgba(20, 15, 8, 0.04);
+    color: var(--ink-soft);
+    font-weight: 400;
+}
+
+.main .objective-card > strong {
+    display: block;
+    font-family: var(--serif);
+    font-size: 17px;
+    color: var(--accent);
+    margin-bottom: 14px;
+}
+
+.main .objective-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--accent);
+}
+
+.main .objective-card-header svg {
+    stroke: var(--accent);
+}
+
+.main .objective-list {
+    list-style: none;
+    counter-reset: obj;
+    padding: 0;
+    margin: 0;
+}
+
+.main .objective-list li {
+    counter-increment: obj;
+    padding-left: 36px;
+    position: relative;
+    margin-bottom: 9px;
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+}
+
+.main .objective-list li::before {
+    content: counter(obj, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    font-weight: 600;
+}
+
+.main .concept-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 14px 18px;
+    background: var(--bg-subtle);
+    border: 1px dashed var(--line-strong);
+    margin-bottom: 28px;
+    align-items: center;
+}
+
+.main .concept-tags-label {
+    font-size: 12px;
+    color: var(--ink-muted);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-right: 4px;
+}
+
+.main .concept-tag {
+    background: var(--bg-elevated);
+    border: 1px solid var(--line-strong);
+    padding: 4px 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-family: var(--serif);
+}
+
+.main .thinking-box {
+    background: var(--highlight);
+    border: 1px solid var(--highlight-line);
+    border-left: 4px solid #c9a35a;
+    padding: 18px 22px;
+    margin: 26px 0;
+    border-radius: 0;
+}
+
+.main .thinking-box::before {
+    content: "想一想";
+    display: block;
+    font-family: var(--serif);
+    font-weight: 700;
+    color: #8a6510;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.main .case-box {
+    background: var(--bg-elevated);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    padding: 22px 26px;
+    margin: 28px 0;
+    border-radius: 0;
+    box-shadow: 0 1px 2px rgba(20, 15, 8, 0.04);
+}
+
+.main .case-box::before {
+    content: "案例";
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.main .supp-box {
+    background: var(--bg-subtle);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin: 28px 0;
+    border-radius: 0;
+}
+
+.main .supp-box::before {
+    content: "补充资料";
+    display: block;
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 12px;
+}
+
+.main table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 14px;
+    background: var(--bg-elevated);
+}
+
+.main table th,
+.main table td {
+    border: 1px solid var(--line);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+    background: var(--bg-elevated);
+}
+
+.main table th {
+    background: var(--bg-subtle);
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.main figcaption {
+    font-family: var(--serif);
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 10px;
+}
+
+.main ol.steps-list {
+    list-style: none;
+    counter-reset: step;
+    padding-left: 0;
+    margin: 18px 0 24px;
+}
+
+.main ol.steps-list > li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 44px;
+    margin: 12px 0;
+}
+
+.main ol.steps-list > li::before {
+    content: counter(step, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    font-weight: 600;
+}
+
+@media (max-width: 720px) {
+    .main { padding: 32px 16px 80px; }
+    .main h1 { font-size: 32px; }
+    .main h2 { font-size: 24px; }
+    .main h3 { font-size: 20px; }
+    .main table { font-size: 13px; }
+}
+</style>
+</head>
+<body>
+<main class="main">
+
+<header class="chapter-header">
+    <div class="chapter-eyebrow">Chapter 03 · 第三章</div>
+    <h1 class="chapter-title">供应商的选择</h1>
+    <div class="chapter-meta">
+        <div class="chapter-meta-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>
+            <span>预计阅读 35 分钟</span>
+        </div>
+        <div class="chapter-meta-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>共 5 节 · 32 页</span>
+        </div>
+        <div class="chapter-meta-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+            <span>含案例 3 篇</span>
+        </div>
+    </div>
+</header>
+
+<div class="objective-card">
+    <div class="objective-card-header">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        <span>学习目标</span>
+    </div>
+    <ol class="objective-list">
+        <li>掌握供应商评估模型和供应商选择模型</li>
+        <li>熟知供应商的选择标准</li>
+        <li>熟知合同授予的标准</li>
+    </ol>
+</div>
+
+<div class="concept-tags">
+    <span class="concept-tags-label">基本概念</span>
+    <span class="concept-tag">供应商选择标准</span>
+    <span class="concept-tag">质量控制</span>
+    <span class="concept-tag">质量保证</span>
+    <span class="concept-tag">合同授予标准</span>
+</div>
+
+<!-- ============ 第一节 ============ -->
+<section id="section-1">
+<h2>第一节 供应商选择</h2>
+
+<p>供应商选择是企业进行成本控制的重要手段。选择合格的供应商以确保其提供的产品满足公司的采购要求，对提升采购方企业的利润水平意义重大。</p>
+
+<p>供应商选择主要有三项标准：一是判断候选供应商是否合适，是否有能力满足采购方的要求提供产品或服务；二是评估候选供应商的适合性程度、可接受性大小和能力水平；三是候选供应商是否有能力实现采购方企业未来的需求。</p>
+
+<p>因此，为了确保供应商的价格和提案具有竞争力，高价值物品和杠杆物品的外部询购一般采用搜寻竞争性供应源的方法。采用该方法时应多关注减少合同授予的数量、复杂性与主观性，以便确保标书和最终决策的公正性。合同授予决策最好是基于少数客观且可量化的标准。</p>
+
+<p>在供应商选择或资格预审时，企业所设定的具体标准应当符合以下五点要求：</p>
+<ul>
+    <li><strong>与企业自身的战略优先排序目标相符合。</strong>如与质量领先、供应链整合、创新、企业社会责任等目标相符合。</li>
+    <li><strong>特定的流程要求。</strong>如与逆向物流能力、快速定制和敏捷供应、精益或高成本效益供应、IT系统兼容等流程相统一。</li>
+    <li><strong>避免供应源搜寻中的风险因素。</strong>如国际货运问题、质量低劣问题、设计公差大、高度的监管干预、声誉风险等因素。</li>
+    <li><strong>根据不同的采购类型，依据企业需求的性质而优先考虑</strong>价格因素、质量因素和交货速度等因素。</li>
+    <li><strong>针对不同的供应关系，</strong>长期持续的供应商需满足更严格的财务稳定性、设备兼容性等其他要求。</li>
+</ul>
+
+<div class="supp-box">
+    <p>按照目标导向、优势互补、互惠互利原则，常用的供应商选择与评价方法可分为<strong>层次分析法</strong>和<strong>模糊综合评价法</strong>，这两者都是定性与定量相结合的方法。</p>
+    <h4>一、层次分析法</h4>
+    <p>层次分析法（Analytic Hierarchy Process, AHP）由著名的运筹学家萨蒂（T.L. Saaty）于20世纪70年代初提出，是将与决策相关的因素分解成目标、准则、方案等层次，并在此基础上进行定性和定量分析的决策方法。其主要步骤为建立层次结构、构造判断矩阵、计算权重向量、一致性检验、计算目标权重。</p>
+    <h4>二、模糊综合评价法</h4>
+    <p>模糊综合评价法由美国加州大学的控制论专家扎德（L.A. Zadeh）经过多年的潜心研究得出。其基本原理是首先确定被评判对象的因素集和评价集，然后分别计算各个隶属的权重及其隶属向量，并据此得到模糊评判矩阵，最后把模糊评判矩阵和因素的权重向量模糊计算并作归一化处理，获得模糊评价综合结果。模糊综合评价法的主要步骤为：确定评价因素；确定评价等级；构造评价矩阵；确定评价因素的模糊权重A；利用适合的合成算法将A在各被评事物的R合成得到各被评事物的模糊综合评价结果向量B；再对模糊综合评价的结果向量进行分析。</p>
+</div>
+
+<div class="thinking-box">
+    <p>A公司进行供应商选择是按照《供应商开发管理制度》来开展的，具体而言，由需求部门提出需求，采购部门进行供应商选择。</p>
+    <p>根据A公司的业务需求，其供应商主要分为两大类，一类是生产产品供应商，另一类是销售代理供应商。A公司目前的采购需求均通过公司ERP信息系统来确认，由生产部门通过ERP采购平台提出采购需求，经平台中的各个环节的审批流程批准后，方可进入供应商采购程序，根据采购供应商类别和采购金额来选择公开招标、竞争性谈判、单一渠道采购等具体的采购方式。</p>
+    <p>若这时生产产品供应商C公司、销售代理供应商D公司都有意向为A公司供货，A公司应以什么标准进行供应商选择呢？</p>
+</div>
+</section>
+
+<!-- ============ 第二节 ============ -->
+<section id="section-2">
+<h2>第二节 评估和选择供应商的模型</h2>
+<p>从公司角度出发，供应商的选择及评估是一项系统、多方位的工作，应综合多方因素考虑，为正确决策作好铺垫，以保证作出最准确合理的评估，从而制定实用的选择标准。也就是说，采购方首先要对供应商选择评估标准进行界定并作出切合实际的限定。</p>
+
+<h3>一、八角度框架</h3>
+<p>关于供应商的选择标准，莱森和法灵顿建议采用以下八角度框架评估潜在供应商，如表3-1所示。</p>
+
+<figure>
+    <figcaption>表3-1 供应商选择的八个角度</figcaption>
+    <table>
+        <thead>
+            <tr><th style="width:15%;">角度</th><th>详情</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>生产能力和设施</strong></td>
+                <td>生产能力：供应商能处理的货量最大值以及在一定时间内能够生产的产品数量<br>创新和设计能力：供应商的声誉、过往交易记录、资源和设施、供应商是否愿意协作<br>生产设施（机器型号、加工能力、维护保养水平和效率），健康与安全记录和体系，工厂的布局和设计是否便于提高效率，是否使用CAD/CAM等系统</td>
+            </tr>
+            <tr>
+                <td><strong>人力资源</strong></td>
+                <td>人力资源的运用水平，团队精神</td>
+            </tr>
+            <tr>
+                <td><strong>质量</strong></td>
+                <td>标准认证（如ISO 9000、BSI等）<br>质量管理方法和体系，如检验和测试、流程控制、出厂质量检验等<br>全面质量管理意识：质量文化</td>
+            </tr>
+            <tr>
+                <td><strong>绩效</strong></td>
+                <td>在类似项目上有无经验、过往记录、已完成的项目、客户证言，对于复杂的采购需求（如基础建设项目或IT开发）极为重要</td>
+            </tr>
+            <tr>
+                <td><strong>环境和商业道德</strong></td>
+                <td>合规记录<br>政策和价值观声明、行为准则和规范、管理责任机制、进度报告机制<br>相关领域的供应链管理<br>ISO 14001（环境管理体系）等认证</td>
+            </tr>
+            <tr>
+                <td><strong>IT技术</strong></td>
+                <td>开发与应用电子商务潜力（互联网和外部网的使用）<br>利用技术来减少或消除纸面作业、缩短订货周期、提供实时的产品可获得性信息、支持协同规划、对供应链进行管理</td>
+            </tr>
+            <tr>
+                <td><strong>组织架构</strong></td>
+                <td>责任说明<br>灵活度：跨职能沟通、决策链短有助于进行快速的决策，或根据需要重新调配人力资源及应对需求波动的能力<br>客户管理：供应商一方的合同与关系管理、与买方联系人的关系管理</td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="font-size:0.85em;color:#7a8a9a;">资料来源：英国皇家采购与供应学会.供应源搜寻[M].北京中交协物流人力资源培训中心，译.北京：机械工业出版社，2014.</p>
+</figure>
+
+<h3>二、"10C"模型</h3>
+<p>本书第一章已对雷·卡特尔提出的"10C"模型进行了论述，在此略作修改和扩充，如表3-2所示。</p>
+
+<figure>
+    <figcaption>表3-2 雷·卡特尔的供应商选择"10C"模型</figcaption>
+    <table>
+        <thead>
+            <tr><th style="width:14%;">模型名称</th><th>详情</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>能力 (Competence)</strong></td>
+                <td>供应商是否具有履行合同的资源和专业知识；供应商是否能够生产相应的产品或提供所需的服务；供应商在管理创新、设计或其他相关领域的实力</td>
+            </tr>
+            <tr>
+                <td><strong>产能 (Capacity)</strong></td>
+                <td>供应商能否满足买方当前和未来的需求；供应商的能力；供应链管理水平</td>
+            </tr>
+            <tr>
+                <td><strong>承诺 (Commitment)</strong></td>
+                <td>对某些关键价值（如质量、服务、成本管理或持续改进）的承诺以及与采购方建立长期合作关系的意愿</td>
+            </tr>
+            <tr>
+                <td><strong>控制 (Control)</strong></td>
+                <td>建立一套对资源和风险进行监控和管理的体系，例如：愿意遵守采购方提出的程序、规则或制度、质量和环境管理体系、财务控制和欺诈预防机制（监管良好）、风险评估和管理体系等</td>
+            </tr>
+            <tr>
+                <td><strong>现金 (Cash)</strong></td>
+                <td>现金资源和现金管理能力能够确保良好的财务状况和稳定性，供应商的盈利能力、现金流状况，自有资产、债务状况、成本结构和分摊情况以及整体财务健康状况</td>
+            </tr>
+            <tr>
+                <td><strong>一致性 (Consistency)</strong></td>
+                <td>一致努力提升质量和服务水平，例如：供应商向来稳定可靠、流程顺畅无误（流程可靠度高，质检质控能力强，可以在对采购方构成影响之前发现和防范问题）</td>
+            </tr>
+            <tr>
+                <td><strong>成本 (Cost)</strong></td>
+                <td>价格合理，全生命成本低</td>
+            </tr>
+            <tr>
+                <td><strong>兼容性 (Compatibility)</strong></td>
+                <td>供应商在战略、操作、技术以及文化层面上与采购组织兼容。战略和文化包含价值观、道德观、工作方法、管理风格、战略目标及其优先排序等；运营和技术包含各种流程、组织架构以及IT系统的兼容性</td>
+            </tr>
+            <tr>
+                <td><strong>合规性 (Compliance)</strong></td>
+                <td>遵循环境、企业社会责任和可持续发展标准、法律以及法规。建立环境、企业社会责任和风险管理体系，以确保合规遵从采购方有关职业道德、企业社会责任以及可持续性的政策和标准（如有涉及）</td>
+            </tr>
+            <tr>
+                <td><strong>沟通 (Communication)</strong></td>
+                <td>能够在供应链中进行有效的协调与协作，例如：使用电子商务、外部网或EDI技术，客户管理架构即供应商方面的合同管理，愿意共享信息（如关于需求、计划、成本的信息）</td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="font-size:0.85em;color:#7a8a9a;">资料来源：英国皇家采购与供应学会.供应源搜寻[M].北京中交协物流人力资源培训中心，译.北京：机械工业出版社，2014.</p>
+</figure>
+
+<h3>三、"FACE2FACE"模型</h3>
+<p>多恩·戴德斯提出的FACE2FACE模型较易记忆，如表3-3所示。</p>
+
+<figure>
+    <figcaption>表3-3 FACE2FACE供应商评估模型</figcaption>
+    <table>
+        <thead>
+            <tr><th style="width:25%;">模型名称</th><th>详情</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>固定资产 (Fixed Assets)</strong></td><td>满足采购方所需的有形资产</td></tr>
+            <tr><td><strong>财务稳定 (Financial Stability)</strong></td><td>确保供应的连续性</td></tr>
+            <tr><td><strong>供货能力 (Ability to Deliver)</strong></td><td>产能和可靠的交货/质量/服务</td></tr>
+            <tr><td><strong>合作能力 (Ability to Work with Buyer)</strong></td><td>双方文化和联络方面的兼容性，采购方愿意合作</td></tr>
+            <tr><td><strong>成本 (Cost)</strong></td><td>具有竞争力的总获取成本，采购方愿意商谈条款</td></tr>
+            <tr><td><strong>质量承诺 (Commitment to Quality)</strong></td><td>质量标准与体系可靠，供应商愿意进行改进</td></tr>
+            <tr><td><strong>效率 (Efficiency)</strong></td><td>高效使用资源，将浪费最小化</td></tr>
+            <tr><td><strong>环境和道德 (Environmental/Ethical)</strong></td><td>政策和做法考虑了企业社会责任、商业道德以及环境管理</td></tr>
+        </tbody>
+    </table>
+    <p style="font-size:0.85em;color:#7a8a9a;">资料来源：英国皇家采购与供应学会.供应源搜寻[M].北京中交协物流人力资源培训中心，译.北京：机械工业出版社，2014.</p>
+</figure>
+
+<p>以上三种供应商选择模型都结合多方面因素，将多种选择标准结合起来，使标准更加全面、合理，不断根据既定标准进行对标，从而找到最理想的供应商。</p>
+</section>
+
+<!-- ============ 第三节 ============ -->
+<section id="section-3">
+<h2>第三节 供应商选择的标准</h2>
+
+<h3>一、供应商选择标准</h3>
+
+<h4>1. 财务状况</h4>
+<p>供应商的财务状况可以通过一些指标来衡量，如公司注册资本金、已付资金、实际投资额、股东持股比例等。</p>
+
+<figure>
+    <figcaption>财务状况表格</figcaption>
+    <table>
+        <thead>
+            <tr><th>注册资金</th><th>已付资金</th><th>实际投资额</th><th>股东名称</th><th>持股比例</th><th>付款方式</th><th>货币方式</th><th>交付方式</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td>
+                <td>现金 / 月结</td>
+                <td>美元 / 人民币 / 其他</td>
+                <td>免费送货 / 需方提货 / 其他</td>
+            </tr>
+        </tbody>
+    </table>
+</figure>
+
+<h4>2. 销售状况</h4>
+<p>主要包括公司上一年度销售额、下一年度销售额、主要客户及销售比例等。</p>
+
+<h4>3. 主要原材料状况</h4>
+<p>主要包括原材料名称、原材料供应商名称、原材料占比等。</p>
+
+<h4>4. 企业管理状况</h4>
+<p>主要包括公司主要管理人员。</p>
+
+<h4>5. 劳动力状况</h4>
+<p>主要包括公司总人数、品保部人数、研发部人数、生技部人数、直接人员数、间接人员数、工程师资格及以上人数、大专及以上学历人数等。</p>
+
+<h4>6. 品质状况</h4>
+<p>主要包括是否有：ISO9000认证、ISO14001认证、QC080000认证、厂内可靠性实验室、统计过程控制、全面质量控制、品质控制流程图等。</p>
+
+<div class="case-box">
+    <h4 style="margin-top:0;">供应商的"可持续性"考核与管理</h4>
+    <p>目前，已有越来越多的公司开始实行或加强对供应商"可持续性"的考核与管理。过去在这方面仅涵盖了一些法律规定和环境保护方面的要求；但在20世纪70年代，耐克供应商使用童工做鞋、缝制足球而对耐克公司造成影响以及一系列类似事件的发生，引发了对供应商社会责任的核查以及社会责任相关标准的出台，沃尔玛等公司的供应商社会责任审核表得到了最广泛的应用。此外，富士康的"员工跳楼事件"使苹果、惠普等供应链后端的大公司也为公众所质疑、指责；2011年，苹果公司iPhone4s手机断货的一个重要原因是，供应商生产线上的有害物质造成工人伤残而引发工厂停工，苹果也因此被再次指为"血汗工厂"。同样是在20世纪70年代，美国一家规模较大的制药企业因生产的普通非处方药致人死亡而濒临倒闭；其产品出现问题的原因是，生产线员工由于精神压力过大而有意实施了破坏行为。</p>
+    <p>在这种大环境下，媒体也开始关注起"可持续性"的重要作用。这一事件使国内许多大企业提高了对于"可持续性"的重视程度。</p>
+</div>
+
+<h4>7. 工艺水准</h4>
+<p>指企业三年之内技术发展的规划。</p>
+
+<h4>8. 电力供应状况</h4>
+<p>主要包括电力供应类型、遇电力突发性事故的后备措施等。</p>
+
+<h4>9. 分承包商管理状况</h4>
+<p>主要包括分承包商名单、分承包商业务比例等。</p>
+
+<h4>10. 设备状况</h4>
+<p>主要包括制造设备、检验测试设备、模具设备、二次加工设备等的名称、数量等。</p>
+
+<h4>11. 生产力状况</h4>
+<p>主要包括每周工作天数、每日工作班次、每工作班次时数等。</p>
+
+<h4>12. 过程能力状况</h4>
+<p>主要是指公司应对约束和阻碍的处理能力。</p>
+
+<div class="supp-box">
+    <h4 style="margin-top:0;">x&gt;x 公司供应商评价指标打分问卷</h4>
+    <p>尊敬的同事：</p>
+    <p>您好！为了更好地评价x&gt;x公司供应商的基本状况，我们需要对x&gt;x公司供应商的各项评级系数的全汇总进行评估，期待您给予宝贵的时间来进行下面的问卷打分。问卷采用1—9标度法，请于对应的数字下打"√"，指标评分标度如下：</p>
+    <table>
+        <thead>
+            <tr><th>相对重要性分数</th><th>定义</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>1</td><td>一样重要</td></tr>
+            <tr><td>3</td><td>稍微重要</td></tr>
+            <tr><td>5</td><td>明显重要</td></tr>
+            <tr><td>7</td><td>非常重要</td></tr>
+            <tr><td>9</td><td>极端重要</td></tr>
+            <tr><td>2、4、6、8</td><td>相邻判断中值</td></tr>
+        </tbody>
+    </table>
+
+    <p><strong>一、准则层指标两两比较</strong></p>
+    <table>
+        <thead>
+            <tr><th>准则</th><th>质量</th><th>交期</th><th>价格</th><th>技术</th><th>售后服务</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>质量</td><td>1</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>交期</td><td></td><td>1</td><td></td><td></td><td></td></tr>
+            <tr><td>价格</td><td></td><td></td><td>1</td><td></td><td></td></tr>
+            <tr><td>技术</td><td></td><td></td><td></td><td>1</td><td></td></tr>
+            <tr><td>售后服务</td><td></td><td></td><td></td><td></td><td>1</td></tr>
+        </tbody>
+    </table>
+
+    <p><strong>二、各供应商对指标层的两两比较</strong></p>
+    <p>（一）各供应商对质量层的两两比较</p>
+    <table>
+        <thead><tr><th>质量</th><th>H供应商</th><th>S供应商</th><th>J供应商</th></tr></thead>
+        <tbody>
+            <tr><td>H供应商</td><td>1</td><td></td><td></td></tr>
+            <tr><td>S供应商</td><td></td><td>1</td><td></td></tr>
+            <tr><td>J供应商</td><td></td><td></td><td>1</td></tr>
+        </tbody>
+    </table>
+    <p>（依此类推，对交期层、价格层、技术层、售后服务层分别进行两两比较……）</p>
+    <p style="font-size:0.85em;color:#7a8a9a;">资料来源：廖卡莎.S公司供应商选择优化研究[D].云南财经大学，2022.</p>
+</div>
+
+<h3>二、总结</h3>
+<p>供应商是为企业提供设备、原材料、劳动力和资金等资源的个人或公司。供应资源的变化将直接影响到企业的日常经营生产活动，进而影响企业的总收益。对于采购方而言，必须通过正确客观的认识，才能深入分析供应商实际情况，保证公司的盈利能力。因此，供应商的选择及评估应是一项系统、多方位的工作，应综合多方因素考虑，以保证作出最准确合理的评估，从而制定实用的选择标准。</p>
+<p>在选择供应商标准方面，由于产品不同，用途各异，所以选择标准也千差万别，根据时间长短可划分为短期标准和长期标准；采购方应将多种选择标准结合起来，并在后期业务开展过程中，不断根据既定标准进行对标对表，从而找到最理想的供应商。</p>
+<p>对于短期标准和长期标准，各评价指标的重要性对于不同的公司也有差异。因此，对于不同的企业，评价指标的权重设计上应该结合企业自身的特点，并采用某些工具和技术方法调查和收集有关供应商生产运营各个方面的信息，对供应商充分了解后作出合理的评价。</p>
+</section>
+
+<!-- ============ 第四节 ============ -->
+<section id="section-4">
+<h2>第四节 合同授予标准</h2>
+
+<p>合同授予也有三项标准：一是从资格预审短名单中选出最佳供应商；二是比较供应商的短名单，选择提供最佳方案的供应商；三是着眼于企业实际需求，与供应商签订具体合同。</p>
+
+<p>合同授予标准通常需要考虑以下两个因素：</p>
+<ul>
+    <li><strong>技术标准：</strong>指供应商达到或超过要求供给产品或服务的能力（在招标文件、产品或服务规范中明确提出的）。</li>
+    <li><strong>商务标准：</strong>检验当前供应商是否实现了成本价值的最优化。根据采购价格和全生命周期成本进行考察，较为重要的项目多采用全生命周期成本进行衡量。</li>
+</ul>
+
+<p>具体而言，可以从以下四个方面设定合同授予的标准。</p>
+
+<h3>一、供应商的供应满足规格的要求</h3>
+<p>规格（specification）实际上是一份需求陈述，它说明了供应的产品或服务应满足的需求。规格的作用在于明确和传达买方的要求，通常有两种类型：</p>
+<ul>
+    <li><strong>一致性规格（conformance specification）：</strong>采购方详细地阐明产品、零件或材料的构成，"质量合格"的产品就是要符合采购方所提出的表述，如蓝图、设计图、化学成分表、指定的牌号、样品和原型。</li>
+    <li><strong>性能规格（performance specification）：</strong>采购方界定产品能够实现的功能和性能水平。此时"质量合格"的产品是指供应商能够达到采购方指明想要达到的结果。这种方式为创新性、协作性、增值性的解决方案提供了借鉴，同时也拓宽了潜在的供应市场，为规模较小、更有创新性的供应商提供了机会。</li>
+</ul>
+
+<p>规格可以用于评估供应商的质量，或其标书、能力是否符合要求，也可以在合同授予后对产品或服务进行评估。当把规格用作合同授予的依据时，采购方应注意以下两个问题：</p>
+<ul>
+    <li>规格必须清楚、全面、无疑问地具体展现出采购方和其他关键利益相关者的期望和要求。</li>
+    <li>有些规格涉及定性的、基于价值观的标准，例如社会和环境的可持续性，若将这些内容放在合同授予的直接评标阶段，要特别注意其评价标准的公正性和客观性。</li>
+</ul>
+
+<p>在日常采购行为中，对于日常的供应源搜寻采购，技术标准可以直接嵌入合同授予标准，把质量或能力的定义简化归结为"符合规格要求"。换言之，在以下情况下可以授予合同：</p>
+<ul>
+    <li><strong>符合特定要求的最佳方案。</strong>例如，当有明确的性能规格、产出规格或功能规格时，其中明确说明了产品或服务所必须达到的绩效。</li>
+    <li><strong>最准确地满足规格要求。</strong>例如，在有明确的一致性规格、技术或设计规格的情况下，其中明确说明了要求供应的准确的设计、成分以及方法，有严格的公差或容许偏差范围。</li>
+    <li><strong>能提供最具性价比的功能。</strong>例如，提供的产品既能够达到或满足相关要求，也能平衡商务成本，即不能为了不需要增值的功能或利益而导致不必要的成本（如规格过高）。</li>
+</ul>
+
+<h3>二、最低价格</h3>
+<p>当满足基本技术标准时，最低价格可能是最明显和最容易执行的合同授予标准。对于按照标准化技术规范进行的日常商品采购，采用最低价格原则很容易找到高价值、有竞争力的供应商。</p>
+<p>总而言之，合同广告或招标邀请首先就应说明合同授予将采用最低价格原则，以便潜在供应商能够相应调整其标书和报价。相应地，当采购方不一定选择报价最低的投标或方案时，合同广告也应写明这一点。</p>
+
+<div class="case-box">
+    <h4 style="margin-top:0;">竞争性谈判低价未成交引发投诉</h4>
+    <p><strong>一、案例背景</strong><br>某市政府计划新建一座大型公共体育馆，项目预算为1亿元人民币。为了确保项目的质量和效率，市政府决定采用竞争性谈判的采购方式，邀请具备相应资质的企业参与投标。经过前期的资格预审，最终有三家公司进入了谈判阶段：A公司报价9500万元，拥有丰富的类似项目经验，技术实力雄厚；B公司报价9000万元，技术团队年轻有为，创新能力强；C公司报价8500万元，但在大型项目施工方面经验较少。</p>
+    <p><strong>二、谈判过程</strong><br>在谈判过程中，采购小组对三家公司的报价、技术方案、项目团队、业绩等方面进行了全面评估。A公司提供了详细的施工方案，保证工期的同时强调了质量控制；B公司提出了创新性的设计理念，能够为项目增添特色；C公司虽然报价最低，但其施工方案较为粗糙，缺乏对关键技术难点的解决方案。经过综合评审，采购小组最终推荐B公司为中标单位。</p>
+    <p><strong>三、投诉内容</strong><br>得知结果后，C公司对评标结果提出了强烈不满，认为采购小组存在不公平行为。主要投诉内容：按照"价低者得"的原则，自己报价最低，理应中标；怀疑采购小组在评标过程中存在偏袒行为，没有公正对待各投标人。</p>
+    <p><strong>四、采购小组的回应</strong><br>针对C公司的投诉，采购小组做出了详细的回应：根据《中华人民共和国政府采购法》，竞争性谈判应综合考虑价格、技术、服务等因素，不能以价格为唯一标准；B公司的技术方案在创新性和可行性方面均优于C公司，能够更好地满足项目需求；C公司在大型项目施工经验方面不足，存在一定的项目风险。</p>
+    <p><strong>五、投诉处理结果</strong><br>市政府监察部门介入调查后，确认采购小组的评标过程符合相关法律法规，评标标准明确，程序合法合规。监察部门驳回了C公司的投诉，维持原评标结果。</p>
+    <p><strong>六、启示与建议</strong></p>
+    <ul>
+        <li>对采购人的启示：应当严格按照法律法规和采购文件规定的标准进行评标，确保公平、公正、公开。</li>
+        <li>对供应商的建议：提高自身综合实力，注重技术方案的质量和可行性，而非一味追求低价。</li>
+        <li>对监管部门的作用：加强对采购过程的监督，及时处理投诉，维护市场的公平竞争环境。</li>
+    </ul>
+    <p>本案例反映了在政府采购中，最低价并不等同于最优选择。采购活动应以满足项目实际需求为导向，综合考虑各方面因素。供应商应提升自身实力，避免陷入低价竞争的误区。</p>
+</div>
+
+<h3>三、最佳价值</h3>
+<p>在采购方对外采购时，除了采用"最低价格"进行采购决策外，当采用"最佳价值"（也称"经济最有利"）标准时，最初的合同广告或报价邀请就应说明并解释清楚衡量"价值"（"经济最有利"）的标准。</p>
+<p>首先，采购方应在合同中写明"最佳价值"标准。其可能包括：质量、交货期限、技术标准、创新优势、风险分担、健康安全、环境绩效等。价值标准应该是与提供商品的规格、合同的目的以及采购绩效等直接相关的。其次，应在合同中列出拟采用的标准，并注明合理的等级和权重，以便供应商了解非价格因素的优先顺序。比如，采购方可以在其外部网站上按照重要程度高低的顺序列明某个合同的授予标准，并且注明各条标准的权重，比如价格占考虑因素的50%，人员素质占考虑因素的30%，实施质量占考虑因素的20%。</p>
+<p>因此，采购方需要考虑的成本可以理解为"全生命周期成本和质量的最优化结合"。</p>
+
+<p>一件物品（特别是重大的资本性资产）的采购价格与其总获取成本之间存在显著差异。总获取成本（total acquisition cost）不仅包括采购价格，还包括：</p>
+<ul>
+    <li>采购成本，如税费、外汇兑换成本、招投标成本以及起草合同的成本。</li>
+    <li>财务成本，如为购买资产而借贷。</li>
+    <li>包装、运输以及货运保险的成本。</li>
+    <li>仓储、组装以及最后收尾工作的成本。</li>
+    <li>质量管理和质量问题的成本，如质检、返工或报废、损失的销售额、消费者赔偿等。</li>
+    <li>全生命周期成本，如安装、维护、修理（对于设备等采购）、人员培训等诸项费用。</li>
+    <li>拆解、回收、处理的成本，包括通过再售实现资产残值的"负成本"。</li>
+</ul>
+
+<p>供应商所报的价格包含了以上成本中的部分或全部，采购方在对两个不同报价进行比较时需考虑以下问题：较低的价格体现的是具有竞争力的定价还是较小的利益，或者是忽略了一部分隐性的生命周期成本。通常，采购价格和利益之间存在着一种权衡关系。过低的价格有可能带来过高的总获取成本。低价格的背后可能是低质量，因此可能不具有较高的资金价值，由于产品质量低下会造成废品和返工的增加，采购方需要进行更严格的质量检验，导致总获取成本和总拥有成本升高以及客户失望造成的销售下降。</p>
+<p>由此看来，"最佳价值"或许可以定义为满足购买者综合需求（包括质量、服务、与供应商的长期伙伴关系等）的最低总获取成本。</p>
+
+<h3>四、供应商绩效测量指标</h3>
+<p>绩效测量指标和标准用于在合同授予之后进行供应商绩效管理和供应商等级评定，采购方在使用指标测量绩效时应注意以下三点：</p>
+<ul>
+    <li>绩效测量指标（或供应商等级评定标准）应当建立在合同授予标准的基础之上，并提供一个清晰的指标来体现采购方是否已达到预期目标。</li>
+    <li>采购方应事先告知潜在供应商合同授予的标准，以便供应商尽其最大能力争取业务。对供应商而言，绩效测量的标准在合同授予之后涉及合同和商业关系问题，使供应商有理由去相信或质疑合同授予决策的公平性。</li>
+    <li>绩效测量指标和关键绩效指标通常比合同授予标准或供应商评估标准更为具体。合同授予标准可能使用诸如"最优生命周期成本"或"可达到的最佳质量标准"之类的说法。关键绩效指标则会明确指出要达到的目标成本或成本的降低值，并细化规定质量指标、容许误差和相关目标。</li>
+</ul>
+
+<p>采购方应尽量在招标或合同授予阶段将达不到基本规定要求（如适合性、财务状况以及技术实力）的供应商排除掉。例如，在公共领域中对合同授予标准有着严格的条款以保护公开、平等、透明的竞争。采购方可以因为下列原因判定供应商资质不符：</p>
+<ul>
+    <li><strong>供应商的个人状况。</strong>如破产、清算或国际法规定的类似状况，或因在投标过程中违反职业道德和竞争原则、偷税漏税、伪造职业资格而受到处罚。</li>
+    <li><strong>财务能力不足。</strong>根据对履行合同所需的财务或经济能力水平的估计，以及与经济和财务能力有关的证据，表明供应商的财务能力不足。</li>
+    <li><strong>技术能力。</strong>采购方有权知道下列信息：供应商或高级职员的职业资格和过去三年所承担的主要工作，所使用的原材料和技术设备，评价项目公平性的方法，是否分包和如何分包。</li>
+    <li><strong>职业资格。</strong>采购方可以要求投标人证明其具有在相关职业机构注册的职业资格。</li>
+    <li><strong>最低价格或经济最有利。</strong>资源消耗和处理成本等因素被纳入评判合同授予的考虑范围。社会或环境可持续性标准只有在与合同的绩效直接相关的情况下才会被纳入，而且权重要适当。</li>
+</ul>
+</section>
+
+<!-- ============ 第五节 ============ -->
+<section id="section-5">
+<h2>第五节 实践指导</h2>
+
+<h3>一、实践任务</h3>
+<p>通过本章学习，引导学生进一步了解供应商选择的方法与合同授予的标准，要求学生掌握供应商评估模型和供应商选择模型。通过案例的学习，加强对典型的合同授予标准和供应商选择标准的认识，从而更好地实现课程教学目标。</p>
+
+<h3>二、实践步骤</h3>
+<ol class="steps-list">
+    <li><strong>分组讨论并交流</strong><p>找出分析案例中的关键问题。</p></li>
+    <li><strong>确定背景资料</strong><p>确定是否还需查找与已找出关键问题相关的背景资料。</p></li>
+    <li><strong>筛选并优化答题思路</strong><p>筛选并优化分析此案例的答题思路。</p></li>
+    <li><strong>明确分析逻辑</strong><p>明确构成小组分析逻辑的依据，并展开进一步的逻辑整理。</p></li>
+    <li><strong>形成文字报告并汇报</strong><p>小组形成文字报告并汇报。</p></li>
+</ol>
+
+<h3>三、实践要求</h3>
+<ul>
+    <li><strong>彻底读懂案例</strong>——当小组分发到一篇案例时，成员需要对案例进行反复阅读，对案例中的重要信息尝试消化理解。在阅读的过程中，对案例中的背景资料、主要事实、面临的难题及难点、重要论点、重要结论和针对性的对策建议等内容进行一一记录，以方便下一个步骤的进行。</li>
+    <li><strong>分组交流讨论，大胆提出自己对问题的看法</strong>——对案例中的主要角色所面临的问题进行分析，尝试对案例所给的背景资料进行仔细阅读、筛选分类，归纳总结，若需要引证资料来佐证个人观点，可以依靠电子资料、图书馆实体资料等，获取相关领域的多方面知识，保证分析的正确性。</li>
+    <li><strong>全面并正确概括问题</strong>——在对案例进行认真分析之后，小组尝试根据案例的相关资料找出问题的症结所在，并对需要解决的问题进行正确概括，注意概括问题的逻辑性与针对性。</li>
+    <li><strong>撰写分析报告</strong>——报告中对资料的分析运用要求准确，以所学理论为指导分析资料；资料分析要求全面充实，紧扣主题，结构合理，层次清楚，中心突出。除此之外，提交的报告要注意格式规范，用词准确，表达通顺。</li>
+</ul>
+
+<h3>四、实践内容</h3>
+
+<div class="case-box">
+    <h4 style="margin-top:0;">美国法院怎样处理合同授予纠纷</h4>
+    <p>1994年，美国阿拉巴马州一条高速公路建设工程进行公开招标。因投标符合所有可适用的法律法规且报价最低，克拉克公司被阿拉巴马交通局选择为合同授予者。但由于交通管制问题，克拉克公司的中标资格最终被取消。1995年8月，克拉克公司向美国地方法院阿拉巴马中部地区北部分庭起诉阿拉巴马交通局主管等人，质疑政府拒绝其投标并计划将合同授予第三方的行为，被告越权非法剥夺其被授予合同的权利。</p>
+    <p>最终，法院责令阿拉巴马交通部门和联邦高速公路管理局将公路建设工程授予原告克拉克公司。阿拉巴马交通部门和联邦高速公路管理局违反了《美国法典》第23编112（b）（1）。且阿拉巴马州不应当重新招标，因为缺少交通管制记录是非实质性问题，被告无权重新采购。</p>
+    <p>联邦高速公路管理局辩称完整交通管制记录的缺失是实质性的，但被告没有证据证明其主张。《联邦采购法规》14.405（d）（2）规定，当修改对价款、数量、质量或交货没有影响或仅仅有可忽略的影响的条款时，这种修改不被认为是实质性的。法院认为不完整的交通管制记录对整个招投标过程来说是非实质性的。</p>
+    <p>在控诉阿拉巴马交通局时，原告称被告没有按照《联邦高速公路法案》的规定将合同授予最低价的有履行能力的投标人。虽然阿拉巴马交通局拒绝所有投标人并重新招标的唯一原因是如果不重新招标的话，其将会失去联邦高速公路基金800多万美元，但阿拉巴马交通局的行为破坏了公众对招投标程序及交通局本身的信任。</p>
+    <p>在审理此案时，法院发现原告缺乏足够的法律救济。原告在普通法上唯一的救济途径是向美国权利申诉法院起诉请求金钱补偿，以补偿其在投标准备期间的损失。但法院发现金钱救济并不足以补偿由于错误地授予了政府采购合同而给未能中标的投标人带来的损失，因此决定发布"禁令"，责令阿拉巴马交通局和联邦高速公路管理局将公路建设工程授予原告克拉克公司，即使永久禁令可能带来整个高速公路建设工程的额外延期。</p>
+    <p style="font-size:0.85em;color:#7a8a9a;">资料来源：焦洪宝，王璇.美国法院怎样处理合同授予纠纷[N].中国政府采购报，2014-12-02（012）.</p>
+</div>
+
+<h3>五、实践范例</h3>
+
+<div class="case-box">
+    <h4 style="margin-top:0;">做好供应商审核才能更好合作</h4>
+    <p>通过供应商审核，企业可以了解供应商有哪些优点和缺点，并将审核结果作为选择供应商的依据。对供应商进行的审核，主要包括对供应商的产品审核、过程审核和质量管理体系审核。</p>
+    <p><strong>产品审核：</strong>苏果超市采取的方法是将供应商提供的部分产品送交第三方检测机构进行检测，主要是确认供应商的产品质量，根据检测结果，与合格产品的供应商继续维持合作关系，而对于不合格产品的供应商，除书面督促供应商改进产品质量以符合公司的要求外，必要时还应根据采购协议对供应商采取相应的处罚。</p>
+    <p><strong>过程审核：</strong>这是分析评价供应商的产品在生产过程中质量控制是否正确、有效进行的一种活动，即所谓的供应商审核。审核时，公司往往派有经验的审核员到供应商处进行现场审核。对供应商进行过程审核，一般依据产品或供应商的实际情况而定，一般来说，将根据下列情况对供应商进行必要的过程审核：生鲜类、其他高危食品供应商及非食类供应商；自有品牌商品供应商；年节商品供应商；其他顾客质量投诉较多的供应商或易对消费者的健康造成危害的商品的供应商；苏果超市有限公司烘焙加工中心。</p>
+    <p><strong>质量管理体系审核：</strong>对于有必要进行体系审核的供应商，可以进一步采取第三方审核。对已经通过第三方体系认证的供应商，可关注其内审、管理评审、纠正措施、预防措施、检验与试验等过程。对未获得第三方认证的供应商，应着重从控制有效性入手，关注其采购、设备、人员、检验、不合格品控制等重要过程。</p>
+    <p><strong>供应商审核程序如下：</strong></p>
+    <ul>
+        <li><strong>建立供应商审核评价体系。</strong>质量管理部计划和组织供应商审核评价体系，它是公司对供应商进行综合评价的依据和标准，同时针对不同的供应商建立相适应的评估管理办法。</li>
+        <li><strong>编制供应商审核计划。</strong>供应商审核计划应与供应商审核评价体系要素保持一致，并持续进行。</li>
+        <li><strong>供应商审核的准备。</strong>供应商审核是质量体系的一个主要因素，因此，它必须依靠标准程序。首先，审核小组应制作规范的程序表；其次，审核小组成员应预先了解被审核产品的性质、制造流程等相关知识。</li>
+        <li><strong>供应商审核的实施。</strong>实际的审核应从了解被审核方的管理情况开始。首先举行首次会议，向被审核方介绍审核原则、审核范围、审核依据和一些需配合的其他事项。然后现场查阅文件控制程序等，审核小组应仔细核实所有相关证据，对不符合要求的现象予以记录，被审核方应陪同审核小组，确保审核过程顺利完成。</li>
+        <li><strong>完成审核报告。</strong>审核结束前举行末次会议，对审核情况进行总结分析，作出审核结论并提出纠正措施。</li>
+        <li><strong>审核跟进。</strong>审核跟进可以采取书面通知，由被审核方反馈纠正措施的进度及完成情况。审核小组根据反馈信息决定复审时间，以此促进供应商持续改进。</li>
+    </ul>
+    <p style="font-size:0.85em;color:#7a8a9a;">资料来源：周显涛.做好供应商审核才能更好合作[N].中华合作时报，2012-01-13（B05）.</p>
+</div>
+
+<h3>前沿研究</h3>
+<p>供应商的选择标准是随着供应商对于采购商的合作伙伴关系战略地位的不同而变化的。对应不同的供应商战略地位，选择标准可以分为供应商选择的短期标准和长期标准。</p>
+
+<h4>（一）供应商选择的短期标准</h4>
+<ol>
+    <li><strong>商品质量是否合格。</strong>所采购商品的质量符合采购单位的要求，是企业正常生产经营的必要条件，也是采购单位采购商品的首要考虑因素。采购中的质量要求应满足企业的生产需要，要求过高或过低都是错误的。评价供应商产品的质量，不仅要从商检入手，更要从供应商的企业出发。</li>
+    <li><strong>低成本。</strong>对供应商报价进行成本分析是选择供应商的有效途径之一。但是，成本不仅是采购价格，还包括原材料或零件在使用过程中或其生命周期结束后发生的所有费用。总成本最低是选择供应商时要考虑的主要因素，总成本一般包括采购成本、作业成本和处置成本。</li>
+    <li><strong>及时交货。</strong>供应商能否按照约定的交货时间和交货条件组织供货，将直接影响企业生产供应活动的连续性。企业在考虑交货期时，一方面要减少原材料的库存量，另一方面要降低停工风险。</li>
+    <li><strong>整体服务水平良好。</strong>供应商内部操作环节能配合采购方的能力和态度，如各项技术服务项目、订货便利措施、订货成本节约措施等，主要指标包括安装服务、培训服务、维修服务、升级服务、技术支持服务等。</li>
+    <li><strong>履行合同的承诺和能力。</strong>企业在确定供应商是否具有履行合同的承诺和能力时，应考虑确认供应商是否对采购项目感兴趣、订单的金额和数量、处理订单的时间，在拟采购项目中是否具有核心能力，是否具有自主开发产品的能力，以及设备闲置的现状。</li>
+</ol>
+
+<h4>（二）供应商选择的长期标准</h4>
+<ol>
+    <li><strong>供应商的财务状况是否稳定。</strong>财务状况直接影响到交货和履行的绩效。一般来说，可以用资产负债表来评估一段时期内供应商的经营成果，观察其资产和负债情况，也可以通过损益表来评估一段时期内供应商的销售业绩和成本情况。</li>
+    <li><strong>供应商内部组织管理是否良好。</strong>内部组织管理关系到供应商未来的服务质量。从供应商机器设备的新旧程度和维修状况，可以看出管理者对生产工具和产品质量以及内部管理质量的重视程度。</li>
+    <li><strong>供应商的员工状况是否稳定。</strong>员工平均年龄是反映企业管理是否存在问题的重要指标，如果平均年龄偏高，说明供应商员工流动率低，供应商无法吸引新员工，缺乏新思想、新技术的引进。</li>
+</ol>
+
+<h3>案例分析</h3>
+
+<div class="case-box">
+    <h4 style="margin-top:0;">供应商短期行为日益明显，中小方案商面临两难选择</h4>
+    <p><strong>一、案例背景</strong><br>A科技有限公司（以下简称"A公司"）是一家专注于智能家居解决方案的中小型方案商。公司成立于2015年，凭借创新的产品设计和优质的客户服务，迅速在市场上占有一席之地。其主要客户包括房地产开发商、酒店和高端住宅用户。为了满足市场需求，A公司需要大量的电子元器件和智能设备，这些关键组件主要由B供应商提供。B供应商是一家大型的电子元器件制造商，拥有先进的生产技术和广泛的产品线。双方自2016年开始合作，关系一直较为稳固。</p>
+    <p><strong>二、问题的出现</strong><br>自2021年下半年起，全球芯片短缺的问题开始显现。B供应商为了应对市场变化，开始调整其供应策略。他们采取了以下短期行为：涨价——多次提高产品价格，涨幅高达30%；减少供货——优先满足大型客户的需求，对A公司的供货量大幅削减；缩短结算周期——要求A公司提前付款，取消了之前的月结方式。</p>
+    <p>这些变化给A公司带来了巨大的压力：成本上升，产品成本大幅增加，利润空间被挤压；供货不足，无法按时交付项目，影响了客户满意度和公司信誉；资金压力，提前付款的要求加剧了公司的现金流紧张。</p>
+    <p><strong>三、中小方案商的两难选择</strong><br>面对B供应商的短期行为，A公司陷入了两难选择：继续合作——接受涨价和不利的合作条件，维持现有供应链关系，然而这将导致成本上升和利润下降，公司可能无法在市场上保持竞争力；更换供应商——寻找新的供应商以降低成本和风险，然而新的供应商在产品质量、供货稳定性和合作默契度上可能存在不确定性，且更换供应商需要时间和资源投入，可能影响公司业务连续性。</p>
+    <p><strong>四、问题分析</strong><br>供应商短期行为的动因：市场压力——全球供应链紧张，原材料价格上涨，供应商自身也面临成本压力；利润最大化——供应商希望通过涨价和调整供货策略，短期内获取更高利润；资源倾斜——优先满足大型客户，以确保稳定的大额订单。中小方案商由于自身的弱势地位，议价能力弱，订单量较小，无法对供应商施加足够的影响；资源有限——缺乏足够的资金和人力来快速调整供应链；市场竞争激烈——难以将成本上涨转嫁给下游客户。</p>
+    <p><strong>五、可能的解决方案</strong></p>
+    <ul>
+        <li>加强与现有供应商的沟通：建立战略合作关系，与B供应商探讨建立更深层次的合作，如签订长期合同，以获得稳定的价格和供货量；共同应对市场挑战，分享市场信息，寻找双方都能接受的解决方案。</li>
+        <li>拓展供应商渠道：开发新的供应商，通过市场调研，寻找其他有能力的供应商，分散风险；多元化供应链，不依赖单一供应商，建立多个供应渠道，提升议价能力。</li>
+        <li>提高自身核心竞争力：技术创新，提升产品的技术含量和附加值，以抵御成本上涨带来的压力；优化内部管理，通过精益管理和成本控制，提高运营效率。</li>
+        <li>寻求合作伙伴：联盟合作，与其他中小方案商结成联盟，联合采购，提升订单量，提高议价能力；资本合作，引入战略投资者，增强资金实力，支持供应链调整和业务拓展。</li>
+    </ul>
+    <p><strong>六、案例的后续发展</strong><br>A公司在权衡利弊后，决定采取以下措施：双管齐下，继续与B供应商保持合作，但努力谈判以获得更好的条件，同时开发新的供应商C；签订长期合作协议，与B供应商签订了为期两年的合作协议，锁定了价格和供货量；优化产品设计、降低对特定组件的依赖，通过技术改进，使用更通用的元器件，扩大可选择的供应商范围；加强资金管理，引入风投基金，通过资金的注入，缓解了现金流压力。</p>
+    <p><strong>七、结果与启示</strong><br>经过一系列调整，A公司成功度过了供应链危机。成本控制——通过多元化供应链和产品优化，降低了成本上涨的影响；供应链稳定——与B供应商和新供应商C建立了稳固的合作关系，供货更加稳定；市场竞争力提升——产品技术含量提高，获得了更多客户认可。</p>
+    <p>启示：供应链管理的重要性——中小方案商应高度重视供应链的稳定性和可持续性，不能过度依赖单一供应商；风险分散——通过多元化供应商渠道，分散供应链风险，提升企业的抗风险能力；合作共赢——与供应商建立战略合作关系，共同应对市场挑战，实现互利共赢；提升自身实力——技术创新和内部管理优化是企业应对外部挑战的根本途径。</p>
+
+    <p style="margin-top:1em;"><strong>思考问题：</strong></p>
+    <ol>
+        <li>中小方案商应如何在面对供应商短期行为时，平衡短期利益与长期合作关系，以实现可持续发展？（提示：考虑中小方案商在供应链中的弱势地位，以及通过战略合作、技术创新和供应链多元化来提升自身竞争力）</li>
+        <li>在供应链风险加剧的情况下，中小企业可以采取哪些具体措施来提高议价能力和抗风险能力？（提示：思考如何通过联盟合作、优化内部管理、拓展融资渠道等方式增强企业实力，以及如何建立有效的风险预警和应对机制）</li>
+        <li>供应商的短期行为对行业生态系统产生了哪些影响？企业和行业协会应如何携手合作，营造健康可持续的供应链环境？（提示：分析供应商短期行为可能导致的市场失衡和信任危机，探讨行业自律和政策支持的重要性，以及集体行动的必要性）</li>
+    </ol>
+</div>
+
+<hr>
+
+<h2>练习与思考</h2>
+
+<h3>一、名词解释</h3>
+<ol>
+    <li>质量控制</li>
+    <li>质量保证</li>
+    <li>经济最有利标准</li>
+    <li>全面质量管理</li>
+</ol>
+
+<h3>二、单项选择题</h3>
+<ol>
+    <li>下列哪一项不属于合同授予的标准？<br>
+        A. 从资格预审短名单中选出最佳供应商<br>
+        B. 比较供应商的短名单，选择最佳的方案<br>
+        C. 着眼当前需求，签订具体合同<br>
+        D. 选择价格最低的供应商
+    </li>
+    <li>遵守采购方所要求的程序、规则或制度、质量和环境管理体系、财务控制、风险评估和管理体系属于供应商评估"10C"模型中的（ ）。<br>
+        A. 供应商履行合同的能力<br>
+        B. 供应商满足采购组织目前和未来需求的产能<br>
+        C. 有现成的控制系统<br>
+        D. 供应商与采购组织的兼容性
+    </li>
+    <li>电子监控设备主要用于（ ）。<br>
+        A. 关键阶段进行持续监控<br>
+        B. 进行持续监控<br>
+        C. 阶段性的审核<br>
+        D. 完成后审核
+    </li>
+    <li>合同授予标准通常要平衡技术标准和（ ）。<br>
+        A. 商务标准<br>
+        B. 质量标准<br>
+        C. 供应商选择标准<br>
+        D. 价值标准
+    </li>
+</ol>
+
+<h3>三、多项选择题</h3>
+<ol>
+    <li>财务能力衡量的相关指标包括（ ）。<br>
+        A. 盈利性 &nbsp; B. 现金流状况 &nbsp; C. 负债情况 &nbsp; D. 成本结构
+    </li>
+    <li>检查财务指标的方法包括（ ）。<br>
+        A. 供应商企业三年来的营业额 &nbsp; B. 被收购和并购的可能性<br>
+        C. 额外产能应急方案也要进行验证 &nbsp; D. 是否过度依赖少数客户
+    </li>
+    <li>质量定义的维度包括（ ）。<br>
+        A. 卓越 &nbsp; B. 相对卓越 &nbsp; C. 适用 &nbsp; D. 不卓越
+    </li>
+    <li>服务评估维度包括（ ）。<br>
+        A. 有形物 &nbsp; B. 可靠性 &nbsp; C. 一致性 &nbsp; D. 响应性 &nbsp; E. 保障性
+    </li>
+    <li>采用竞争性招标方法时应关注于（ ）。<br>
+        A. 减少合同授予的数量 &nbsp; B. 减少合同授予的复杂性<br>
+        C. 减少产品质量 &nbsp; D. 减少合同授予的主观性
+    </li>
+</ol>
+
+<h3>四、简答题</h3>
+<ol>
+    <li>简要归纳评估技术能力的因素。</li>
+    <li>简述评估质量时采购方应当注意的因素。</li>
+</ol>
+
+<h3>五、论述题</h3>
+<p>请论述采购方可以从哪些方面评估供应商的财务能力。</p>
+
+</section>
+
+</main>
+</body>
+</html>

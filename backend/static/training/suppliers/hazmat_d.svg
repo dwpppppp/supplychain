@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Hazmat supplier D">
+  <rect width="640" height="360" fill="#f0fdf4"/>
+  <rect x="70" y="76" width="170" height="210" rx="20" fill="#16a34a"/>
+  <rect x="270" y="76" width="170" height="210" rx="20" fill="#15803d"/>
+  <rect x="470" y="112" width="96" height="100" rx="12" fill="#14532d"/>
+  <text x="60" y="320" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#14532d">D · Jiangzhe Hazmat</text>
+</svg>

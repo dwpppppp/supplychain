@@ -1,0 +1,1044 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>实训教学 · 草莓果酱采购寻源</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Kalam:wght@400;700&family=Caveat:wght@400;600&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="globals.css">
+<style>
+/* ──────────────────────────────────────────────────────────────────
+   实训教学 · 高保真 · Carbon Design System
+   IBM Blue 60 (#0f62fe) 唯一强调色 · IBM Plex 字族 · 直角硬朗
+   ────────────────────────────────────────────────────────────────── */
+:root {
+  --ink: #161616;
+  --ink-2: #393939;
+  --ink-3: #525252;
+  --ink-4: #6f6f6f;
+  --ink-5: #a8a8a8;
+  --paper: #ffffff;
+  --layer-01: #f4f4f4;
+  --layer-02: #ffffff;
+  --layer-03: #fafafa;
+  --rule: #e0e0e0;
+  --rule-strong: #c6c6c6;
+  --rule-bold: #8d8d8d;
+  --blue: #0f62fe;
+  --blue-hover: #0353e9;
+  --blue-active: #002d9c;
+  --blue-tint: #edf5ff;
+  --success: #198038;
+  --success-tint: #defbe6;
+  --warning: #f1c21b;
+  --warning-tint: #fcf4d6;
+  --error: #da1e28;
+  --error-tint: #fff1f1;
+  --serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', serif;
+  --sans: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'IBM Plex Mono', Menlo, Courier, monospace;
+  --hand: 'Kalam', 'Caveat', 'IBM Plex Sans', sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--layer-01); color: var(--ink); font-family: var(--sans); font-size: 14px; line-height: 1.4; -webkit-font-smoothing: antialiased; }
+
+/* ── Top toolbar (wireframe-style, matches index/AI助教) ─── */
+.toolbar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; padding: 14px 24px;
+  background: var(--paper); border-bottom: 1px solid var(--rule-strong);
+}
+.toolbar-brand { display: flex; align-items: baseline; gap: 12px; }
+.toolbar-brand .logo { font-family: var(--hand); font-size: 22px; font-weight: 700; letter-spacing: -.5px; }
+.toolbar-brand .tag { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; text-transform: uppercase; }
+.toolbar-tabs { display: flex; gap: 0; flex: 1; justify-content: center; background: var(--layer-01); border: 1px solid var(--rule-strong); }
+.toolbar-tabs a { background: transparent; padding: 10px 18px; font-family: var(--hand); font-size: 16px; color: var(--ink); border-right: 1px solid var(--rule-strong); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
+.toolbar-tabs a:last-child { border-right: 0; }
+.toolbar-tabs a .n { font-family: var(--mono); font-size: 11px; color: var(--ink-4); margin-right: 8px; }
+.toolbar-tabs a[aria-current="page"] { background: var(--paper); color: var(--blue); box-shadow: inset 0 -3px 0 var(--blue); }
+.toolbar-tabs a[aria-current="page"] .n { color: var(--blue); }
+.toolbar-meta { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; }
+.toolbar-meta b { color: var(--ink); font-weight: 500; }
+
+/* ── Page head ──────────────────────────────────────────────── */
+.page { max-width: 1584px; margin: 0 auto; padding: 0; background: var(--paper); }
+.page-head {
+  padding: 24px 32px 16px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+.crumbs { font-size: 12px; color: var(--ink-4); margin-bottom: 8px; }
+.crumbs a { color: var(--blue); text-decoration: none; }
+.crumbs a:hover { text-decoration: underline; }
+.crumbs .sep { margin: 0 6px; color: var(--ink-5); }
+.page-title-row { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 24px; }
+.page-title h1 { margin: 0; font-size: 32px; font-weight: 300; line-height: 1.25; letter-spacing: 0; }
+.page-title .desc { margin-top: 8px; color: var(--ink-3); font-size: 14px; max-width: 760px; }
+.page-meta { display: flex; gap: 24px; font-size: 12px; color: var(--ink-4); }
+.page-meta .m { display: grid; gap: 2px; text-align: right; }
+.page-meta .m .k { font-family: var(--mono); font-size: 11px; letter-spacing: .32px; text-transform: uppercase; }
+.page-meta .m .v { color: var(--ink); font-size: 14px; font-weight: 500; }
+.page-meta .m .v.score { font-size: 18px; }
+.page-meta .m .v.score .of { color: var(--ink-4); font-weight: 400; font-size: 13px; }
+
+/* ── Stepper (Carbon-style ProgressIndicator) ─────────────────── */
+.progress-indicator {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  background: var(--layer-03); border-bottom: 1px solid var(--rule);
+  padding: 16px 32px;
+}
+.pi-step {
+  position: relative; padding: 0 24px 0 0;
+  display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start;
+  cursor: pointer;
+}
+.pi-step + .pi-step::before {
+  content: ""; position: absolute; left: -24px; right: calc(100% - 0px); top: 11px;
+  height: 1px; background: var(--rule-strong);
+  width: calc(100% - 36px); left: -100%; right: auto;
+}
+.pi-step .icon {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 1.5px solid var(--rule-bold); background: var(--paper);
+  display: grid; place-items: center;
+  font-family: var(--mono); font-size: 12px; color: var(--ink-3);
+}
+.pi-step.complete .icon { background: var(--blue); border-color: var(--blue); color: var(--paper); }
+.pi-step.complete .icon::before { content: ""; width: 10px; height: 6px; border-left: 2px solid var(--paper); border-bottom: 2px solid var(--paper); transform: rotate(-45deg) translate(1px,-1px); }
+.pi-step.complete .icon span { display: none; }
+.pi-step.current .icon { border-color: var(--blue); color: var(--blue); }
+.pi-step.current .icon::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--blue); position: absolute; }
+.pi-step.current .icon span { display: none; }
+.pi-step .lbl { padding-top: 2px; }
+.pi-step .lbl .n { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; text-transform: uppercase; }
+.pi-step .lbl .t { font-size: 14px; font-weight: 500; color: var(--ink-2); margin-top: 2px; }
+.pi-step .lbl .s { font-size: 12px; color: var(--ink-4); margin-top: 4px; font-family: var(--mono); }
+.pi-step.current .lbl .t { color: var(--blue); font-weight: 600; }
+.pi-step.complete .lbl .t { color: var(--ink); }
+
+/* ── Workspace ─────────────────────────────────────────────────── */
+.workspace { display: grid; grid-template-columns: 1fr 360px; min-height: 720px; background: var(--layer-01); }
+.ws-main { padding: 24px 32px 0; background: var(--paper); }
+.ws-rail { padding: 24px 24px 0; border-left: 1px solid var(--rule); background: var(--layer-03); }
+
+.section-title { font-size: 11px; font-family: var(--mono); color: var(--ink-4); letter-spacing: .32px; text-transform: uppercase; margin: 0 0 12px; font-weight: 500; }
+.section-h2 { font-size: 20px; font-weight: 400; margin: 0 0 4px; color: var(--ink); }
+.section-h2-sub { font-size: 13px; color: var(--ink-3); margin: 0 0 20px; }
+
+/* Step view switching */
+.step-view { display: none; }
+.step-view.on { display: block; }
+
+/* ════════════════════════════════════════════════════════════════
+   STEP 1 · 需求分析
+   ════════════════════════════════════════════════════════════════ */
+.s1-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 24px; }
+.s1-doc {
+  background: var(--layer-01); padding: 24px; border-left: 3px solid var(--blue);
+}
+.s1-doc .doc-h { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 12px; border-bottom: 1px solid var(--rule-strong); margin-bottom: 16px; }
+.s1-doc .doc-h .t { font-size: 14px; font-weight: 600; }
+.s1-doc .doc-h .src { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; text-transform: uppercase; }
+.s1-doc .doc-body { font-family: var(--serif); font-size: 14px; line-height: 1.95; color: var(--ink-2); text-align: justify; }
+.s1-doc mark { background: #ffe9b3; color: var(--ink); padding: 0 3px; font-weight: 600; box-decoration-break: clone; }
+
+.s1-form { background: var(--paper); border: 1px solid var(--rule); }
+.s1-form .form-h { padding: 16px 20px; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; }
+.s1-form .form-h .t { font-size: 14px; font-weight: 600; }
+.s1-form .form-h .pts { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; }
+.s1-form .form-body { padding: 20px; display: grid; gap: 18px; }
+.field { display: grid; gap: 6px; }
+.field .lab { display: flex; justify-content: space-between; align-items: baseline; }
+.field .lab .l { font-size: 12px; color: var(--ink-3); }
+.field .lab .pts { font-family: var(--mono); font-size: 10px; color: var(--ink-4); letter-spacing: .32px; }
+.field .lab .pts.full { color: var(--success); font-weight: 600; }
+.field .inp {
+  border: 0; border-bottom: 1px solid var(--rule-bold);
+  padding: 8px 12px; background: var(--layer-01);
+  font-size: 14px; color: var(--ink); min-height: 40px;
+  display: flex; align-items: center;
+}
+.field .inp:hover { background: #ececec; }
+.field .inp.filled { border-bottom-color: var(--blue); }
+.field .check { display: flex; gap: 8px; flex-wrap: wrap; }
+.field .check .c {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border: 1px solid var(--rule-strong);
+  font-size: 12px; color: var(--ink-3); background: var(--paper);
+  cursor: pointer;
+}
+.field .check .c::before {
+  content: ""; width: 14px; height: 14px; border: 1px solid var(--rule-bold); background: var(--paper);
+}
+.field .check .c.on { border-color: var(--blue); color: var(--blue); background: var(--blue-tint); }
+.field .check .c.on::before { background: var(--blue); border-color: var(--blue); position: relative; }
+.field .check .c.on::after { content: ""; position: absolute; width: 8px; height: 4px; border-left: 2px solid var(--paper); border-bottom: 2px solid var(--paper); transform: translate(3px, -1px) rotate(-45deg); margin-left: -16px; }
+.field .seg { display: flex; }
+.field .seg .opt {
+  flex: 1; padding: 9px 12px; border: 1px solid var(--rule-strong); border-right-width: 0;
+  font-size: 13px; color: var(--ink-3); background: var(--paper);
+  cursor: pointer; text-align: center;
+}
+.field .seg .opt:last-child { border-right-width: 1px; }
+.field .seg .opt.on { background: var(--blue); border-color: var(--blue); color: var(--paper); font-weight: 500; }
+
+/* ════════════════════════════════════════════════════════════════
+   STEP 2 · 市场寻源
+   ════════════════════════════════════════════════════════════════ */
+.s2-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 16px; }
+.s2-toolbar .pick {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--ink-3);
+}
+.s2-toolbar .pick b { color: var(--blue); font-weight: 600; font-size: 16px; }
+.s2-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.s2-card {
+  padding: 20px; background: var(--paper); position: relative;
+  cursor: pointer; transition: background .12s;
+  display: grid; gap: 0; grid-template-rows: auto auto 1fr auto;
+}
+.s2-card:hover { background: var(--layer-03); }
+.s2-card.picked { background: var(--blue-tint); box-shadow: inset 3px 0 0 var(--blue); }
+.s2-card .card-h { display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px; }
+.s2-card .code { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; }
+.s2-card.picked .code { color: var(--blue); font-weight: 600; }
+.s2-card .check {
+  width: 18px; height: 18px; border: 1px solid var(--rule-bold); background: var(--paper);
+  display: grid; place-items: center;
+}
+.s2-card.picked .check { background: var(--blue); border-color: var(--blue); }
+.s2-card.picked .check::after { content: ""; width: 9px; height: 5px; border-left: 1.5px solid var(--paper); border-bottom: 1.5px solid var(--paper); transform: rotate(-45deg) translate(1px,-1px); }
+.s2-card .name { font-size: 17px; font-weight: 500; margin: 4px 0 14px; color: var(--ink); }
+.s2-card .rows { display: grid; gap: 8px; padding-bottom: 12px; }
+.s2-card .rows .r { display: grid; grid-template-columns: 56px 1fr; gap: 12px; font-size: 13px; align-items: baseline; }
+.s2-card .rows .r .k { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; text-transform: uppercase; }
+.s2-card .rows .r .v { color: var(--ink); }
+.s2-card .tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px; padding: 1px 6px;
+  margin-left: 6px; letter-spacing: .32px; text-transform: uppercase;
+  background: var(--success-tint); color: var(--success); border: 1px solid #a7f0ba;
+}
+.s2-card .tag.warn { background: var(--error-tint); color: var(--error); border-color: #ffd7d9; }
+.s2-card .note {
+  margin-top: auto; padding-top: 12px; border-top: 1px solid var(--rule);
+  font-size: 12px; color: var(--ink-3); font-style: italic;
+}
+.s2-card.picked .note { color: var(--ink-2); font-style: normal; }
+.inline-notification {
+  margin-top: 16px; display: grid; grid-template-columns: 4px 1fr; gap: 0;
+  background: var(--warning-tint); border: 1px solid #f1c21b;
+}
+.inline-notification .accent { background: #f1c21b; }
+.inline-notification .body { padding: 14px 18px; font-size: 13px; line-height: 1.55; color: var(--ink-2); }
+.inline-notification .body b { font-weight: 600; color: var(--ink); display: block; margin-bottom: 4px; }
+
+/* ════════════════════════════════════════════════════════════════
+   STEP 3 · 商务谈判
+   ════════════════════════════════════════════════════════════════ */
+.s3-supplier-tabs {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  background: var(--paper); border: 1px solid var(--rule);
+  margin-bottom: 0;
+}
+.s3-supplier-tabs .tab {
+  padding: 14px 16px; border-right: 1px solid var(--rule);
+  display: grid; grid-template-columns: 36px 1fr auto; gap: 12px; align-items: center;
+  cursor: pointer; background: var(--layer-03); position: relative;
+}
+.s3-supplier-tabs .tab:last-child { border-right: 0; }
+.s3-supplier-tabs .tab:hover { background: var(--paper); }
+.s3-supplier-tabs .tab.on { background: var(--paper); }
+.s3-supplier-tabs .tab.on::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--blue); }
+.s3-supplier-tabs .tab .av {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--ink); color: var(--paper);
+  display: grid; place-items: center; font-size: 13px; font-weight: 600;
+}
+.s3-supplier-tabs .tab.on .av { background: var(--blue); }
+.s3-supplier-tabs .tab .name { font-size: 14px; font-weight: 600; color: var(--ink); }
+.s3-supplier-tabs .tab .desc { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; margin-top: 2px; }
+.s3-supplier-tabs .tab .price { font-family: var(--mono); font-size: 12px; color: var(--ink-3); text-align: right; }
+.s3-supplier-tabs .tab .price b { color: var(--ink); font-weight: 600; font-size: 14px; }
+
+.s3-stage {
+  background: var(--paper); border: 1px solid var(--rule); border-top: 0;
+}
+.s3-stage-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px; border-bottom: 1px solid var(--rule); background: var(--layer-03);
+}
+.s3-stage-head .who { display: flex; align-items: center; gap: 12px; }
+.s3-stage-head .who .av {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--blue); color: var(--paper);
+  display: grid; place-items: center; font-size: 14px; font-weight: 600;
+}
+.s3-stage-head .who .meta .n { font-size: 15px; font-weight: 600; color: var(--ink); }
+.s3-stage-head .who .meta .r { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; margin-top: 2px; }
+.s3-stage-head .round-pill {
+  display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px;
+  background: var(--paper); border: 1px solid var(--rule-strong);
+  font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: .32px; text-transform: uppercase;
+}
+.s3-stage-head .round-pill b { color: var(--blue); font-weight: 600; }
+
+.s3-dialog { padding: 28px 32px 24px; position: relative; background: var(--paper); }
+.s3-dialog .speech-bubble {
+  position: relative; background: var(--layer-01);
+  padding: 20px 24px; border-radius: 2px;
+  font-family: var(--serif); font-size: 17px; line-height: 1.7; color: var(--ink);
+  max-width: 720px;
+}
+.s3-dialog .speech-bubble::before {
+  content: ""; position: absolute; left: -8px; top: 18px;
+  width: 0; height: 0; border-style: solid; border-width: 8px 8px 8px 0;
+  border-color: transparent var(--layer-01) transparent transparent;
+}
+.s3-dialog .speech-bubble .quote-mark { color: var(--ink-5); font-family: var(--serif); }
+.s3-dialog .deltas {
+  display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap;
+}
+.s3-dialog .delta {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; font-family: var(--mono); font-size: 12px;
+  background: var(--paper); border: 1px solid var(--rule-strong); color: var(--ink-3);
+}
+.s3-dialog .delta .down { color: var(--success); font-weight: 600; }
+.s3-dialog .delta.warn { background: var(--error-tint); border-color: #ffb3b8; color: var(--error); }
+.s3-dialog .delta .ok { color: var(--success); }
+
+.s3-options {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  border-top: 1px solid var(--rule);
+}
+.s3-options .opt {
+  padding: 18px 20px; border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer; background: var(--paper); position: relative;
+  display: grid; gap: 8px; transition: background .12s;
+}
+.s3-options .opt:nth-child(2n) { border-right: 0; }
+.s3-options .opt:nth-last-child(-n+2) { border-bottom: 0; }
+.s3-options .opt:hover { background: var(--blue-tint); }
+.s3-options .opt:hover .text { color: var(--ink); }
+.s3-options .opt .opt-h { display: flex; align-items: center; gap: 8px; }
+.s3-options .opt .tag {
+  display: inline-block; padding: 2px 8px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .32px; text-transform: uppercase; font-weight: 500;
+  background: var(--ink); color: var(--paper);
+}
+.s3-options .opt[data-kind="press"] .tag { background: #393939; }
+.s3-options .opt[data-kind="bundle"] .tag { background: var(--blue); }
+.s3-options .opt[data-kind="trade"] .tag { background: var(--success); }
+.s3-options .opt[data-kind="hard"] .tag { background: var(--error); }
+.s3-options .opt .num { font-family: var(--mono); font-size: 11px; color: var(--ink-4); }
+.s3-options .opt .text { font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+.s3-options .opt .hint {
+  font-family: var(--mono); font-size: 11px; color: var(--ink-4);
+  display: flex; align-items: center; gap: 4px;
+  padding-top: 6px; border-top: 1px dashed var(--rule);
+}
+.s3-options .opt[data-kind="hard"] .hint { color: var(--error); font-weight: 500; }
+
+/* Negotiation log */
+.s3-log { margin-top: 20px; border: 1px solid var(--rule); }
+.s3-log .lh { padding: 10px 16px; background: var(--layer-03); border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; }
+.s3-log .lh .t { font-size: 13px; font-weight: 600; }
+.s3-log .lh .meta { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; }
+.s3-log .lt {
+  display: grid; grid-template-columns: 60px 100px 1fr 120px 80px;
+  padding: 8px 16px; border-bottom: 1px solid var(--rule);
+  font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; text-transform: uppercase;
+  background: var(--paper);
+}
+.s3-log .lr {
+  display: grid; grid-template-columns: 60px 100px 1fr 120px 80px;
+  padding: 12px 16px; border-bottom: 1px solid var(--rule);
+  font-size: 13px; align-items: baseline;
+}
+.s3-log .lr:last-child { border-bottom: 0; }
+.s3-log .lr .r { font-family: var(--mono); color: var(--ink-3); font-weight: 500; }
+.s3-log .lr .act { font-weight: 600; color: var(--ink); }
+.s3-log .lr .quote { color: var(--ink-3); font-family: var(--serif); }
+.s3-log .lr .price { font-family: var(--mono); font-weight: 600; color: var(--ink); text-align: right; }
+.s3-log .lr .delta-tag { font-family: var(--mono); font-size: 11px; text-align: right; color: var(--success); }
+.s3-log .lr.warn { background: var(--error-tint); }
+.s3-log .lr.warn .delta-tag { color: var(--error); }
+
+/* ════════════════════════════════════════════════════════════════
+   STEP 4 · 决策复盘
+   ════════════════════════════════════════════════════════════════ */
+.s4-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; }
+.tile { background: var(--paper); border: 1px solid var(--rule); }
+.tile .h { padding: 16px 20px; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; }
+.tile .h .t { font-size: 14px; font-weight: 600; color: var(--ink); }
+.tile .h .meta { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; text-transform: uppercase; }
+.tile .b { padding: 24px; }
+
+.score-display { display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: start; }
+.score-big {
+  display: flex; align-items: baseline; gap: 4px;
+  font-family: var(--sans); font-weight: 300;
+}
+.score-big .num { font-size: 72px; line-height: 1; color: var(--ink); }
+.score-big .of { font-size: 22px; color: var(--ink-4); }
+.score-side .band {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 4px 10px; background: var(--warning-tint); color: #b28600;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .32px; text-transform: uppercase; font-weight: 600;
+  border: 1px solid #f1c21b;
+}
+.score-side .label { font-size: 13px; color: var(--ink-3); margin-top: 8px; line-height: 1.5; }
+.breakdown { margin-top: 24px; display: grid; gap: 14px; padding-top: 20px; border-top: 1px solid var(--rule); }
+.breakdown .br { display: grid; grid-template-columns: 90px 1fr 90px; gap: 14px; align-items: center; }
+.breakdown .br .k { font-size: 13px; color: var(--ink-2); }
+.breakdown .br .bar { height: 8px; background: var(--layer-01); position: relative; overflow: hidden; }
+.breakdown .br .bar > span { position: absolute; inset: 0; background: var(--blue); display: block; }
+.breakdown .br .v { font-family: var(--mono); font-size: 13px; color: var(--ink); text-align: right; font-weight: 500; }
+.breakdown .br .v small { color: var(--ink-4); font-weight: 400; }
+
+.summary-rows .r {
+  display: grid; grid-template-columns: 110px 1fr; gap: 16px;
+  padding: 14px 0; border-bottom: 1px solid var(--rule); align-items: baseline;
+}
+.summary-rows .r:last-child { border-bottom: 0; }
+.summary-rows .r .k { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; text-transform: uppercase; }
+.summary-rows .r .v { font-size: 14px; color: var(--ink); }
+.summary-rows .r .v b { font-size: 18px; font-weight: 600; }
+.summary-rows .r .v .sub { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; padding: 2px 8px; background: var(--success-tint); color: var(--success); font-family: var(--mono); font-size: 11px; }
+.summary-rows .r .v .checkmark { color: var(--success); margin-right: 6px; }
+.summary-rows .r.alert { background: var(--error-tint); margin: 0 -24px; padding-left: 20px; padding-right: 20px; border-bottom-color: #ffb3b8; }
+.summary-rows .r.alert .k { color: var(--error); font-weight: 600; }
+.summary-rows .r.alert .v { color: var(--ink); font-size: 14px; }
+.summary-rows .r.alert .v b { color: var(--error); }
+
+.coach-comment {
+  grid-column: 1 / -1; display: grid; grid-template-columns: 4px 1fr; gap: 0;
+  background: var(--blue-tint); border: 1px solid #a6c8ff;
+}
+.coach-comment .accent { background: var(--blue); }
+.coach-comment .body { padding: 20px 24px; }
+.coach-comment .body .h { font-family: var(--mono); font-size: 11px; color: var(--blue); letter-spacing: .42px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; padding: 0; border: 0; }
+.coach-comment .body p { margin: 0; font-family: var(--serif); font-size: 14px; line-height: 1.85; color: var(--ink-2); }
+.coach-comment .body p b { color: var(--ink); font-weight: 600; }
+
+/* ── Right rail ──────────────────────────────────────────────── */
+.rail-tile { margin-bottom: 16px; background: var(--paper); border: 1px solid var(--rule); }
+.rail-tile .h { padding: 12px 16px; border-bottom: 1px solid var(--rule); background: var(--layer-03); display: flex; justify-content: space-between; align-items: center; }
+.rail-tile .h .t { font-size: 13px; font-weight: 600; color: var(--ink); }
+.rail-tile .h .m { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; text-transform: uppercase; }
+.rail-tile .h .m.live::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); margin-right: 6px; vertical-align: 2px; animation: pulse 1.6s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+.rail-tile .b { padding: 16px; }
+
+.kv { display: grid; gap: 14px; }
+.kv .row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: baseline; }
+.kv .row .k { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; text-transform: uppercase; }
+.kv .row .v { font-size: 16px; font-weight: 500; color: var(--ink); text-align: right; }
+.kv .row .v small { display: block; font-family: var(--mono); font-size: 11px; font-weight: 400; color: var(--ink-4); margin-top: 2px; }
+.kv .row .v .was { font-family: var(--mono); font-size: 11px; color: var(--ink-4); text-decoration: line-through; margin-right: 6px; font-weight: 400; }
+.kv .row .v.warn small { color: var(--error); }
+
+.attitude { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--rule); }
+.attitude .lab { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; text-transform: uppercase; margin-bottom: 8px; }
+.attitude .lab b { color: var(--ink); font-weight: 600; }
+.attitude .bar { height: 4px; background: var(--layer-01); position: relative; }
+.attitude .bar > span { position: absolute; inset: 0; background: var(--blue); display: block; }
+.attitude .ticks { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; color: var(--ink-5); margin-top: 6px; letter-spacing: .32px; }
+
+.formula { font-family: var(--mono); font-size: 11.5px; line-height: 1.85; color: var(--ink-3); }
+.formula .ln { display: grid; grid-template-columns: 64px 1fr; gap: 8px; padding: 4px 0; }
+.formula .ln + .ln { border-top: 1px dashed var(--rule); }
+.formula .ln .k { color: var(--ink); font-weight: 600; }
+.formula .note { font-family: var(--sans); font-size: 11.5px; color: var(--ink-4); margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--rule); }
+
+.rounds-left {
+  display: flex; align-items: baseline; gap: 4px;
+  font-family: var(--sans); padding-bottom: 8px; border-bottom: 1px solid var(--rule); margin-bottom: 12px;
+}
+.rounds-left .num { font-size: 32px; font-weight: 300; color: var(--blue); line-height: 1; }
+.rounds-left .lbl { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; text-transform: uppercase; margin-left: 4px; }
+.rail-warn-text { font-size: 12.5px; line-height: 1.55; color: var(--ink-3); }
+.rail-warn-text b { color: var(--error); font-weight: 600; }
+
+/* ── Action bar (bottom) ──────────────────────────────────────── */
+.action-bar {
+  display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center;
+  padding: 12px 32px; background: var(--paper); border-top: 1px solid var(--rule);
+}
+.action-bar .progress {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; text-transform: uppercase;
+}
+.action-bar .progress b { color: var(--ink); font-weight: 500; }
+.action-bar .progress .bar { display: inline-block; width: 240px; height: 4px; background: var(--layer-01); position: relative; }
+.action-bar .progress .bar > span { position: absolute; inset: 0; background: var(--blue); display: block; }
+.action-bar .right { display: flex; gap: 1px; }
+
+/* Carbon-style buttons */
+.btn {
+  appearance: none; cursor: pointer; border: 0;
+  font-family: var(--sans); font-size: 14px; font-weight: 400;
+  padding: 0 16px; height: 40px; min-width: 120px;
+  display: inline-flex; align-items: center; justify-content: space-between; gap: 12px;
+  transition: background .12s, color .12s;
+  letter-spacing: .16px;
+}
+.btn.primary { background: var(--blue); color: var(--paper); }
+.btn.primary:hover { background: var(--blue-hover); }
+.btn.primary:active { background: var(--blue-active); }
+.btn.secondary { background: var(--ink-2); color: var(--paper); }
+.btn.secondary:hover { background: var(--ink); }
+.btn.tertiary { background: transparent; color: var(--blue); border: 1px solid var(--blue); }
+.btn.tertiary:hover { background: var(--blue-tint); }
+.btn.ghost { background: transparent; color: var(--blue); }
+.btn.ghost:hover { background: var(--blue-tint); }
+.btn .arrow { font-family: var(--mono); font-size: 14px; }
+
+/* ── Tweaks panel ─────────────────────────────────────────────── */
+.tweaks { position: fixed; right: 24px; bottom: 24px; width: 300px; background: var(--paper); border: 1px solid var(--rule-bold); box-shadow: 0 8px 24px rgba(0,0,0,.16); z-index: 100; display: none; }
+.tweaks.open { display: block; }
+.tweaks-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--ink); color: var(--paper); }
+.tweaks-head .t { font-size: 13px; font-weight: 600; letter-spacing: .16px; }
+.tweaks-head .close { background: none; border: 0; color: var(--paper); font-size: 18px; cursor: pointer; line-height: 1; padding: 4px; }
+.tweaks-body { padding: 16px; display: grid; gap: 16px; }
+.tweak-row { display: grid; gap: 8px; }
+.tweak-row label { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .32px; text-transform: uppercase; }
+.seg2 { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border: 1px solid var(--rule-bold); }
+.seg2 button { appearance: none; background: var(--paper); border: 0; border-right: 1px solid var(--rule-bold); color: var(--ink-3); padding: 8px 4px; cursor: pointer; font-family: var(--sans); font-size: 12px; }
+.seg2 button:last-child { border-right: 0; }
+.seg2 button.on { background: var(--blue); color: var(--paper); }
+
+@media (max-width: 1280px) {
+  .workspace { grid-template-columns: 1fr 320px; }
+  .s2-grid { grid-template-columns: repeat(2, 1fr); }
+  .ushell-nav a { padding: 0 12px; font-size: 13px; }
+}
+@media (max-width: 1024px) {
+  .workspace { grid-template-columns: 1fr; }
+  .ws-rail { border-left: 0; border-top: 1px solid var(--rule); }
+  .s1-grid, .s4-grid { grid-template-columns: 1fr; }
+  .s2-grid { grid-template-columns: 1fr; }
+  .s3-options { grid-template-columns: 1fr; }
+  .s3-options .opt { border-right: 0 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Top toolbar (线框风格，与 index / AI助教 一致) ───── -->
+<header class="toolbar">
+  <div class="toolbar-brand">
+    <span class="logo">供应链寻源</span>
+    <span class="tag">PRACTICE / V1.0 · 草莓果酱采购寻源</span>
+  </div>
+  <nav class="toolbar-tabs">
+    <a href="index.html"><span class="n">01</span>首页</a>
+    <a href="AI助教.html"><span class="n">02</span>AI 助教</a>
+    <a href="课程文档.html"><span class="n">03</span>课程文档</a>
+    <a href="实训教学.html" aria-current="page"><span class="n">04</span>实训中心</a>
+  </nav>
+  <div class="toolbar-meta">学生 · <b>张同学</b></div>
+</header>
+
+<!-- ── Page content ─────────────────────────────────────────── -->
+<main class="page">
+
+  <!-- Page head -->
+  <div class="page-head">
+    <div class="crumbs">
+      <a href="index.html">首页</a><span class="sep">/</span>
+      <a href="实训教学.html">实训中心</a><span class="sep">/</span>
+      <a href="实训教学.html">案例 P-2026-001</a><span class="sep">/</span>
+      <span id="crumbStep">STEP 04 · 决策复盘</span>
+    </div>
+    <div class="page-title-row">
+      <div class="page-title">
+        <h1>草莓拿铁夹心饼干 · 草莓果酱年度采购</h1>
+        <p class="desc">配方要求糖度 ≥ 65 Brix，无人工防腐剂；HACCP + ISO22000 双证；预算上限 ¥29,000 / 吨；月结 30 天为优。</p>
+      </div>
+      <div class="page-meta">
+        <div class="m"><div class="k">案例 ID</div><div class="v">P-2026-001</div></div>
+        <div class="m"><div class="k">用时</div><div class="v">00:31:24</div></div>
+        <div class="m"><div class="k">已得分</div><div class="v score" id="totalScore">232<span class="of"> / 300</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stepper -->
+  <div class="progress-indicator" id="stepper">
+    <div class="pi-step complete" data-step="1">
+      <div class="icon"><span>1</span></div>
+      <div class="lbl"><div class="n">STEP 01</div><div class="t">需求分析</div><div class="s">75 / 100</div></div>
+    </div>
+    <div class="pi-step complete" data-step="2">
+      <div class="icon"><span>2</span></div>
+      <div class="lbl"><div class="n">STEP 02</div><div class="t">市场寻源</div><div class="s">100 / 100</div></div>
+    </div>
+    <div class="pi-step complete" data-step="3">
+      <div class="icon"><span>3</span></div>
+      <div class="lbl"><div class="n">STEP 03</div><div class="t">商务谈判</div><div class="s">72 / 100</div></div>
+    </div>
+    <div class="pi-step current" data-step="4">
+      <div class="icon"><span>4</span></div>
+      <div class="lbl"><div class="n">STEP 04</div><div class="t">决策复盘</div><div class="s">查看复盘报告</div></div>
+    </div>
+  </div>
+
+  <!-- Workspace -->
+  <div class="workspace">
+    <section class="ws-main">
+
+      <!-- ════ STEP 1 · 需求分析 ════ -->
+      <div class="step-view" data-view="1">
+        <h2 class="section-h2">需求分析 · 把采购需求拆解为 6 项关键字段</h2>
+        <p class="section-h2-sub">阅读左侧《采购需求说明》，从中提取关键信息，填入右侧规格单。每项满分均有提示。</p>
+
+        <div class="s1-grid">
+          <article class="s1-doc">
+            <div class="doc-h"><span class="t">采购需求说明（内部文件）</span><span class="src">引用 · 原文</span></div>
+            <div class="doc-body">
+              公司计划于下季度上线新品「草莓拿铁夹心饼干」，已通过研发部门口味测试，进入量产准备阶段。饼干夹心层使用<mark>草莓果酱</mark>，研发配方要求<mark>糖度不低于 65 Brix</mark>，且<mark>不得使用防腐剂</mark>。根据产线排期，<mark>预计年用量为 200 吨</mark>，首批到货时间不超过采购合同签署后 45 天。财务部门核定该品类<mark>采购单价上限为 ¥29,000 元/吨</mark>，含税含运。<mark>付款方式优先争取月结</mark>。品控部门强调：供应商须持有 <mark>HACCP 认证</mark>，产品须符合 <mark>GB 2760</mark>。此前有一家合作供应商因 <mark>ISO22000 到期未续</mark> 造成批次召回，故本次采购要求双证齐全。
+            </div>
+          </article>
+
+          <article class="s1-form">
+            <div class="form-h"><span class="t">采购规格单</span><span class="pts">满分 8 分</span></div>
+            <div class="form-body">
+              <div class="field">
+                <div class="lab"><span class="l">采购品类</span><span class="pts full">+1 / 1</span></div>
+                <div class="inp filled">草莓果酱（食品级）</div>
+              </div>
+              <div class="field">
+                <div class="lab"><span class="l">年采购量</span><span class="pts full">+1 / 1</span></div>
+                <div class="inp filled">200 吨</div>
+              </div>
+              <div class="field">
+                <div class="lab"><span class="l">核心质量要求</span><span class="pts full">+2 / 2</span></div>
+                <div class="inp filled">糖度 ≥ 65 Brix；无人工防腐剂</div>
+              </div>
+              <div class="field">
+                <div class="lab"><span class="l">合规认证（多选）</span><span class="pts full">+2 / 2</span></div>
+                <div class="check">
+                  <span class="c on">HACCP</span>
+                  <span class="c on">ISO22000</span>
+                  <span class="c">BRC</span>
+                  <span class="c on">GB 2760</span>
+                  <span class="c">QS</span>
+                </div>
+              </div>
+              <div class="field">
+                <div class="lab"><span class="l">预算上限</span><span class="pts full">+1 / 1</span></div>
+                <div class="inp filled">¥ 29,000 元 / 吨（含税含运）</div>
+              </div>
+              <div class="field">
+                <div class="lab"><span class="l">期望账期</span><span class="pts full">+1 / 1</span></div>
+                <div class="seg">
+                  <span class="opt">货到付款</span>
+                  <span class="opt">月结 15 天</span>
+                  <span class="opt on">月结 30 天</span>
+                  <span class="opt">月结 60 天</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- ════ STEP 2 · 市场寻源 ════ -->
+      <div class="step-view" data-view="2">
+        <h2 class="section-h2">市场寻源 · 从 6 家候选供应商中筛选 3 家入围</h2>
+        <p class="section-h2-sub">基于步骤 1 的合规、产能、报价区间评估每家供应商，最终圈定 3 家进入下一轮谈判。</p>
+
+        <div class="s2-toolbar">
+          <span class="pick">已选供应商 <b>3</b> / 3</span>
+          <button class="btn ghost" style="min-width:auto;height:32px;padding:0 12px;">查看完整资料 →</button>
+        </div>
+
+        <div class="s2-grid">
+
+          <article class="s2-card picked">
+            <div class="card-h"><span class="code">A · 入围</span><span class="check"></span></div>
+            <div class="name">锐达食品原料</div>
+            <div class="rows">
+              <div class="r"><span class="k">认证</span><span class="v">HACCP + ISO22000<span class="tag">在期</span></span></div>
+              <div class="r"><span class="k">产能</span><span class="v">3,000 吨 / 年</span></div>
+              <div class="r"><span class="k">报价</span><span class="v">¥27,000 – 29,000</span></div>
+            </div>
+            <div class="note">"近三年零投诉，履约率 98%"</div>
+          </article>
+
+          <article class="s2-card">
+            <div class="card-h"><span class="code">B</span><span class="check"></span></div>
+            <div class="name">晨光农业发展</div>
+            <div class="rows">
+              <div class="r"><span class="k">认证</span><span class="v">仅 QS<span class="tag warn">无 HACCP</span></span></div>
+              <div class="r"><span class="k">产能</span><span class="v">800 吨 / 年</span></div>
+              <div class="r"><span class="k">报价</span><span class="v">¥24,000 – 25,500</span></div>
+            </div>
+            <div class="note">认证不合规，产能无弹性</div>
+          </article>
+
+          <article class="s2-card picked">
+            <div class="card-h"><span class="code">C · 入围</span><span class="check"></span></div>
+            <div class="name">优鲜源食品科技</div>
+            <div class="rows">
+              <div class="r"><span class="k">认证</span><span class="v">HACCP + BRC A级</span></div>
+              <div class="r"><span class="k">产能</span><span class="v">5,000 吨 / 年</span></div>
+              <div class="r"><span class="k">报价</span><span class="v">¥30,000 – 32,000</span></div>
+            </div>
+            <div class="note">认证等级最高，超预算</div>
+          </article>
+
+          <article class="s2-card">
+            <div class="card-h"><span class="code">D</span><span class="check"></span></div>
+            <div class="name">田野本铺食材</div>
+            <div class="rows">
+              <div class="r"><span class="k">认证</span><span class="v">HACCP<span class="tag warn">ISO 已过期</span></span></div>
+              <div class="r"><span class="k">产能</span><span class="v">1,200 吨 / 年</span></div>
+              <div class="r"><span class="k">报价</span><span class="v">¥26,000 – 28,000</span></div>
+            </div>
+            <div class="note">同类风险点，曾召回</div>
+          </article>
+
+          <article class="s2-card">
+            <div class="card-h"><span class="code">E</span><span class="check"></span></div>
+            <div class="name">绿洲食材供应链</div>
+            <div class="rows">
+              <div class="r"><span class="k">认证</span><span class="v">HACCP + ISO22000</span></div>
+              <div class="r"><span class="k">产能</span><span class="v">2,000 吨 / 年</span></div>
+              <div class="r"><span class="k">报价</span><span class="v">¥27,500 – 29,500</span></div>
+            </div>
+            <div class="note">近 12 月 2 起糖度不达标投诉</div>
+          </article>
+
+          <article class="s2-card picked">
+            <div class="card-h"><span class="code">F · 入围</span><span class="check"></span></div>
+            <div class="name">盛丰原料（天津）</div>
+            <div class="rows">
+              <div class="r"><span class="k">认证</span><span class="v">HACCP + ISO22000<span class="tag">在期</span></span></div>
+              <div class="r"><span class="k">产能</span><span class="v">4,000 吨 / 年</span></div>
+              <div class="r"><span class="k">报价</span><span class="v">¥28,000 – 30,000</span></div>
+            </div>
+            <div class="note">合规齐全，距离远，运费需核算</div>
+          </article>
+        </div>
+
+        <div class="inline-notification">
+          <div class="accent"></div>
+          <div class="body">
+            <b>合规提示 · 排除项</b>
+            选 B 或 D：认证不符合本次采购的合规强制要求（HACCP + ISO22000 双证）。选 E：认证在期，但近 12 月 2 起糖度不达标投诉，食品类风险过大。
+          </div>
+        </div>
+      </div>
+
+      <!-- ════ STEP 3 · 商务谈判 ════ -->
+      <div class="step-view" data-view="3">
+        <h2 class="section-h2">商务谈判 · 与 3 家入围供应商分别谈判</h2>
+        <p class="section-h2-sub">每家最多 5 回合，选择不同策略试探对方让步空间。注意：策略组合会触发不同的对手反应。</p>
+
+        <div class="s3-supplier-tabs">
+          <div class="tab">
+            <div class="av">锐</div>
+            <div><div class="name">锐达食品</div><div class="desc">SUPPLIER · 务实型</div></div>
+            <div class="price">起价<br><b>¥28,500</b></div>
+          </div>
+          <div class="tab on">
+            <div class="av">盛</div>
+            <div><div class="name">盛丰（天津）</div><div class="desc">SUPPLIER · 灵活型</div></div>
+            <div class="price">起价<br><b>¥29,500</b></div>
+          </div>
+          <div class="tab">
+            <div class="av">优</div>
+            <div><div class="name">优鲜源食品</div><div class="desc">SUPPLIER · 强势型</div></div>
+            <div class="price">起价<br><b>¥31,000</b></div>
+          </div>
+        </div>
+
+        <div class="s3-stage">
+          <div class="s3-stage-head">
+            <div class="who">
+              <div class="av">林</div>
+              <div class="meta"><div class="n">林经理 · 盛丰销售</div><div class="r">SUPPLIER · 灵活型 · 谈判中</div></div>
+            </div>
+            <div class="round-pill">回合 <b>03 / 05</b></div>
+          </div>
+
+          <div class="s3-dialog">
+            <div class="speech-bubble">
+              <span class="quote-mark">"</span>好，¥27,000 我们咬牙接。但运费需要单独核算 — 天津到贵司运费约 ¥800 / 吨，这个我们没法再让了。<span class="quote-mark">"</span>
+            </div>
+            <div class="deltas">
+              <span class="delta">报价 <span class="down">¥27,200 → ¥27,000</span></span>
+              <span class="delta">质保 18 个月 <span class="ok">✓</span></span>
+              <span class="delta warn">⚠ 触发 · 运费陷阱（强硬累计 2 次）</span>
+            </div>
+          </div>
+
+          <div class="s3-options">
+            <div class="opt" data-kind="press">
+              <div class="opt-h"><span class="tag">施压</span><span class="num">A</span></div>
+              <div class="text">"我们高层对这个价格有明确要求，再谈不下去可能要重新评估合作。"</div>
+              <div class="hint">→ 价格继续下探，态度小幅扣分</div>
+            </div>
+            <div class="opt" data-kind="bundle">
+              <div class="opt-h"><span class="tag">捆绑</span><span class="num">B</span></div>
+              <div class="text">"我们总部还有其他品类需求，有没有兴趣成为战略供应商？"</div>
+              <div class="hint">→ 价格 + 账期联动，态度回升</div>
+            </div>
+            <div class="opt" data-kind="trade">
+              <div class="opt-h"><span class="tag">换让步</span><span class="num">C</span></div>
+              <div class="text">"质保期能不能从现有基础上延长 6 个月？"</div>
+              <div class="hint">→ 锁定质保 18 个月</div>
+            </div>
+            <div class="opt" data-kind="hard">
+              <div class="opt-h"><span class="tag">强硬</span><span class="num">D</span></div>
+              <div class="text">"这是我们的价格底线，否则我们结束今天的谈判。"</div>
+              <div class="hint">⚠ 强硬已 ×2 · 再次触发深坑</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="s3-log">
+          <div class="lh"><span class="t">本场谈判记录 · 盛丰</span><span class="meta">3 / 5 回合</span></div>
+          <div class="lt"><span>回合</span><span>策略</span><span>对方回应</span><span>报价 / 吨</span><span>变化</span></div>
+          <div class="lr">
+            <span class="r">R1</span><span class="act">捆绑</span>
+            <span class="quote">"长约好商量，¥28,800，后续有得谈。"</span>
+            <span class="price">¥28,800</span><span class="delta-tag">−¥700</span>
+          </div>
+          <div class="lr">
+            <span class="r">R2</span><span class="act">换让步</span>
+            <span class="quote">"账期月结 30 天没问题，价格 ¥28,000。"</span>
+            <span class="price">¥28,000</span><span class="delta-tag">−¥800</span>
+          </div>
+          <div class="lr warn">
+            <span class="r">R3</span><span class="act">强硬</span>
+            <span class="quote">⚠ 触发运费陷阱：¥27,000 不含运 + ¥800/吨</span>
+            <span class="price">¥27,000*</span><span class="delta-tag">+¥800 隐性</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════ STEP 4 · 决策复盘 ════ -->
+      <div class="step-view on" data-view="4">
+        <h2 class="section-h2">决策复盘 · 谈判结果与系统点评</h2>
+        <p class="section-h2-sub">复盘谈判数据，识别关键决策点。本节得分将计入最终成绩，可点击下方"导出复盘报告"留存。</p>
+
+        <div class="s4-grid">
+
+          <article class="tile">
+            <div class="h"><span class="t">谈判得分</span><span class="meta">SCORE · / 100</span></div>
+            <div class="b">
+              <div class="score-display">
+                <div class="score-big"><span class="num">72</span><span class="of">/ 100</span></div>
+                <div class="score-side">
+                  <span class="band">良好 · 65–84</span>
+                  <p class="label">谈判达成主要目标，仍有 28 分空间未争取到 — 主要丢在隐藏成本与质保未谈到上限。</p>
+                </div>
+              </div>
+              <div class="breakdown">
+                <div class="br"><span class="k">价格节省</span><span class="bar"><span style="width:67%"></span></span><span class="v">40<small> /60</small></span></div>
+                <div class="br"><span class="k">账期改善</span><span class="bar"><span style="width:100%"></span></span><span class="v">20<small> /20</small></span></div>
+                <div class="br"><span class="k">质保改善</span><span class="bar"><span style="width:60%"></span></span><span class="v">12<small> /20</small></span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="tile">
+            <div class="h"><span class="t">谈判结果摘要</span><span class="meta">FINAL TERMS</span></div>
+            <div class="b">
+              <div class="summary-rows">
+                <div class="r"><span class="k">谈判对象</span><span class="v">盛丰原料（天津）<small style="color:var(--ink-4);font-size:12px;margin-left:8px;">灵活型</small></span></div>
+                <div class="r"><span class="k">最终成交价</span><span class="v"><b>¥27,000</b> / 吨<span class="sub">较起始 ¥29,500 ↓ 8.5%</span></span></div>
+                <div class="r"><span class="k">账期</span><span class="v"><span class="checkmark">✓</span>月结 30 天（达成目标）</span></div>
+                <div class="r"><span class="k">质保期</span><span class="v"><span class="checkmark">✓</span>18 个月（上限 24 个月）</span></div>
+                <div class="r alert"><span class="k">⚠ 综合到手</span><span class="v">实际成本 = ¥27,000 + ¥800 运费 = <b>¥27,800 / 吨</b></span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="coach-comment">
+            <div class="accent"></div>
+            <div class="body">
+              <div class="h">系统点评 · 良好（65–84 分）</div>
+              <p>谈判取得主要成果，账期与质保改善目标基本达成；但部分条款仍有空间未争取到。<b>核心提示：</b>第 3 回合连续两次"强硬"触发了盛丰的运费陷阱 — 最终单价虽降到 ¥27,000，但加上 ¥800/吨的额外运费，实际综合成本已经来到 ¥27,800，与锐达食品的常规报价非常接近。<b>下一步建议：</b>复盘哪几轮的策略选择拉低了让步空间，注意"单价"之外的隐藏成本变量（运费、保险、最小起订量）。</p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ── Right rail ─────────────────────────────────── -->
+    <aside class="ws-rail">
+      <h3 class="section-title">实时状态 · 谈判态势</h3>
+
+      <article class="rail-tile">
+        <div class="h"><span class="t">当前条款</span><span class="m live">R3 进行中</span></div>
+        <div class="b">
+          <div class="kv">
+            <div class="row"><span class="k">价格 / 吨</span><span class="v warn"><span class="was">¥29,500</span>¥27,000<small>+ ¥800 运费（隐性）</small></span></div>
+            <div class="row"><span class="k">账期</span><span class="v">月结 30 天<small>达成目标</small></span></div>
+            <div class="row"><span class="k">质保</span><span class="v">18 个月<small>上限 24 个月</small></span></div>
+          </div>
+          <div class="attitude">
+            <div class="lab"><span>态度值 ATTITUDE</span><b>55 · 中性偏好</b></div>
+            <div class="bar"><span style="width:55%"></span></div>
+            <div class="ticks"><span>0 敌对</span><span>50</span><span>100 友好</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="rail-tile">
+        <div class="h"><span class="t">评分公式</span><span class="m">FORMULA</span></div>
+        <div class="b">
+          <div class="formula">
+            <div class="ln"><span class="k">价格</span><span>(起 − 终) ÷ 最大降幅 × 60</span></div>
+            <div class="ln"><span class="k">账期</span><span>月结 30 → 20 / 否则 → 0</span></div>
+            <div class="ln"><span class="k">质保</span><span>谈到上限 → 20 / 否则 → 0</span></div>
+            <div class="note">隐性成本（运费、保险）不计入扣分，但会在复盘点评中提示。</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="rail-tile">
+        <div class="h"><span class="t">剩余回合</span><span class="m">ROUNDS LEFT</span></div>
+        <div class="b">
+          <div class="rounds-left"><span class="num">2</span><span class="lbl">/ 5 Rounds</span></div>
+          <p class="rail-warn-text">还有 2 回合可谈。注意：再次"<b>强硬</b>"会让盛丰彻底放弃运费让步，得分将下滑。</p>
+        </div>
+      </article>
+    </aside>
+  </div>
+
+  <!-- Action bar -->
+  <div class="action-bar">
+    <div class="progress" id="progressLine">
+      <span>已完成 <b>3 / 4</b> 步</span>
+      <span class="bar"><span style="width:75%"></span></span>
+      <span><b>75%</b></span>
+    </div>
+    <div class="right">
+      <button class="btn ghost">← 上一步</button>
+      <button class="btn tertiary">保存草稿</button>
+      <button class="btn primary" id="nextBtn">导出复盘报告 <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+</main>
+
+<!-- Tweaks -->
+<div class="tweaks" id="tweaksPanel">
+  <div class="tweaks-head"><span class="t">Tweaks</span><button class="close" id="tweaksClose">×</button></div>
+  <div class="tweaks-body">
+    <div class="tweak-row">
+      <label>当前步骤</label>
+      <div class="seg2" data-key="step">
+        <button data-val="1">01 需求</button>
+        <button data-val="2">02 寻源</button>
+        <button data-val="3">03 谈判</button>
+        <button data-val="4">04 复盘</button>
+      </div>
+    </div>
+    <div class="tweak-row">
+      <label>右侧状态栏</label>
+      <div class="seg2" data-key="rail">
+        <button data-val="show">显示</button>
+        <button data-val="hide">隐藏</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "step": "1",
+    "rail": "show"
+  }/*EDITMODE-END*/;
+  const state = Object.assign({}, TWEAK_DEFAULTS);
+
+  const panel = document.getElementById('tweaksPanel');
+  const closeBtn = document.getElementById('tweaksClose');
+
+  window.addEventListener('message', (e) => {
+    const d = e.data || {};
+    if (d.type === '__activate_edit_mode') panel.classList.add('open');
+    if (d.type === '__deactivate_edit_mode') panel.classList.remove('open');
+  });
+  closeBtn && closeBtn.addEventListener('click', () => {
+    panel.classList.remove('open');
+    try { window.parent.postMessage({type: '__edit_mode_dismissed'}, '*'); } catch(e){}
+  });
+  try { window.parent.postMessage({type: '__edit_mode_available'}, '*'); } catch(e){}
+
+  document.querySelectorAll('.seg2').forEach(seg => {
+    seg.addEventListener('click', (e) => {
+      const b = e.target.closest('button[data-val]');
+      if (!b) return;
+      state[seg.dataset.key] = b.dataset.val;
+      try { window.parent.postMessage({type: '__edit_mode_set_keys', edits: { [seg.dataset.key]: b.dataset.val }}, '*'); } catch(e){}
+      apply();
+    });
+  });
+
+  // stepper click
+  document.getElementById('stepper').addEventListener('click', (e) => {
+    const s = e.target.closest('.pi-step[data-step]');
+    if (!s) return;
+    state.step = s.dataset.step;
+    try { window.parent.postMessage({type: '__edit_mode_set_keys', edits: { step: s.dataset.step }}, '*'); } catch(e){}
+    apply();
+  });
+
+  // supplier tabs (cosmetic)
+  document.querySelectorAll('.s3-supplier-tabs .tab').forEach((t, i) => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.s3-supplier-tabs .tab').forEach(x => x.classList.remove('on'));
+      t.classList.add('on');
+    });
+  });
+
+  function apply(){
+    document.querySelectorAll('.step-view').forEach(v => v.classList.toggle('on', v.dataset.view === String(state.step)));
+    document.querySelectorAll('#stepper .pi-step').forEach(s => {
+      const n = +s.dataset.step;
+      s.classList.remove('current','complete');
+      if (n < +state.step) s.classList.add('complete');
+      if (n === +state.step) s.classList.add('current');
+    });
+
+    const labels = { '1':'STEP 01 · 需求分析', '2':'STEP 02 · 市场寻源', '3':'STEP 03 · 商务谈判', '4':'STEP 04 · 决策复盘' };
+    const next   = { '1':'提交规格单 · 进入寻源', '2':'确认 3 家入围', '3':'提交本回合', '4':'导出复盘报告' };
+    document.getElementById('crumbStep').textContent = labels[state.step];
+    document.getElementById('nextBtn').innerHTML = next[state.step] + ' <span class="arrow">→</span>';
+
+    const done = +state.step - 1;
+    const pct  = Math.round(+state.step / 4 * 100);
+    document.getElementById('progressLine').innerHTML =
+      `<span>已完成 <b>${done} / 4</b> 步</span>` +
+      `<span class="bar"><span style="width:${pct}%"></span></span>` +
+      `<span><b>${pct}%</b></span>`;
+
+    const rail = document.querySelector('.ws-rail');
+    const ws = document.querySelector('.workspace');
+    if (state.rail === 'hide') { rail.style.display = 'none'; ws.style.gridTemplateColumns = '1fr'; }
+    else { rail.style.display = ''; ws.style.gridTemplateColumns = ''; }
+
+    document.querySelectorAll('.seg2').forEach(seg => {
+      const k = seg.dataset.key;
+      seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.val === String(state[k])));
+    });
+  }
+
+  apply();
+})();
+</script>
+
+</body>
+</html>

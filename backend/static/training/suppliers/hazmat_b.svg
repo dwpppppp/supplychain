@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Hazmat supplier B">
+  <rect width="640" height="360" fill="#fefce8"/>
+  <rect x="76" y="84" width="160" height="196" rx="18" fill="#eab308"/>
+  <rect x="270" y="84" width="160" height="196" rx="18" fill="#ca8a04"/>
+  <circle cx="508" cy="180" r="62" fill="#713f12"/>
+  <text x="60" y="320" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#713f12">B · Beichen Chemical</text>
+</svg>

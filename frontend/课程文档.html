@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>课程文档 · 供应链寻源学习平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ------------------------------------------------------------------
+   课程文档 · 黑白线框 · 锁定"混合渲染"主方案
+   同时提供 A Markdown / B PDF / C Hybrid(推荐) 三种渲染对比
+   ------------------------------------------------------------------*/
+:root {
+  --ink: #161616;
+  --ink-2: #525252;
+  --ink-3: #6f6f6f;
+  --ink-4: #a8a8a8;
+  --paper: #ffffff;
+  --paper-2: #f4f4f4;
+  --paper-3: #e0e0e0;
+  --rule: #c6c6c6;
+  --rule-strong: #8d8d8d;
+  --accent: #161616;
+  --hand: 'Kalam', 'Caveat', 'IBM Plex Sans', sans-serif;
+  --sans: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  --serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', serif;
+  --mono: 'IBM Plex Mono', Menlo, Courier, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--paper-2); color: var(--ink); font-family: var(--sans); }
+
+/* Top toolbar ----------------------------------------------------- */
+.toolbar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px;
+  padding: 14px 24px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+.toolbar-brand { display: flex; align-items: baseline; gap: 12px; }
+.toolbar-brand .logo {
+  font-family: var(--hand); font-size: 22px; font-weight: 700;
+  letter-spacing: -.5px;
+}
+.toolbar-brand .tag {
+  font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+  letter-spacing: .32px; text-transform: uppercase;
+}
+.toolbar-meta {
+  font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+  letter-spacing: .32px;
+}
+.toolbar-meta b { color: var(--ink); font-weight: 500; }
+
+/* Sketch canvas --------------------------------------------------- */
+.canvas { padding: 28px 32px 64px; max-width: 1440px; margin: 0 auto; }
+.sheet {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  position: relative;
+}
+.sheet::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(22,22,22,.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(22,22,22,.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+.sheet-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px 14px;
+  border-bottom: 1px dashed var(--rule-strong);
+  position: relative; z-index: 1;
+}
+.sheet-head h2 {
+  margin: 0;
+  font-family: var(--hand); font-weight: 700; font-size: 22px;
+  letter-spacing: -.2px;
+}
+.sheet-head .subtitle {
+  font-size: 13px; color: var(--ink-2); margin-top: 2px;
+}
+.sheet-head .meta {
+  font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+  letter-spacing: .32px; text-transform: uppercase;
+}
+.sheet-body { padding: 24px; position: relative; z-index: 1; }
+
+/* Mock shell ----------------------------------------------------- */
+.mock {
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  position: relative;
+}
+.mock-header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.mock-brand { display: flex; align-items: center; gap: 12px; }
+.mock-brand .dot { width: 22px; height: 22px; background: var(--ink); }
+.mock-brand .label { font-family: var(--hand); font-size: 17px; font-weight: 700; }
+.mock-brand .sub { font-family: var(--mono); font-size: 10px; color: var(--ink-3); letter-spacing: .32px; }
+.mock-nav { display: flex; gap: 6px; }
+.mock-nav span {
+  font-family: var(--hand); font-size: 14px;
+  padding: 6px 12px;
+  border: 1.2px solid var(--rule-strong);
+}
+.mock-nav span.on { border-color: var(--ink); color: var(--ink); background: var(--paper-2); }
+.mock-user { display: flex; align-items: center; gap: 10px; font-family: var(--hand); font-size: 14px; }
+.mock-user .av { width: 28px; height: 28px; border-radius: 50%; background: var(--paper-2); border: 1.5px solid var(--ink); }
+
+/* Doc page layout: left TOC · center content · right tools -------- */
+.doc-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr 280px;
+  min-height: 820px;
+}
+.toc {
+  border-right: 1.5px dashed var(--ink);
+  padding: 18px 16px;
+  font-family: var(--sans);
+}
+.toc h3 {
+  margin: 0 0 12px;
+  font-family: var(--hand); font-size: 17px;
+}
+.toc .search {
+  border: 1.2px solid var(--rule-strong);
+  padding: 6px 10px;
+  font-family: var(--mono); font-size: 11px;
+  color: var(--ink-3);
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.toc .book {
+  font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+  letter-spacing: .32px; text-transform: uppercase;
+  padding: 10px 0 6px;
+  border-top: 1px solid var(--rule);
+}
+.toc .chap {
+  font-family: var(--hand); font-size: 15px; font-weight: 700;
+  margin-top: 6px;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.toc .chap .pg { font-family: var(--mono); font-size: 10px; color: var(--ink-3); font-weight: 400; }
+.toc .chap.on { color: var(--ink); background: var(--paper-2); padding: 4px 8px; margin: 6px -8px 0; }
+.toc ul { list-style: none; margin: 4px 0 10px; padding: 0 0 0 12px; border-left: 1px solid var(--rule); }
+.toc li {
+  font-size: 12.5px; color: var(--ink-2);
+  padding: 3px 0; cursor: pointer;
+  display: flex; justify-content: space-between;
+}
+.toc li.on { color: var(--ink); font-weight: 600; }
+.toc li .pg { font-family: var(--mono); font-size: 10px; color: var(--ink-3); }
+
+/* content column -------------------------------------------------- */
+.content-col { position: relative; }
+.mode-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 22px;
+  border-bottom: 1px dashed var(--rule-strong);
+  background: var(--paper-2);
+  font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+  letter-spacing: .32px;
+}
+.mode-tabs { display: inline-flex; border: 1.2px solid var(--ink); background: var(--paper); }
+.mode-tabs button {
+  appearance: none; border: 0; background: transparent;
+  padding: 6px 14px;
+  font-family: var(--hand); font-size: 14px;
+  border-right: 1px solid var(--rule);
+  cursor: pointer; color: var(--ink-2);
+}
+.mode-tabs button:last-child { border-right: 0; }
+.mode-tabs button.on {
+  background: var(--ink); color: var(--paper);
+}
+.mode-tabs .n { font-family: var(--mono); font-size: 10px; margin-right: 6px; opacity: .7; }
+.mode-actions { display: inline-flex; gap: 8px; }
+.mode-actions .chip {
+  padding: 3px 8px; border: 1px solid var(--rule-strong);
+  font-family: var(--mono); font-size: 10px; color: var(--ink-2);
+  letter-spacing: .32px;
+}
+.mode-actions .chip.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+.doc-scroll {
+  height: 760px;
+  overflow-y: auto;
+  padding: 32px 56px 80px;
+  font-family: var(--serif);
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: var(--ink);
+  position: relative;
+}
+.doc-scroll h1 {
+  font-family: var(--serif); font-weight: 700; font-size: 26px;
+  margin: 0 0 6px;
+  text-align: center; letter-spacing: 2px;
+}
+.doc-scroll .h1-sub {
+  text-align: center; font-family: var(--mono); font-size: 11px;
+  color: var(--ink-3); letter-spacing: .4px;
+  padding-bottom: 18px; border-bottom: 2px solid var(--ink); margin-bottom: 24px;
+}
+.doc-scroll h2 {
+  font-family: var(--serif); font-weight: 700; font-size: 19px;
+  margin: 30px 0 10px;
+  padding-left: 10px; border-left: 4px solid var(--ink);
+}
+.doc-scroll h3 {
+  font-family: var(--serif); font-weight: 600; font-size: 16px;
+  margin: 20px 0 8px; color: var(--ink);
+}
+.doc-scroll p { margin: 10px 0; text-indent: 2em; }
+.doc-scroll p.no-indent { text-indent: 0; }
+.doc-scroll ol, .doc-scroll ul { padding-left: 28px; }
+.doc-scroll ol li, .doc-scroll ul li { margin: 4px 0; }
+.doc-scroll .learn-obj {
+  border: 1.5px solid var(--ink);
+  padding: 14px 18px 14px 16px;
+  margin: 16px 0 24px;
+  background: var(--paper-2);
+}
+.doc-scroll .learn-obj b {
+  font-family: var(--sans); font-size: 13px;
+  display: block; margin-bottom: 6px;
+  letter-spacing: 1px; color: var(--ink);
+}
+.doc-scroll .learn-obj ul { margin: 6px 0 0; padding-left: 22px; font-size: 14px; }
+.doc-scroll .learn-obj li::marker { content: "●  "; }
+
+.doc-scroll .think {
+  border: 1px dashed var(--ink);
+  padding: 10px 14px;
+  margin: 14px 0;
+  font-family: var(--sans);
+  font-size: 13.5px; color: var(--ink-2);
+  background: var(--paper);
+}
+.doc-scroll .think b { font-family: var(--hand); color: var(--ink); font-weight: 700; font-size: 14px; }
+
+.doc-scroll .figure {
+  margin: 20px 0;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  padding: 0;
+}
+.doc-scroll .figure .cap {
+  font-family: var(--sans); font-size: 12.5px; color: var(--ink-2);
+  padding: 8px 14px; border-top: 1px dashed var(--rule-strong);
+  text-align: center;
+}
+.doc-scroll .figure .cap b { color: var(--ink); font-weight: 600; margin-right: 6px; }
+
+/* Fig 1-1 flow */
+.fig-flow {
+  padding: 18px 22px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  align-items: center;
+}
+.fig-flow .step {
+  border: 1.2px solid var(--ink);
+  padding: 10px 6px;
+  font-family: var(--sans); font-size: 11px;
+  text-align: center;
+  min-height: 60px;
+  display: grid; place-items: center;
+  line-height: 1.3;
+  text-indent: 0;
+}
+.fig-flow .step .no {
+  display: block; font-family: var(--mono); font-size: 10px;
+  color: var(--ink-3); margin-bottom: 3px;
+}
+.fig-flow .arrow {
+  position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
+  font-family: var(--mono); font-size: 14px; color: var(--ink);
+}
+
+/* 10C table */
+.tbl-10c {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sans); font-size: 12.5px;
+  margin: 6px 0;
+}
+.tbl-10c th, .tbl-10c td {
+  border: 1px solid var(--rule-strong);
+  padding: 7px 10px;
+  text-align: left;
+  vertical-align: top;
+  text-indent: 0;
+}
+.tbl-10c th {
+  background: var(--paper-2);
+  font-family: var(--sans); font-size: 12px; font-weight: 600;
+  letter-spacing: .3px;
+  width: 130px;
+}
+.tbl-10c td p { margin: 2px 0; text-indent: 0; font-size: 12.5px; }
+
+/* Kraljic matrix */
+.fig-kraljic {
+  display: grid; grid-template-columns: 20px 1fr 1fr;
+  grid-template-rows: auto 1fr 1fr 20px;
+  gap: 0;
+  padding: 14px;
+}
+.fig-kraljic .ax-y {
+  grid-row: 2 / 4; grid-column: 1;
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  display: grid; place-items: center;
+  font-family: var(--sans); font-size: 11px; letter-spacing: 2px;
+  color: var(--ink-2);
+}
+.fig-kraljic .ax-x {
+  grid-row: 4; grid-column: 2 / 4;
+  display: grid; place-items: center;
+  font-family: var(--sans); font-size: 11px; letter-spacing: 2px;
+  color: var(--ink-2); padding-top: 6px;
+}
+.fig-kraljic .hdr-low, .fig-kraljic .hdr-high {
+  font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+  padding: 4px 8px; letter-spacing: .32px;
+}
+.fig-kraljic .cell {
+  border: 1.2px solid var(--ink);
+  padding: 10px 12px;
+  font-family: var(--sans); font-size: 12px; line-height: 1.55;
+  min-height: 120px;
+  text-indent: 0;
+}
+.fig-kraljic .cell .t { font-weight: 700; font-size: 13px; display: block; margin-bottom: 4px; }
+.fig-kraljic .cell .k { font-family: var(--mono); font-size: 10px; color: var(--ink-3); }
+
+/* PDF rendered mode (variant B) */
+.pdf-page {
+  background: var(--paper);
+  border: 1px solid var(--rule-strong);
+  width: 560px;
+  margin: 18px auto;
+  padding: 48px 54px 42px;
+  font-family: var(--serif);
+  font-size: 13.5px;
+  line-height: 1.9;
+  position: relative;
+  box-shadow: 0 1px 0 var(--rule), 0 8px 0 -4px var(--paper), 0 9px 0 -4px var(--rule);
+}
+.pdf-page .pn {
+  position: absolute; top: 18px; right: 54px;
+  font-family: var(--serif); font-size: 11px; color: var(--ink-3);
+}
+.pdf-page .pn.book {
+  left: 54px; right: auto;
+}
+.pdf-page h2 { font-size: 17px; margin: 0 0 18px; text-align: center; font-weight: 700; }
+.pdf-page p { margin: 6px 0; text-indent: 2em; font-size: 13.5px; }
+.pdf-page .sel-demo {
+  background: rgba(22,22,22,.14);
+  outline: 1px dashed var(--ink);
+  padding: 0 2px;
+  position: relative;
+}
+.pdf-page .sel-bubble {
+  position: absolute;
+  left: 50%; bottom: calc(100% + 6px);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: var(--ink); color: var(--paper);
+  font-family: var(--sans); font-size: 11px;
+  padding: 5px 10px;
+  display: inline-flex; gap: 10px;
+  align-items: center;
+  z-index: 3;
+}
+.pdf-page .sel-bubble::after {
+  content: ""; position: absolute; left: 50%; top: 100%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--ink);
+}
+.pdf-page .sel-bubble b { color: var(--paper); font-weight: 500; cursor: pointer; }
+.pdf-page .sel-bubble b:hover { text-decoration: underline; }
+
+/* right rail: AI / note tools */
+.rail {
+  border-left: 1.5px dashed var(--ink);
+  padding: 18px 16px;
+  display: grid; gap: 14px;
+  align-content: start;
+  font-family: var(--sans);
+}
+.rail h4 {
+  margin: 0;
+  font-family: var(--hand); font-size: 16px;
+}
+.rail .rail-tabs {
+  display: inline-flex;
+  border: 1.2px solid var(--rule-strong);
+}
+.rail .rail-tabs button {
+  appearance: none; background: transparent; border: 0;
+  padding: 5px 10px;
+  font-family: var(--sans); font-size: 11px;
+  color: var(--ink-2); cursor: pointer;
+  border-right: 1px solid var(--rule-strong);
+}
+.rail .rail-tabs button:last-child { border-right: 0; }
+.rail .rail-tabs button.on { background: var(--ink); color: var(--paper); }
+
+.ai-card {
+  border: 1.2px solid var(--rule-strong);
+  padding: 10px 12px;
+  background: var(--paper);
+  font-size: 12.5px;
+}
+.ai-card .q {
+  font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+  letter-spacing: .32px; margin-bottom: 2px;
+}
+.ai-card .qt { font-weight: 600; margin-bottom: 8px; }
+.ai-card .a {
+  border-top: 1px dashed var(--rule-strong); padding-top: 8px;
+  color: var(--ink-2); line-height: 1.55;
+}
+.ai-card .a b { color: var(--ink); font-weight: 600; }
+.ai-card .src {
+  margin-top: 8px;
+  display: flex; gap: 6px; flex-wrap: wrap;
+}
+.ai-card .src span {
+  font-family: var(--mono); font-size: 10px;
+  padding: 2px 6px; border: 1px solid var(--rule-strong);
+  color: var(--ink-2);
+}
+
+.ai-empty {
+  border: 1px dashed var(--rule-strong);
+  padding: 12px; text-align: center;
+  font-family: var(--hand); font-size: 13px; color: var(--ink-3);
+}
+
+.note-card {
+  border: 1px solid var(--rule-strong);
+  border-left: 3px solid var(--ink);
+  padding: 8px 10px;
+  font-size: 12px; color: var(--ink-2);
+  background: var(--paper-2);
+}
+.note-card .t { font-family: var(--mono); font-size: 10px; color: var(--ink-3); margin-bottom: 2px; }
+
+/* Selection bubble that follows user text-selection (variant A) */
+.sel-menu {
+  position: absolute; z-index: 10;
+  background: var(--ink); color: var(--paper);
+  font-family: var(--sans); font-size: 12px;
+  padding: 5px 4px;
+  display: none;
+  gap: 2px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+}
+.sel-menu.show { display: inline-flex; }
+.sel-menu button {
+  appearance: none; border: 0; background: transparent;
+  color: var(--paper); padding: 4px 10px; cursor: pointer;
+  font-family: var(--sans); font-size: 12px;
+  border-right: 1px solid rgba(255,255,255,.25);
+}
+.sel-menu button:last-child { border-right: 0; }
+.sel-menu button:hover { background: rgba(255,255,255,.15); }
+.sel-menu .icon {
+  font-family: var(--mono); margin-right: 4px; opacity: .8;
+}
+
+/* highlighted selection */
+::selection { background: rgba(22,22,22,.2); }
+.highlight { background: rgba(255, 222, 0, 0.28); outline: 1px solid rgba(22,22,22,.15); padding: 0 2px; }
+
+/* notes row */
+.notes-row {
+  margin-top: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+.notes-row .note {
+  padding: 14px;
+  border-left: 3px solid var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--ink);
+}
+.notes-row .note .chip {
+  display: inline-block;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .32px;
+  padding: 2px 8px; border: 1px solid var(--rule-strong);
+  margin-bottom: 8px;
+}
+.notes-row .note.cost .chip { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.notes-row .note p { margin: 0; font-size: 13px; color: var(--ink-2); line-height: 1.65; }
+
+/* Tweaks panel */
+.tweaks {
+  position: fixed; right: 20px; bottom: 20px; z-index: 40;
+  width: 260px;
+  background: var(--ink); color: var(--paper);
+  border: 1px solid var(--ink);
+  font-family: var(--sans);
+  display: none;
+}
+.tweaks.open { display: block; }
+.tweaks-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,.2);
+  font-family: var(--hand); font-size: 15px;
+}
+.tweaks-head .close { cursor:pointer; background: none; border: 0; color: var(--paper); font-size: 16px; }
+.tweaks-body { padding: 14px; display: grid; gap: 14px; }
+.tweak-row label {
+  font-family: var(--mono); font-size: 10px; color: var(--ink-4);
+  letter-spacing: .32px; text-transform: uppercase;
+  display: block; margin-bottom: 6px;
+}
+.seg { display: inline-flex; border: 1px solid var(--ink-4); }
+.seg button {
+  appearance: none; background: transparent; border: 0;
+  color: var(--paper); padding: 6px 10px;
+  font-family: var(--sans); font-size: 12px;
+  border-right: 1px solid var(--ink-4); cursor: pointer;
+}
+.seg button:last-child { border-right: 0; }
+.seg button.on { background: var(--paper); color: var(--ink); }
+
+/* scrollbar */
+.doc-scroll::-webkit-scrollbar { width: 8px; }
+.doc-scroll::-webkit-scrollbar-track { background: var(--paper-2); }
+.doc-scroll::-webkit-scrollbar-thumb { background: var(--ink-4); }
+
+@media (max-width: 1100px) {
+  .doc-layout { grid-template-columns: 1fr; }
+  .toc, .rail { display: none; }
+}
+</style>
+</head>
+<body data-screen-label="03 课程文档">
+
+<div class="toolbar">
+  <div class="toolbar-brand">
+    <span class="logo">课程文档</span>
+    <span class="tag">DOCS / READER + AI INLINE · v0.1</span>
+  </div>
+  <div class="toolbar-meta">
+    <span>渲染：<b>混合（Markdown + 图版）</b></span>
+    <span style="margin-left: 20px;">划词 → 问 AI · 高亮 · 笔记</span>
+  </div>
+</div>
+
+<div class="canvas">
+<section class="variation active">
+  <div class="sheet">
+    <div class="sheet-head">
+      <div>
+        <h2>课程文档 · 《采购寻源基础》</h2>
+        <div class="subtitle">第一章 供应源搜寻的基本流程 · 可切换三种渲染方案对比</div>
+      </div>
+      <div class="meta">LAYOUT · DOC READER</div>
+    </div>
+
+    <div class="sheet-body">
+      <div class="mock">
+        <div class="mock-header">
+          <div class="mock-brand">
+            <div class="dot"></div>
+            <div><div class="label">供应链寻源学习平台</div><div class="sub">SOURCING · LEARN</div></div>
+          </div>
+          <div class="mock-nav">
+            <span>首页</span><span>AI 助教</span><span class="on">课程文档</span><span>实训教学</span>
+          </div>
+          <div class="mock-user"><div class="av"></div><div>张同学</div></div>
+        </div>
+
+        <div class="doc-layout">
+          <!-- ================= LEFT: TOC ================= -->
+          <aside class="toc">
+            <h3>目录导航</h3>
+            <div class="search"><span>⌕</span><span>搜索本书…</span></div>
+
+            <div class="book">BOOK · 采购寻源基础</div>
+
+            <div class="chap"><span>第一章 供应源搜寻的基本流程</span><span class="pg">001</span></div>
+            <ul>
+              <li class="on"><span>第一节 供应源搜寻的界定</span><span class="pg">001</span></li>
+              <li><span>第二节 供应源搜寻过程</span><span class="pg">003</span></li>
+              <li><span>第三节 潜在供应商的选择</span><span class="pg">008</span></li>
+              <li><span>第四节 供应商资格预审和评估</span><span class="pg">011</span></li>
+              <li><span>第五节 供应商信息的收集和验证</span><span class="pg">016</span></li>
+              <li><span>第六节 供应商绩效评估</span><span class="pg">017</span></li>
+              <li><span>第七节 实践指导</span><span class="pg">025</span></li>
+              <li><span>练习与思考</span><span class="pg">031</span></li>
+            </ul>
+
+            <div class="chap"><span>第二章 供应商选择与决策</span><span class="pg">033</span></div>
+            <div class="chap"><span>第三章 谈判与合同</span><span class="pg">062</span></div>
+            <div class="chap"><span>第四章 供应商关系管理</span><span class="pg">091</span></div>
+            <div class="chap"><span>第五章 全生命周期成本</span><span class="pg">120</span></div>
+
+            <div style="margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 10px; color: var(--ink-3); line-height: 1.8;">
+              共 5 章 · 182 页<br>
+              已读进度 · 12%<br>
+              笔记 8 条 · 高亮 24 处
+            </div>
+          </aside>
+
+          <!-- ================= CENTER: CONTENT ================= -->
+          <div class="content-col">
+
+            <div class="mode-bar">
+              <div class="mode-tabs" role="tablist">
+                <button class="on" data-mode="hybrid" role="tab"><span class="n">C</span>混合 <span style="opacity:.7;">推荐</span></button>
+                <button data-mode="md" role="tab"><span class="n">A</span>纯 Markdown</button>
+                <button data-mode="pdf" role="tab"><span class="n">B</span>原版 PDF</button>
+              </div>
+              <div class="mode-actions">
+                <span class="chip on">⎇ 宋体</span>
+                <span class="chip">Aa 15.5</span>
+                <span class="chip">📑 目录</span>
+                <span class="chip">🔖 笔记</span>
+              </div>
+            </div>
+
+            <!-- ========== MODE: HYBRID (default) ========== -->
+            <div class="doc-scroll" id="docHybrid" data-view="hybrid">
+              <h1>第一章　供应源搜寻的基本流程</h1>
+              <div class="h1-sub">CHAPTER 1 · SOURCING · BASIC PROCESS</div>
+
+              <div class="learn-obj">
+                <b>学 习 目 标</b>
+                <ul>
+                  <li>了解供应源搜寻的基本概念</li>
+                  <li>理解供应商绩效管理的基本含义</li>
+                  <li>熟知供应商评估的方法和作用</li>
+                  <li>掌握供应源的搜寻过程并尝试结合理论分析实践案例</li>
+                </ul>
+                <div style="margin-top: 10px; font-family: var(--sans); font-size: 12px; color: var(--ink-2);"><b style="font-family: var(--hand); font-size: 13px; letter-spacing: 0;">基本概念　</b>供应源搜寻的定义；供应商的信息来源；供应商等级评定</div>
+              </div>
+
+              <h2>第一节　供应源搜寻的界定</h2>
+              <h3>一、供应源搜寻的基本概念</h3>
+              <p>采购通常是指采购方与供应商达成合同后下订单、收货和付款等行为。供应源搜寻通常包括十个重要环节，起始于识别需求，制定产品请购单或物料清单，结束于签订合同，并包括对供应商进行监控、评审等内容。搜寻过程是一个周期性的过程，从确定需求开始，终止于合同和供应商的管理。具体过程参见图 1—1。</p>
+
+              <!-- Figure 1-1: 一般采购过程流程图 —— 原书有图，这里用 SVG+HTML 重建 -->
+              <div class="figure">
+                <div class="fig-flow" style="grid-template-columns: repeat(5, 1fr); position: relative;">
+                  <div class="step"><span class="no">01</span>识别需求</div>
+                  <div class="step"><span class="no">02</span>定义需求 /<br>制定计划</div>
+                  <div class="step"><span class="no">03</span>市场调研 /<br>供应商评估</div>
+                  <div class="step"><span class="no">04</span>招标 / 谈判 /<br>签订合同</div>
+                  <div class="step"><span class="no">05</span>合同管理 /<br>绩效评估 / SRM</div>
+                </div>
+                <div style="padding: 0 22px 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-family: var(--sans); font-size: 11px; color: var(--ink-2); text-indent: 0;">
+                  <div style="border-top: 1px dashed var(--rule-strong); padding-top: 6px;"><b style="font-family: var(--mono); font-size: 10px; color: var(--ink-3);">PRE-AWARD</b>　合同授予前：识别需求 → 调研 → 评估 → 授予合同</div>
+                  <div style="border-top: 1px dashed var(--rule-strong); padding-top: 6px;"><b style="font-family: var(--mono); font-size: 10px; color: var(--ink-3);">POST-AWARD</b>　合同授予后：催货 / 付款 / 合同管理 / 复盘</div>
+                </div>
+                <div class="cap"><b>图 1—1</b>一般采购过程流程图</div>
+              </div>
+
+              <h3>二、供应源搜寻的类型</h3>
+              <p>供应源搜寻可分为<span data-ask="战术供应源搜寻">战术供应源搜寻</span>和<span data-ask="战略供应源搜寻">战略供应源搜寻</span>两种类型，两者有着各自的特点。</p>
+              <p><b>战术供应源搜寻</b>的特点：一是决策层次低，主要进行低利润、低风险、日常性的采购；二是所形成的决策是短期决策，其重点是为了满足具体和准确的需求，并对组织或供应市场的变化做出反应；三是需求说明和规格要求的表示都非常明确，供应源搜寻的交易决策主要基于公开竞价和采购价格，如市场竞价。</p>
+              <p><b>战略供应源搜寻</b>的特点：一是决策层次高，适用于高利润、高供应风险的采购；二是属于长期的可持续性发展的决策；三是需系统性分析市场、供应商的关注点及其供应能力。</p>
+
+              <div class="think">
+                <b>💭 想 一 想</b><br>
+                同学们，联系你们身边的采购行为，能不能就战术供应源搜寻和战略供应源搜寻举例说明？
+              </div>
+
+              <h2>第二节　供应源搜寻过程</h2>
+              <h3>一、供应源搜寻过程</h3>
+              <p>供应源搜寻的过程可以用不同类别的模型进行阐述，其中基本的搜寻过程如下所示。</p>
+              <ol style="text-indent: 0;">
+                <li><b>第一步：识别需求。</b>通常是产品使用部门提出采购需求，在此基础上，由库存控制部门提出补货申请。</li>
+                <li><b>第二步：拟定供应源搜寻计划。</b>做出自制或外购的决策；确定具体采购的类型、规格等内容。</li>
+                <li><b>第三步：市场分析。</b>预测产品的短期和长期需求、估算市场价格、预测价格趋势、寻找潜在供应源、估测供应源的安全性与风险性。</li>
+                <li><b>第四步：供应商资格预审。</b>设定定量与定性指标作为资格预审标准，筛选能满足企业需求的供应商。</li>
+                <li><b>第五步：评估供应商报价，并对供应商进行选择。</b>通过询价、谈判、正式或非正式的招标进行评估，将合同授予提出最佳报价方案的供应商。</li>
+                <li><b>第六步：合同或合作的形成。</b>签订采购订单、合同、框架协议，确定销售、采购或订单条款。</li>
+              </ol>
+
+              <h3>二、卡拉杰克（Kraljic）的采购定位矩阵</h3>
+              <p>卡拉杰克的采购定位矩阵用于分析<span data-ask="采购物品的重要性">采购物品的重要性</span>和<span data-ask="供应市场的复杂性">供应市场的复杂性</span>两个因素，是基于战略层面，用以评估企业的采购组合可能带来供应中断风险的工具。</p>
+
+              <!-- Figure: Kraljic matrix — 原书表 1-1，重建为 HTML -->
+              <div class="figure">
+                <div class="fig-kraljic">
+                  <div class="ax-y">物 品 的 重 要 性</div>
+                  <div class="hdr-low" style="grid-row:1; grid-column:2; text-align:center;">低 &nbsp; 供应市场的复杂性 &nbsp; 高</div>
+                  <div style="grid-row:1; grid-column:3;"></div>
+
+                  <div class="cell" style="grid-row:2; grid-column:2;">
+                    <span class="t">杠杆物品</span>
+                    <span class="k">LEVERAGE · 12–24 个月</span>
+                    <div style="margin-top: 6px;">战略：商业优势最大化<br>行动：增加竞争性招标</div>
+                  </div>
+                  <div class="cell" style="grid-row:2; grid-column:3;">
+                    <span class="t">战略性物品</span>
+                    <span class="k">STRATEGIC · 可长达 10 年</span>
+                    <div style="margin-top: 6px;">战略：与供应商形成伙伴关系<br>行动：过程管理 / 联合研发</div>
+                  </div>
+                  <div class="cell" style="grid-row:3; grid-column:2;">
+                    <span class="t">普通物品</span>
+                    <span class="k">ROUTINE · &lt; 12 个月</span>
+                    <div style="margin-top: 6px;">战略：简化中间环节<br>行动：合理化供应商数量</div>
+                  </div>
+                  <div class="cell" style="grid-row:3; grid-column:3;">
+                    <span class="t">瓶颈物品</span>
+                    <span class="k">BOTTLENECK · 取决于可用性</span>
+                    <div style="margin-top: 6px;">战略：确保供给连续性<br>行动：开发新供应源 / 中期合同</div>
+                  </div>
+                  <div class="ax-x">高</div>
+                </div>
+                <div class="cap"><b>表 1—1</b>卡拉杰克（Kraljic）矩阵</div>
+              </div>
+
+              <h2>第四节　供应商资格预审和供应商评估</h2>
+              <h3>雷·卡特尔的供应评估"10C"模型</h3>
+              <p>雷·卡特尔提出的"10C"模型被采购界广泛应用。模型具体内容如下表所示。</p>
+
+              <!-- Table 1-5: 10C model — 原书表，重建 -->
+              <div class="figure">
+                <table class="tbl-10c">
+                  <tr><th>能力 Competence</th><td>供应商拥有履行合同的资源和专业知识；能否生产相应产品或提供所需服务。</td></tr>
+                  <tr><th>产能 Capacity</th><td>是否满足买方当前和未来的需求；供应链的管理水平。</td></tr>
+                  <tr><th>承诺 Commitment</th><td>对质量、服务、成本或持续改进的承诺；长期合作关系的意愿。</td></tr>
+                  <tr><th>控制 Control</th><td>资源和风险的监控管理体系；合规财务控制、欺诈预防、风险评估。</td></tr>
+                  <tr><th>现金 Cash</th><td>现金流状况、自有资产、债务分摊；整体财务稳定性。</td></tr>
+                  <tr><th>一致性 Consistency</th><td>稳定可靠、流程顺畅；问题能在影响买方之前被发现。</td></tr>
+                  <tr><th>成本 Cost</th><td>价格合理、全生命成本低、资金价值。</td></tr>
+                  <tr><th>兼容性 Compatibility</th><td>战略、操作、技术、文化层面与买方组织兼容。</td></tr>
+                  <tr><th>合规 Compliance</th><td>遵循环境、CSR、可持续发展标准；合规管理体系。</td></tr>
+                  <tr><th>沟通 Communication</th><td>能在供应链中进行有效协调协作；EDI / 外部网 / 信息共享。</td></tr>
+                </table>
+                <div class="cap"><b>表 1—5</b>雷·卡特尔的供应评估"10C"模型</div>
+              </div>
+
+              <h3>小案例 · 进口铁矿石企业谨慎评估供应商信誉度</h3>
+              <p>江阴检验检疫局通过检验发现一批从泰国进口的铁矿铁石含量为 <span data-ask="53.8%">53.8%</span>，与装货港品质报告中铁矿铁石含量 65.8% 的检测值相比，该指标低了 12 个百分点。这是该局首次发现与国外装货港品质检验值差异超 10 个百分点的进口铁矿石。</p>
+              <p>在进口铁矿贸易中需提升自我保护意识，货款不宜一次结清，应谨慎评估供应商的信誉度，依据风险等级预留一定比例货款以争取赔付主动权。</p>
+
+              <div class="think">
+                <b>💭 思 考 问 题</b><br>
+                （1）企业可以从哪些渠道获得供应商信息？<br>
+                （2）在选择供应商时，企业应怎样对供应商进行评估？
+              </div>
+
+              <!-- fake: more pages below (indicated by scroll) -->
+              <div style="margin-top: 30px; padding: 12px 0; border-top: 1px dashed var(--rule-strong); text-align: center; font-family: var(--mono); font-size: 10px; color: var(--ink-3); text-indent: 0;">
+                – 向下滚动继续阅读 · 还有 18 页 –
+              </div>
+            </div>
+
+            <!-- ========== MODE: MD (hidden) ========== -->
+            <div class="doc-scroll" id="docMD" data-view="md" style="display:none; font-family: var(--sans); font-size: 14px; line-height: 1.8;">
+              <h1 style="font-family: var(--sans); font-size: 22px; letter-spacing: 0; text-align: left; border-bottom: 0;">第一章　供应源搜寻的基本流程</h1>
+              <div class="h1-sub" style="text-align: left; border: 0; padding: 0; font-family: var(--mono);">chapter 1 · 基本流程 · 来自 ch1.md（20,000+ 字符，无图）</div>
+
+              <h2 style="border-left: 3px solid var(--ink-2); font-family: var(--sans); font-size: 17px;">学习目标</h2>
+              <p class="no-indent">• 了解供应源搜寻的基本概念<br>• 理解供应商绩效管理的基本含义<br>• 熟知供应商评估的方法和作用<br>• 掌握供应源的搜寻过程并尝试结合理论分析实践案例</p>
+
+              <h2 style="border-left: 3px solid var(--ink-2); font-family: var(--sans); font-size: 17px;">第一节　供应源搜寻的界定</h2>
+              <h3 style="font-family: var(--sans);">一、供应源搜寻的基本概念</h3>
+              <p>采购通常是指采购方与供应商达成合同后下订单、收货和付款等行为。供应源搜寻通常包括十个重要环节，起始于识别需求，制定产品请购单或物料清单，结束于签订合同，并包括对供应商进行监控、评审等内容。具体过程参见图 1—1。</p>
+
+              <!-- This is where MD loses figures -->
+              <div style="border: 1.2px dashed #c00; background: #fff4f4; padding: 12px 16px; margin: 12px 0; text-indent: 0; font-family: var(--sans); font-size: 12.5px; color: #831010;">
+                <b style="font-family: var(--mono); font-size: 10px; letter-spacing: .4px;">⚠ MISSING FIGURE</b><br>
+                <b>图 1—1</b> 一般采购过程流程图 · 原书为图片，Markdown 转换丢失
+              </div>
+
+              <h3 style="font-family: var(--sans);">二、供应源搜寻的类型</h3>
+              <p>供应源搜寻可分为战术供应源搜寻和战略供应源搜寻两种类型，两者有着各自的特点。</p>
+              <p><b>战术供应源搜寻的特点：</b>一是决策层次低，主要进行低利润、低风险、日常性的采购；二是所形成的决策是短期决策；三是需求说明和规格要求的表示都非常明确。</p>
+              <p><b>战略供应源搜寻的特点：</b>一是决策层次高，适用于高利润、高供应风险的采购；二是属于长期的可持续性发展的决策；三是需系统性分析市场、供应商的关注点及其供应能力。</p>
+
+              <h3 style="font-family: var(--sans);">四、供应源搜寻流程的重要程度 / 卡拉杰克矩阵</h3>
+              <p>卡拉杰克矩阵是基于战略层面，用以评估企业的采购组合可能带来供应中断风险的工具。</p>
+              <div style="border: 1.2px dashed #c00; background: #fff4f4; padding: 12px 16px; margin: 12px 0; text-indent: 0; font-family: var(--sans); font-size: 12.5px; color: #831010;">
+                <b style="font-family: var(--mono); font-size: 10px;">⚠ MISSING TABLE LAYOUT</b><br>
+                <b>表 1—1</b> 卡拉杰克矩阵 · 原书是 2×2 图文矩阵，被 OCR 转成线性文字，四象限空间关系丢失：<br>
+                <span style="color: var(--ink-2); font-family: var(--serif); line-height: 1.7;">杠杆物品 一般 12—24 个月 战略：商业优势最大化，节约成本最大化 策略：保证竞争态势 行动方案：增加竞争性招标 采购的类型 时间 战略性物品 可长达 10 年 …</span>
+              </div>
+
+              <h3 style="font-family: var(--sans);">雷·卡特尔的"10C"模型</h3>
+              <p>10C 模型被采购界广泛应用：能力 Competence、产能 Capacity、承诺 Commitment、控制 Control、现金 Cash、一致性 Consistency、成本 Cost、兼容性 Compatibility、合规 Compliance、沟通 Communication。</p>
+              <div style="border: 1.2px dashed #c00; background: #fff4f4; padding: 12px 16px; margin: 12px 0; text-indent: 0; font-family: var(--sans); font-size: 12.5px; color: #831010;">
+                <b style="font-family: var(--mono); font-size: 10px;">⚠ TABLE AS WALL-OF-TEXT</b><br>
+                原书为 2 列表格（要素 | 说明），MD 中仅以"全角空格 + 连续段落"呈现，视觉节奏丢失。
+              </div>
+
+              <div style="margin-top: 24px; padding: 12px; background: var(--paper-2); font-family: var(--sans); font-size: 12.5px; color: var(--ink-2); text-indent: 0;">
+                <b style="font-family: var(--mono); font-size: 11px;">MD 渲染优点 ✓</b>　文本全部可选、可复制；搜索极快；划词问 AI 最精准；移动端友好；体积 0.02MB。<br>
+                <b style="font-family: var(--mono); font-size: 11px; color: #c00;">缺点 ✗</b>　流程图、矩阵、评分图全部丢失；表格塌陷；原书版式体验缺失。
+              </div>
+            </div>
+
+            <!-- ========== MODE: PDF (hidden) ========== -->
+            <div class="doc-scroll" id="docPDF" data-view="pdf" style="display:none; background: var(--paper-2); padding: 24px 0;">
+              <div class="pdf-page">
+                <div class="pn book">采购寻源基础</div>
+                <div class="pn">006</div>
+                <h2>第一章　供应源搜寻的基本流程</h2>
+                <p>四、供应源搜寻流程的重要程度</p>
+                <p>供应源的搜寻工作的排序取决于所需采购内容的重要性程度，<span class="sel-demo">帕累托原理和卡拉杰克矩阵可以对所需购买物品的重要性进行排序<span class="sel-bubble"><b>💬 问 AI</b>|<b>🖍 高亮</b>|<b>📝 笔记</b>|<b>📖 查词</b></span></span>。</p>
+
+                <p>（一）帕累托原理</p>
+                <p>帕累托原理（又称"二八法则"）是由意大利经济学家帕累托（Vilfredo Pareto，1848—1923）提出的一种分析工具。它在供应源搜寻中的意义为：20% 的供应商或供应品，是 80% 的支出、风险或价值的来源。</p>
+                <p>帕累托原理可以用来区分供应商的重要程度。可以将供应商分为重点供应商和普通供应商。采购过程中的大部分精力需集中于从重点供应商处采购产品。</p>
+                <p>（二）卡拉杰克（Kraljic）的采购定位矩阵</p>
+                <p>卡拉杰克的采购定位矩阵用于分析采购物品的重要性和供应市场的复杂性两个因素。</p>
+
+                <!-- fake table 1-1 in PDF style -->
+                <div style="border: 1.5px solid var(--ink); padding: 0; margin: 14px -10px; display: grid; grid-template-columns: 1fr 1fr; font-size: 11px; line-height: 1.55; text-indent: 0;">
+                  <div style="padding: 8px 10px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink);"><b>杠杆物品</b><br>战略：商业优势最大化</div>
+                  <div style="padding: 8px 10px; border-bottom: 1px solid var(--ink);"><b>战略性物品</b><br>战略：与供应商形成伙伴关系</div>
+                  <div style="padding: 8px 10px; border-right: 1px solid var(--ink);"><b>普通物品</b><br>战略：简化中间环节</div>
+                  <div style="padding: 8px 10px;"><b>瓶颈物品</b><br>战略：确保供给连续性</div>
+                </div>
+                <div style="text-align: center; font-size: 10px; color: var(--ink-3); font-family: var(--sans); margin-top: 4px; text-indent: 0;">表 1—1　卡拉杰克（Kraljic）矩阵</div>
+              </div>
+
+              <div class="pdf-page">
+                <div class="pn book">第一章　供应源搜寻的基本流程</div>
+                <div class="pn">007</div>
+                <p>卡拉杰克矩阵是基于战略层面，用以评估企业的采购组合可能带来供应中断风险的工具。该矩阵用于评估不同采购类型物品适用的供应源搜寻方法。</p>
+                <p>对于杠杆物品，供应源搜寻的首要任务是利用自身在市场中的力量，确保获得最优的采购价格和采购条件。此类物品的采购通常采用竞争性招标或团体采购以确保交易成功。</p>
+                <p>对于普通物品，供应源搜寻的重点应是降低采购成本。采购方可以采用供应商管理库存、签订总括订单和使用电子采购方案等交易关系进行此类商品的采购，以提高工作效率。</p>
+
+                <div style="margin-top: 20px; padding: 10px 12px; border: 1px dashed #c00; text-indent: 0; font-family: var(--sans); font-size: 11.5px; color: #831010; line-height: 1.55;">
+                  <b style="font-family: var(--mono); font-size: 10px;">⚠ 交互限制</b>　PDF 文本层由 OCR / 扫描生成，划词时常跨 span 断裂；表格、图形无法局部引用给 AI；移动端缩放后字号过小；全文搜索命中不精准。
+                </div>
+              </div>
+
+              <div style="text-align: center; padding: 14px; font-family: var(--mono); font-size: 10px; color: var(--ink-3); text-indent: 0;">
+                PDF.js 渲染 · 25 / 32 页 · 文件 4.2 MB · 每页 ≈ 180ms
+              </div>
+            </div>
+
+            <!-- Floating selection menu (used by hybrid mode) -->
+            <div class="sel-menu" id="selMenu">
+              <button data-act="ask"><span class="icon">💬</span>问 AI</button>
+              <button data-act="hl"><span class="icon">🖍</span>高亮</button>
+              <button data-act="note"><span class="icon">📝</span>笔记</button>
+              <button data-act="copy"><span class="icon">⎘</span>复制</button>
+            </div>
+          </div>
+
+          <!-- ================= RIGHT: AI / NOTES RAIL ================= -->
+          <aside class="rail">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <h4>右 栏 · 工 具</h4>
+              <div class="rail-tabs">
+                <button class="on">AI</button>
+                <button>笔记</button>
+                <button>高亮</button>
+              </div>
+            </div>
+
+            <div style="font-family: var(--mono); font-size: 10px; color: var(--ink-3); letter-spacing: .32px; text-transform: uppercase;">划词上下文</div>
+
+            <div class="ai-card">
+              <div class="q">Q · 10:08</div>
+              <div class="qt">"战术供应源搜寻" 和战略搜寻最核心的区别是什么？</div>
+              <div class="a">
+                <b>核心区别在决策层次与时间维度：</b><br>
+                • 战术 = 低层、短期、规格明确、基于价格；<br>
+                • 战略 = 高层、长期、需系统分析市场与供应能力。<br>
+                原书示例：日常性低风险采购 vs 高利润高风险长期采购。
+              </div>
+              <div class="src">
+                <span>§1.1 · 002</span>
+                <span>§1.1 · 003</span>
+              </div>
+            </div>
+
+            <div class="ai-card">
+              <div class="q">Q · 10:12</div>
+              <div class="qt">帕累托原理在寻源里具体怎么用？</div>
+              <div class="a">
+                简单说就是 <b>20% 的供应商贡献 80% 的支出/风险</b>。操作上：<br>
+                ① 按年度支出排序供应商<br>
+                ② 前 20% 为"重点供应商"，投入 80% 精力<br>
+                ③ 后 80% 走标准化 / 电子采购简化流程
+              </div>
+              <div class="src">
+                <span>§1.2 · 006</span>
+              </div>
+            </div>
+
+            <div class="ai-empty">
+              选中正文任意段落 →<br>
+              自动弹出"问 AI / 高亮 / 笔记"
+            </div>
+
+            <div style="font-family: var(--mono); font-size: 10px; color: var(--ink-3); letter-spacing: .32px; text-transform: uppercase; margin-top: 6px;">我的笔记 · 3 条</div>
+            <div class="note-card">
+              <div class="t">P.006 · 10:14</div>
+              10C 模型里"兼容性"容易被忽略——它不只是技术层面，文化和价值观也算进去。
+            </div>
+            <div class="note-card">
+              <div class="t">P.003 · 09:52</div>
+              第五步"评估报价"：老师上课说招标 ≠ 谈判，记住两者流程不同。
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- Designer notes · 三种方案的权衡 -->
+      <div class="notes-row">
+        <div class="note">
+          <span class="chip">方案 A · MARKDOWN</span>
+          <p><b>优势：</b>文本 100% 可选、搜索快、划词问 AI 最精准、移动端轻量（0.02MB）<br><b>代价：</b>图 1—1 流程图、表 1—1 Kraljic 矩阵、图 1—2 评分表等<b>全部丢失</b>；表格变成连续段落。</p>
+        </div>
+        <div class="note">
+          <span class="chip">方案 B · PDF 原版</span>
+          <p><b>优势：</b>版式 100% 忠实、图表完整、最"像书"<br><b>代价：</b>文本层跨 span 断裂，划词问 AI 经常取到半句；无法把某张图精准喂给 AI；移动端缩放后体验差；4.2MB / 32 页。</p>
+        </div>
+        <div class="note cost">
+          <span class="chip">方案 C · 混合（推荐）</span>
+          <p><b>做法：</b>正文走 Markdown 保证文本语义，<b>关键图表（流程图 / 矩阵 / 表格）用 HTML/SVG 重建</b>，保留原图编号。<br>换来：文本可选 · AI 精准 · 图表不丢 · 体积适中。制作成本略高（每章 2-4 张图重建）。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- Tweaks -->
+<div class="tweaks" id="tweaksPanel">
+  <div class="tweaks-head">
+    <span>Tweaks</span>
+    <button class="close" id="tweaksClose">×</button>
+  </div>
+  <div class="tweaks-body">
+    <div class="tweak-row">
+      <label>渲染模式 MODE</label>
+      <div class="seg" data-key="mode">
+        <button data-val="hybrid">混合</button>
+        <button data-val="md">Markdown</button>
+        <button data-val="pdf">PDF</button>
+      </div>
+    </div>
+    <div class="tweak-row">
+      <label>正文字号 FONT-SIZE</label>
+      <div class="seg" data-key="fontSize">
+        <button data-val="14">14</button>
+        <button data-val="15.5">15.5</button>
+        <button data-val="17">17</button>
+      </div>
+    </div>
+    <div class="tweak-row">
+      <label>正文字体 FONT-FAMILY</label>
+      <div class="seg" data-key="fontFamily">
+        <button data-val="serif">宋体</button>
+        <button data-val="sans">黑体</button>
+      </div>
+    </div>
+    <div class="tweak-row">
+      <label>左侧目录 TOC</label>
+      <div class="seg" data-key="toc">
+        <button data-val="show">显示</button>
+        <button data-val="hide">隐藏</button>
+      </div>
+    </div>
+    <div class="tweak-row">
+      <label>右侧工具栏 RAIL</label>
+      <div class="seg" data-key="rail">
+        <button data-val="show">显示</button>
+        <button data-val="hide">隐藏</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // ---------- mode tabs ----------
+  const modeBtns = document.querySelectorAll('.mode-tabs button');
+  const views = {
+    hybrid: document.getElementById('docHybrid'),
+    md: document.getElementById('docMD'),
+    pdf: document.getElementById('docPDF'),
+  };
+  function showMode(m){
+    modeBtns.forEach(b => b.classList.toggle('on', b.dataset.mode === m));
+    Object.entries(views).forEach(([k, el]) => {
+      if (el) el.style.display = (k === m) ? '' : 'none';
+    });
+    state.mode = m;
+    refreshSeg();
+  }
+  modeBtns.forEach(b => b.addEventListener('click', () => showMode(b.dataset.mode)));
+
+  // ---------- word-select → AI bubble (hybrid view) ----------
+  const selMenu = document.getElementById('selMenu');
+  const scrollEl = document.getElementById('docHybrid');
+  let lastRange = null;
+  function hideMenu(){ selMenu.classList.remove('show'); }
+
+  if (scrollEl) {
+    scrollEl.addEventListener('mouseup', function(e){
+      setTimeout(() => {
+        const sel = window.getSelection();
+        if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideMenu(); return; }
+        const range = sel.getRangeAt(0);
+        if (!scrollEl.contains(range.commonAncestorContainer)) { hideMenu(); return; }
+        lastRange = range.cloneRange();
+        const rect = range.getBoundingClientRect();
+        const parentRect = scrollEl.parentElement.getBoundingClientRect();
+        const top = rect.top - parentRect.top - 40 + scrollEl.parentElement.scrollTop;
+        const left = rect.left - parentRect.left + rect.width/2 - 120;
+        selMenu.style.top = Math.max(6, top) + 'px';
+        selMenu.style.left = Math.max(8, left) + 'px';
+        selMenu.classList.add('show');
+      }, 10);
+    });
+  }
+  document.addEventListener('mousedown', function(e){
+    if (!selMenu.contains(e.target) && (!scrollEl || !scrollEl.contains(e.target))) hideMenu();
+  });
+
+  selMenu.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', function(){
+      const act = btn.dataset.act;
+      const text = window.getSelection().toString().trim();
+      if (!text) return;
+      if (act === 'hl' && lastRange) {
+        try {
+          const span = document.createElement('span');
+          span.className = 'highlight';
+          lastRange.surroundContents(span);
+        } catch(e){}
+      } else if (act === 'ask') {
+        // flash the AI rail first card
+        const card = document.querySelector('.rail .ai-empty');
+        if (card) {
+          card.style.transition = 'background .4s';
+          card.style.background = 'var(--ink)';
+          card.style.color = 'var(--paper)';
+          card.textContent = '→ 已把"' + (text.length > 20 ? text.slice(0,20)+'…' : text) + '" 发给 AI 助教';
+          setTimeout(() => {
+            card.style.background = '';
+            card.style.color = '';
+            card.innerHTML = '选中正文任意段落 →<br>自动弹出"问 AI / 高亮 / 笔记"';
+          }, 2400);
+        }
+      }
+      window.getSelection().removeAllRanges();
+      hideMenu();
+    });
+  });
+
+  // ---------- tweaks ----------
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "mode": "md",
+    "fontSize": "15.5",
+    "fontFamily": "serif",
+    "toc": "show",
+    "rail": "show"
+  }/*EDITMODE-END*/;
+  const state = Object.assign({}, TWEAK_DEFAULTS);
+
+  const panel = document.getElementById('tweaksPanel');
+  const closeBtn = document.getElementById('tweaksClose');
+  closeBtn && closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+
+  function refreshSeg(){
+    document.querySelectorAll('.seg').forEach(seg => {
+      const key = seg.dataset.key;
+      if (!key) return;
+      seg.querySelectorAll('button').forEach(b => {
+        b.classList.toggle('on', String(b.dataset.val) === String(state[key]));
+      });
+    });
+  }
+
+  function apply(){
+    if (state.mode) showMode(state.mode);
+    // font
+    const fs = state.fontSize + 'px';
+    Object.values(views).forEach(el => { if (el) el.style.fontSize = fs; });
+    const ff = state.fontFamily === 'sans' ? 'var(--sans)' : 'var(--serif)';
+    if (views.hybrid) views.hybrid.style.fontFamily = ff;
+    // toc/rail
+    document.querySelector('.toc').style.display = state.toc === 'hide' ? 'none' : '';
+    document.querySelector('.rail').style.display = state.rail === 'hide' ? 'none' : '';
+    const layout = document.querySelector('.doc-layout');
+    const cols = [];
+    cols.push(state.toc === 'hide' ? '0' : '260px');
+    cols.push('1fr');
+    cols.push(state.rail === 'hide' ? '0' : '280px');
+    layout.style.gridTemplateColumns = cols.join(' ');
+    refreshSeg();
+  }
+
+  document.querySelectorAll('.seg').forEach(seg => {
+    seg.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => {
+        const key = seg.dataset.key;
+        state[key] = b.dataset.val;
+        const edit = {}; edit[key] = b.dataset.val;
+        try { window.parent.postMessage({type:'__edit_mode_set_keys', edits: edit}, '*'); } catch(e){}
+        apply();
+      });
+    });
+  });
+
+  // edit-mode host wiring
+  window.addEventListener('message', function(e){
+    const d = e.data || {};
+    if (d.type === '__activate_edit_mode') panel.classList.add('open');
+    else if (d.type === '__deactivate_edit_mode') panel.classList.remove('open');
+  });
+  try { window.parent.postMessage({type:'__edit_mode_available'}, '*'); } catch(e){}
+
+  apply();
+})();
+</script>
+
+</body>
+</html>

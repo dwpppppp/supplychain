@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Motor supplier B">
+  <rect width="640" height="360" fill="#fff7ed"/>
+  <rect x="70" y="108" width="320" height="128" rx="16" fill="#f97316"/>
+  <circle cx="422" cy="172" r="70" fill="#292524"/>
+  <circle cx="422" cy="172" r="36" fill="#fed7aa"/>
+  <rect x="480" y="158" width="80" height="28" rx="14" fill="#fdba74"/>
+  <text x="60" y="310" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#431407">B · Jinbei Drive</text>
+</svg>

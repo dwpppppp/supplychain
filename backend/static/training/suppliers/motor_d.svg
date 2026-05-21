@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Motor supplier D">
+  <rect width="640" height="360" fill="#f8fafc"/>
+  <rect x="64" y="98" width="334" height="144" rx="18" fill="#475569"/>
+  <circle cx="430" cy="170" r="76" fill="#0f172a"/>
+  <circle cx="430" cy="170" r="42" fill="#e2e8f0"/>
+  <rect x="492" y="155" width="86" height="30" rx="15" fill="#94a3b8"/>
+  <text x="60" y="310" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#0f172a">D · Wanjiang Smart Motor</text>
+</svg>

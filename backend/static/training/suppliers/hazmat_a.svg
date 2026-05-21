@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Hazmat supplier A">
+  <rect width="640" height="360" fill="#fff7ed"/>
+  <rect x="70" y="70" width="170" height="210" rx="20" fill="#f97316"/>
+  <rect x="270" y="70" width="170" height="210" rx="20" fill="#ea580c"/>
+  <rect x="470" y="95" width="90" height="150" rx="16" fill="#7c2d12"/>
+  <text x="60" y="320" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#7c2d12">A · Huaan Chemical</text>
+</svg>

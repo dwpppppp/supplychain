@@ -1,0 +1,1866 @@
+<style>
+  /* ============================================================
+     采购寻源基础 · 章节内容样式
+     仅作用于 .main 内部,不影响平台外壳
+     ============================================================ */
+
+  .main {
+    --c-ink: #1a1a1a;
+    --c-ink-soft: #4a4a4a;
+    --c-ink-muted: #8a8580;
+    --c-line: #e6e2da;
+    --c-line-strong: #d4cfc4;
+    --c-bg-subtle: #f3f1ec;
+    --c-bg-elevated: #ffffff;
+    --c-accent: #b91c4d;
+    --c-accent-soft: #fdf2f5;
+    --c-accent-line: #f4d7e0;
+    --c-highlight: #fff8e7;
+    --c-highlight-line: #ead9a8;
+    --c-shadow-sm: 0 1px 2px rgba(20, 15, 8, 0.04);
+    --c-shadow-md: 0 4px 16px rgba(20, 15, 8, 0.06);
+
+    --c-serif: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+    --c-sans: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    --c-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+
+    font-family: var(--c-sans);
+    color: var(--c-ink);
+    line-height: 1.8;
+    font-size: 16px;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 8px 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ====== Reset within .main only ====== */
+  .main *,
+  .main *::before,
+  .main *::after { box-sizing: border-box; }
+  .main p, .main ul, .main ol, .main figure, .main table { margin: 0; padding: 0; }
+
+  /* ============ HEADER ============ */
+  .main .chapter-header {
+    margin-bottom: 48px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--c-line);
+  }
+  .main .chapter-eyebrow {
+    display: inline-block;
+    font-family: var(--c-mono);
+    font-size: 12px;
+    color: var(--c-accent);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding: 4px 10px;
+    background: var(--c-accent-soft);
+    border: 1px solid var(--c-accent-line);
+  }
+  .main h1.chapter-title {
+    font-family: var(--c-serif);
+    font-weight: 900;
+    font-size: 40px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+    color: var(--c-ink);
+  }
+  .main .chapter-meta {
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--c-ink-muted);
+    margin-top: 18px;
+  }
+  .main .chapter-meta-item { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* ============ HEADINGS ============ */
+  .main h2.section-title {
+    font-family: var(--c-serif);
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--c-ink);
+    margin: 56px 0 22px;
+    padding-left: 16px;
+    border-left: 4px solid var(--c-accent);
+    line-height: 1.3;
+    scroll-margin-top: 24px;
+  }
+  .main h2.section-title .section-num {
+    font-family: var(--c-mono);
+    font-size: 13px;
+    color: var(--c-accent);
+    display: block;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .main h3.subsection-title {
+    font-family: var(--c-serif);
+    font-weight: 700;
+    font-size: 21px;
+    margin: 36px 0 14px;
+    scroll-margin-top: 24px;
+  }
+  .main h4.minor-title {
+    font-family: var(--c-sans);
+    font-weight: 600;
+    font-size: 17px;
+    margin: 26px 0 10px;
+  }
+
+  /* ============ TEXT ============ */
+  .main p {
+    font-size: 16px;
+    line-height: 1.85;
+    color: var(--c-ink-soft);
+    margin: 0 0 16px;
+    text-align: justify;
+    text-justify: inter-ideograph;
+  }
+  .main p strong { color: var(--c-ink); font-weight: 600; }
+
+  /* ============ OBJECTIVE CARD ============ */
+  .main .objective-card {
+    background: var(--c-bg-elevated);
+    border: 1px solid var(--c-accent-line);
+    border-left: 4px solid var(--c-accent);
+    padding: 24px 28px;
+    margin-bottom: 22px;
+    box-shadow: var(--c-shadow-sm);
+  }
+  .main .objective-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    font-family: var(--c-serif);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--c-accent);
+  }
+  .main .objective-list {
+    list-style: none;
+    counter-reset: obj;
+    padding: 0; margin: 0;
+  }
+  .main .objective-list li {
+    counter-increment: obj;
+    padding-left: 36px;
+    position: relative;
+    margin-bottom: 9px;
+    font-size: 15px;
+    color: var(--c-ink-soft);
+    line-height: 1.7;
+  }
+  .main .objective-list li::before {
+    content: counter(obj, decimal-leading-zero);
+    position: absolute;
+    left: 0; top: 0;
+    font-family: var(--c-mono);
+    font-size: 12px;
+    color: var(--c-accent);
+    background: var(--c-accent-soft);
+    width: 26px; height: 26px;
+    display: grid; place-items: center;
+    font-weight: 600;
+  }
+
+  /* ============ CONCEPT TAGS ============ */
+  .main .concept-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 14px 18px;
+    background: var(--c-bg-subtle);
+    border: 1px dashed var(--c-line-strong);
+    margin-bottom: 28px;
+    align-items: center;
+  }
+  .main .concept-tags-label {
+    font-size: 12px;
+    color: var(--c-ink-muted);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+  .main .concept-tag {
+    background: var(--c-bg-elevated);
+    border: 1px solid var(--c-line-strong);
+    padding: 4px 12px;
+    font-size: 13px;
+    color: var(--c-ink-soft);
+    font-family: var(--c-serif);
+  }
+
+  /* ============ THINKING BOX ============ */
+  .main .thinking-box {
+    background: var(--c-highlight);
+    border: 1px solid var(--c-highlight-line);
+    border-left: 4px solid #c9a35a;
+    padding: 18px 22px;
+    margin: 26px 0;
+  }
+  .main .thinking-box-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--c-serif);
+    font-weight: 700;
+    color: #8a6510;
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+  .main .thinking-box p {
+    font-size: 14.5px;
+    color: #5a4a20;
+    margin: 0 0 8px;
+    line-height: 1.75;
+  }
+  .main .thinking-box p:last-child { margin-bottom: 0; }
+  .main .thinking-box .thinking-answer {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--c-highlight-line);
+    font-size: 14px;
+    color: #6a5530;
+  }
+  .main .thinking-box .thinking-answer strong { color: #5a3f10; }
+
+  /* ============ SUPP BOX ============ */
+  .main .supp-box {
+    background: var(--c-accent-soft);
+    border: 1px solid var(--c-accent-line);
+    padding: 22px 26px;
+    margin: 28px 0;
+  }
+  .main .supp-box-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--c-serif);
+    font-weight: 700;
+    color: var(--c-accent);
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--c-accent-line);
+  }
+  .main .supp-icon {
+    width: 28px; height: 28px;
+    background: var(--c-accent);
+    color: #fff;
+    display: grid; place-items: center;
+    font-size: 13px;
+    font-family: var(--c-serif);
+  }
+  .main .supp-box-title { font-size: 16px; }
+  .main .supp-box p { font-size: 14.5px; color: var(--c-ink-soft); }
+  .main .supp-box h5 {
+    font-family: var(--c-serif);
+    font-size: 15px;
+    color: var(--c-ink);
+    margin: 14px 0 8px;
+    font-weight: 700;
+  }
+  .main .supp-box h6 {
+    font-family: var(--c-sans);
+    font-size: 14px;
+    color: var(--c-ink);
+    margin: 12px 0 6px;
+    font-weight: 600;
+  }
+  .main .supp-box .supp-source {
+    font-size: 11.5px;
+    color: var(--c-ink-muted);
+    font-style: italic;
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--c-accent-line);
+  }
+
+  /* ============ CASE BOX ============ */
+  .main .case-box {
+    background: var(--c-bg-elevated);
+    border: 1px solid var(--c-line);
+    border-top: 3px solid var(--c-accent);
+    padding: 26px 30px;
+    margin: 30px 0;
+    box-shadow: var(--c-shadow-sm);
+  }
+  .main .case-box-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--c-line-strong);
+    flex-wrap: wrap;
+  }
+  .main .case-tag {
+    font-family: var(--c-mono);
+    font-size: 11px;
+    background: var(--c-accent);
+    color: #fff;
+    padding: 3px 8px;
+    letter-spacing: 0.1em;
+  }
+  .main .case-title {
+    font-family: var(--c-serif);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--c-ink);
+  }
+  .main .case-box p { font-size: 15px; }
+  .main .case-source {
+    font-size: 12px;
+    color: var(--c-ink-muted);
+    font-style: italic;
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--c-line);
+  }
+  .main .case-questions {
+    margin-top: 14px;
+    padding: 14px 18px;
+    background: var(--c-bg-subtle);
+    border-left: 3px solid var(--c-accent);
+  }
+  .main .case-questions-label {
+    font-weight: 600;
+    color: var(--c-accent);
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+  .main .case-questions ol { padding-left: 20px; margin: 0; }
+  .main .case-questions li {
+    font-size: 14px;
+    color: var(--c-ink-soft);
+    margin-bottom: 4px;
+  }
+  .main .case-subhead {
+    font-family: var(--c-serif);
+    font-weight: 700;
+    color: var(--c-ink);
+    font-size: 15px;
+    margin: 16px 0 8px;
+  }
+
+  /* ============ STEPS LIST ============ */
+  .main .steps-list {
+    counter-reset: step;
+    list-style: none;
+    margin: 22px 0;
+    padding: 0;
+  }
+  .main .steps-list > li {
+    counter-increment: step;
+    padding-left: 56px;
+    position: relative;
+    margin-bottom: 18px;
+    min-height: 38px;
+  }
+  .main .steps-list > li::before {
+    content: "第 " counter(step, cjk-decimal) " 步";
+    position: absolute;
+    left: 0; top: 2px;
+    background: var(--c-ink);
+    color: #fff;
+    font-family: var(--c-serif);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    width: 48px;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .main .steps-list > li > strong {
+    display: block;
+    font-size: 16px;
+    color: var(--c-ink);
+    margin-bottom: 4px;
+  }
+  .main .steps-list > li > p { margin: 0; font-size: 15px; }
+
+  /* ============ INFO LIST ============ */
+  .main .info-list {
+    list-style: none;
+    counter-reset: info;
+    margin: 14px 0 22px;
+    padding: 0;
+  }
+  .main .info-list > li {
+    counter-increment: info;
+    padding-left: 36px;
+    position: relative;
+    margin-bottom: 12px;
+    font-size: 15px;
+    color: var(--c-ink-soft);
+    line-height: 1.75;
+  }
+  .main .info-list > li::before {
+    content: "(" counter(info) ")";
+    position: absolute;
+    left: 0; top: 0;
+    font-family: var(--c-mono);
+    color: var(--c-accent);
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  /* ============ FIGURES & TABLES ============ */
+  .main figure {
+    margin: 28px 0;
+    background: var(--c-bg-elevated);
+    border: 1px solid var(--c-line);
+    box-shadow: var(--c-shadow-sm);
+    overflow: hidden;
+  }
+  .main figcaption {
+    background: var(--c-bg-subtle);
+    padding: 10px 18px;
+    font-family: var(--c-serif);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--c-ink);
+    border-bottom: 1px solid var(--c-line);
+  }
+  .main figcaption .fig-num {
+    color: var(--c-accent);
+    font-family: var(--c-mono);
+    margin-right: 10px;
+    font-weight: 500;
+  }
+  .main .fig-source {
+    font-size: 11.5px;
+    color: var(--c-ink-muted);
+    font-style: italic;
+    padding: 8px 18px;
+    background: var(--c-bg-subtle);
+    border-top: 1px dashed var(--c-line);
+  }
+
+  .main table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .main table th, .main table td {
+    padding: 11px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--c-line);
+    vertical-align: top;
+    line-height: 1.7;
+  }
+  .main table th {
+    background: var(--c-accent-soft);
+    color: var(--c-ink);
+    font-weight: 600;
+    font-size: 13.5px;
+    border-bottom: 2px solid var(--c-accent-line);
+  }
+  .main table tbody tr:hover { background: var(--c-bg-subtle); }
+  .main table.center th, .main table.center td { text-align: center; }
+  .main table .label-col {
+    background: var(--c-bg-subtle);
+    font-weight: 600;
+    color: var(--c-ink);
+    font-family: var(--c-serif);
+  }
+
+  /* Two-column comparison highlight */
+  .main table.compare th:first-child { background: #f0f9ff; color: #075985; }
+  .main table.compare th:last-child { background: #fef2f2; color: #991b1b; }
+
+  /* ============ SOURCING TYPES OVERVIEW ============ */
+  .main .sourcing-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 22px 0 28px;
+  }
+  .main .sourcing-card {
+    background: var(--c-bg-elevated);
+    border: 1px solid var(--c-line);
+    padding: 16px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .main .sourcing-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--c-accent);
+  }
+  .main .sourcing-card .num {
+    font-family: var(--c-mono);
+    font-size: 11px;
+    color: var(--c-accent);
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+  }
+  .main .sourcing-card h5 {
+    font-family: var(--c-serif);
+    font-size: 16px;
+    color: var(--c-ink);
+    margin: 0 0 4px;
+    font-weight: 700;
+  }
+  .main .sourcing-card .en {
+    font-family: var(--c-mono);
+    font-size: 11px;
+    color: var(--c-ink-muted);
+    margin-bottom: 10px;
+  }
+  .main .sourcing-card p {
+    font-size: 13px;
+    margin: 0;
+    color: var(--c-ink-soft);
+    line-height: 1.65;
+  }
+
+  /* ============ RELATIONSHIP SPECTRUM ============ */
+  .main .spectrum {
+    margin: 24px 0;
+    padding: 24px 20px;
+    background: var(--c-bg-elevated);
+    border: 1px solid var(--c-line);
+  }
+  .main .spectrum-axis {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--c-ink-muted);
+    font-family: var(--c-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    padding: 0 4px;
+  }
+  .main .spectrum-track {
+    position: relative;
+    height: 4px;
+    background: linear-gradient(90deg, #f0f9ff 0%, var(--c-accent-soft) 100%);
+    margin-bottom: 18px;
+  }
+  .main .spectrum-track::after {
+    content: "";
+    position: absolute;
+    right: -2px; top: -4px;
+    border: 6px solid transparent;
+    border-left-color: var(--c-accent);
+  }
+  .main .spectrum-list {
+    counter-reset: spec;
+    list-style: none;
+    margin: 0; padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .main .spectrum-list li {
+    counter-increment: spec;
+    padding: 10px 14px;
+    background: var(--c-bg-subtle);
+    border-left: 3px solid var(--c-line-strong);
+    font-size: 14px;
+    color: var(--c-ink-soft);
+    transition: all 0.15s ease;
+  }
+  .main .spectrum-list li:hover {
+    border-left-color: var(--c-accent);
+    background: var(--c-accent-soft);
+  }
+  .main .spectrum-list li::before {
+    content: counter(spec) ". ";
+    color: var(--c-accent);
+    font-family: var(--c-mono);
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .main .spectrum-list li strong {
+    color: var(--c-ink);
+    font-family: var(--c-serif);
+    margin-right: 6px;
+  }
+  .main .spectrum-list li .en {
+    font-family: var(--c-mono);
+    font-size: 12px;
+    color: var(--c-ink-muted);
+    margin-right: 8px;
+  }
+
+  /* ============ TENDER TYPES ============ */
+  .main .tender-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 22px 0;
+  }
+  .main .tender-card {
+    background: var(--c-bg-elevated);
+    border: 1px solid var(--c-line);
+    padding: 18px 20px;
+    transition: all 0.2s ease;
+  }
+  .main .tender-card:hover {
+    box-shadow: var(--c-shadow-md);
+    transform: translateY(-1px);
+  }
+  .main .tender-card h5 {
+    font-family: var(--c-serif);
+    font-weight: 700;
+    color: var(--c-accent);
+    font-size: 16px;
+    margin: 0 0 4px;
+  }
+  .main .tender-card .en {
+    font-family: var(--c-mono);
+    font-size: 11px;
+    color: var(--c-ink-muted);
+    margin-bottom: 10px;
+  }
+  .main .tender-card p {
+    font-size: 13.5px;
+    color: var(--c-ink-soft);
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  /* ============ EXERCISES ============ */
+  .main .exercises {
+    margin-top: 72px;
+    padding-top: 40px;
+    border-top: 2px solid var(--c-ink);
+  }
+  .main .exercises-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .main .exercises-header h2 {
+    font-family: var(--c-serif);
+    font-weight: 700;
+    font-size: 24px;
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+  .main .exercises-header .icon {
+    width: 34px; height: 34px;
+    background: var(--c-ink);
+    color: #fff;
+    display: grid; place-items: center;
+    font-family: var(--c-serif);
+    font-weight: 700;
+  }
+  .main .ex-section { margin-bottom: 32px; }
+  .main .ex-section-title {
+    font-family: var(--c-serif);
+    font-weight: 600;
+    font-size: 17px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--c-line);
+  }
+  .main .ex-section-title .ex-num {
+    font-family: var(--c-mono);
+    color: var(--c-accent);
+    margin-right: 10px;
+    font-size: 13px;
+  }
+  .main .term-list { list-style: none; counter-reset: term; margin: 0; padding: 0; }
+  .main .term-list li {
+    counter-increment: term;
+    padding: 9px 14px;
+    background: var(--c-bg-subtle);
+    margin-bottom: 6px;
+    font-size: 15px;
+    color: var(--c-ink);
+    border-left: 3px solid var(--c-line-strong);
+    transition: all 0.15s ease;
+  }
+  .main .term-list li:hover {
+    border-left-color: var(--c-accent);
+    background: var(--c-accent-soft);
+  }
+  .main .term-list li::before {
+    content: counter(term) ".";
+    font-family: var(--c-mono);
+    color: var(--c-accent);
+    margin-right: 10px;
+    font-weight: 500;
+  }
+  .main .quiz-question {
+    margin-bottom: 20px;
+    padding: 14px 18px;
+    background: var(--c-bg-elevated);
+    border: 1px solid var(--c-line);
+  }
+  .main .quiz-question .q-stem {
+    font-size: 15px;
+    color: var(--c-ink);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .main .quiz-question .q-num {
+    color: var(--c-accent);
+    font-family: var(--c-mono);
+    margin-right: 8px;
+  }
+  .main .quiz-question .q-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    list-style: none;
+    margin: 0; padding: 0;
+  }
+  .main .quiz-question .q-options li {
+    font-size: 14px;
+    color: var(--c-ink-soft);
+    padding: 4px 10px;
+  }
+  .main .quiz-question .opt-letter {
+    font-family: var(--c-mono);
+    font-weight: 600;
+    color: var(--c-accent);
+    margin-right: 8px;
+  }
+  .main .essay-q {
+    padding: 12px 16px;
+    background: var(--c-bg-subtle);
+    border-left: 3px solid var(--c-accent);
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: var(--c-ink);
+  }
+  .main .essay-q .q-num {
+    color: var(--c-accent);
+    font-family: var(--c-mono);
+    margin-right: 8px;
+    font-weight: 500;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 720px) {
+    .main { padding: 20px 16px 64px; }
+    .main h1.chapter-title { font-size: 30px; }
+    .main h2.section-title { font-size: 23px; }
+    .main h3.subsection-title { font-size: 19px; }
+    .main .tender-grid,
+    .main .quiz-question .q-options { grid-template-columns: 1fr; }
+    .main .sourcing-overview { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .main .sourcing-overview { grid-template-columns: 1fr; }
+  }
+
+  /* ====== Chapter 01 visual alignment ====== */
+  .main {
+    --c-bg: #fbfaf7;
+    --c-bg-elevated: #ffffff;
+    --c-bg-subtle: #f3f1ec;
+    --c-ink: #1a1a1a;
+    --c-ink-soft: #4a4a4a;
+    --c-ink-muted: #8a8580;
+    --c-line: #e6e2da;
+    --c-line-strong: #d4cfc4;
+    --c-accent: #b91c4d;
+    --c-accent-soft: #fdf2f5;
+    --c-accent-line: #f4d7e0;
+    --c-highlight: #fff8e7;
+    --c-highlight-line: #ead9a8;
+    --c-code-bg: #f5f2eb;
+    --c-shadow-sm: 0 1px 2px rgba(20, 15, 8, 0.04);
+    --c-shadow-md: 0 4px 16px rgba(20, 15, 8, 0.06);
+    --c-serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
+    --c-sans: "Noto Sans SC", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    --c-mono: "JetBrains Mono", "SF Mono", Menlo, monospace;
+
+    font-family: var(--c-sans);
+    color: var(--c-ink);
+    line-height: 1.8;
+    font-size: 16px;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 56px 8px 120px;
+  }
+
+  .main .chapter-header {
+    margin-bottom: 56px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  .main h1.chapter-title {
+    font-family: var(--c-serif);
+    font-weight: 900;
+    font-size: 44px;
+    line-height: 1.2;
+    color: var(--c-ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+
+  .main h2.section-title {
+    font-family: var(--c-serif);
+    font-weight: 700;
+    font-size: 30px;
+    color: var(--c-ink);
+    margin-top: 64px;
+    margin-bottom: 24px;
+    padding-left: 16px;
+    border-left: 4px solid var(--c-accent);
+    line-height: 1.3;
+  }
+
+  .main h2.section-title .section-num {
+    font-family: var(--c-mono);
+    font-size: 14px;
+    color: var(--c-accent);
+    display: block;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .main h3.subsection-title {
+    font-family: var(--c-serif);
+    font-weight: 700;
+    font-size: 22px;
+    margin: 40px 0 16px;
+    color: var(--c-ink);
+  }
+
+  @media (max-width: 720px) {
+    .main { padding: 32px 16px 80px; }
+    .main h1.chapter-title { font-size: 32px; }
+    .main h2.section-title { font-size: 24px; }
+    .main h3.subsection-title { font-size: 20px; }
+  }
+</style>
+
+<main class="main">
+
+  <!-- ============ CHAPTER HEADER ============ -->
+  <header class="chapter-header">
+    <div class="chapter-eyebrow">Chapter 02 · 第二章</div>
+    <h1 class="chapter-title">供应源搜寻战略</h1>
+    <div class="chapter-meta">
+      <div class="chapter-meta-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>
+        <span>预计阅读 40 分钟</span>
+      </div>
+      <div class="chapter-meta-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span>共 5 节 · 38 页</span>
+      </div>
+      <div class="chapter-meta-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+        <span>含案例 3 篇</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Objectives -->
+  <div class="objective-card">
+    <div class="objective-card-header">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      <span>学习目标</span>
+    </div>
+    <ol class="objective-list">
+      <li>了解单供应源搜寻、双供应源搜寻以及多供应源搜寻的基本概念</li>
+      <li>熟知企业外包的优点和缺点</li>
+      <li>掌握供应源垄断形成的基本条件</li>
+      <li>掌握企业内部交易的主要目标</li>
+    </ol>
+  </div>
+
+  <div class="concept-tags">
+    <span class="concept-tags-label">基本概念</span>
+    <span class="concept-tag">单供应源搜寻</span>
+    <span class="concept-tag">多供应源搜寻</span>
+    <span class="concept-tag">招标</span>
+    <span class="concept-tag">调拨定价</span>
+  </div>
+
+  <!-- ============ SECTION 1 ============ -->
+  <section id="section-1">
+    <h2 class="section-title">
+      <span class="section-num">Section 01</span>
+      第一节　供应商数量优化
+    </h2>
+
+    <p>根据为特定采购者提供产品和服务的供应商类型不同，本书将供应商搜寻分为<strong>单供应源搜寻、双供应源搜寻、独家供应源搜寻和多供应源搜寻</strong>。</p>
+
+<div class="sourcing-overview">
+      <div class="sourcing-card">
+        <div class="num">01 / 单一合作</div>
+        <h5>单供应源搜寻</h5>
+        <div class="en">single sourcing</div>
+        <p>采购方主动选择一家供应商建立稳定合作，以换取承诺、协同投入或更深层的供应支持。</p>
+      </div>
+      <div class="sourcing-card">
+        <div class="num">02 / 双源保障</div>
+        <h5>双供应源搜寻</h5>
+        <div class="en">dual sourcing</div>
+        <p>同时保留两家供应商，兼顾稳定供给和风险分散，避免对单一供应商形成过度依赖。</p>
+      </div>
+      <div class="sourcing-card">
+        <div class="num">03 / 深度协作</div>
+        <h5>伙伴式供应源搜寻</h5>
+        <div class="en">partnership sourcing</div>
+        <p>围绕关键物料或高风险采购，与供应商建立长期互信、共同改进和共同创造价值的关系。</p>
+      </div>
+      <div class="sourcing-card">
+        <div class="num">04 / 唯一来源</div>
+        <h5>独家供应源搜寻</h5>
+        <div class="en">sole sourcing</div>
+        <p>供应市场中只有一家可用供应商，采购方需要重点识别垄断力量、替代可能和议价风险。</p>
+      </div>
+      <div class="sourcing-card">
+        <div class="num">05 / 多源竞争</div>
+        <h5>多供应源搜寻</h5>
+        <div class="en">multiple sourcing</div>
+        <p>利用多个通过资格预审的供应商满足采购需求，提高供应弹性，并保持供应商之间的竞争压力。</p>
+      </div>
+    </div>
+
+    <h3 class="subsection-title">一、单供应源搜寻</h3>
+
+    <p>单供应源搜寻（single sourcing）是供应商选择范围狭小化的极端情况，即只选择一个供应商发展合作关系或签订独家供应合同。当采购方想要得到供应商的合同承诺、共同投资或其他优惠待遇时，通常会选择这种排他性的方式。</p>
+
+    <p>单供应源搜寻可以降低供应风险，保证采购商品的竞争力。采购方通常在以下情况下选择单供应源搜寻：</p>
+    <ol class="info-list">
+      <li>总需求量小，不值得拆分订单，否则单位加工成本太高；</li>
+      <li>供应商的声誉、质量和价格等优势远远超过竞争对手，因此没有必要寻找其他供应商；</li>
+      <li>供货启动成本高，如系统集成等；</li>
+      <li>供给有风险或供给物品稀缺，确定一个稳定的供应商可以降低供应风险。</li>
+    </ol>
+
+    <p>但是，单供应源搜寻是进行供应商搜寻最具风险的方法，当独家供应商出现问题时，采购方就要承担经营亏损的风险。特别是当采购方受独家采购协议约束时，如果供应商不能按时交货，将产生严重的后果，因此采购方必须密切关注独家供应商的财务稳定性、潜在的风险因素以及供应链的风险管理等因素。</p>
+
+    <div class="supp-box">
+      <div class="supp-box-header">
+        <div class="supp-icon">补</div>
+        <div class="supp-box-title">补充资料：单一供应商的风险案例</div>
+      </div>
+      <p>供应链风险的成因可能与过分仰赖单一供应商有关。当单一供应商遭遇自然灾害、港口罢工、网络攻击、政变等突发而不易预防的事件时，影响极为严重。例如，2011 年泰国洪灾对供应链运作造成了极为严重的后果。</p>
+    </div>
+
+    <h3 class="subsection-title">二、双供应源搜寻</h3>
+
+    <p>为了避免上述情况发生，大多数企业会同时寻找两家供应商，这种行为方式被称为<strong>双供应源搜寻</strong>（dual sourcing），它不仅可以使采购方获得狭窄供应的好处，而且可以避免过度依赖一个供应商引致的风险。</p>
+
+    <p>双供应源搜寻和单供应源搜寻可能面临的共同挑战是，由于采购方与供应商之间的长期协议，供应商对于提供的商品失去继续创新和改进的动力。为了防止这种情况发生并确保供应商履行其承诺，采购方应实施有效的绩效管理措施和持续改进计划。</p>
+
+    <h3 class="subsection-title">三、伙伴式供应源搜寻</h3>
+
+    <p>单供应源搜寻或双供应源搜寻有两个共同关注点：一是使采购方专注于与选定的供应商建立深入合作的关系；二是要求采购方与选定的供应商建立长期合作伙伴关系，以尽量减少供应风险。两者都强调双方的承诺、共同投资的意愿和共同关系的建设，因此也被称为"<strong>伙伴式供应源搜寻</strong>"（partnership sourcing）。</p>
+
+    <h4 class="minor-title">适合伙伴式供应源搜寻的六种情况</h4>
+    <ol class="info-list">
+      <li>采购方需支付给供应商的成本巨大；</li>
+      <li>采购方需要承担高采购风险；</li>
+      <li>采购方采购的产品技术的复杂性高，需要供应商提供先进的技术支持；</li>
+      <li>供给产品工艺复杂，需要花费大量的时间、精力和资源；</li>
+      <li>供应市场瞬息万变，采购方需要及时了解有关市场在技术或法律方面的最新变化；</li>
+      <li>供应市场供应商数量有限，需要与重要的供应商建立密切的伙伴关系，以提高供应安全。</li>
+    </ol>
+
+    <h4 class="minor-title">伙伴式供应源搜寻的主要特点</h4>
+    <ol class="info-list">
+      <li>合作伙伴的文化兼容；</li>
+      <li>客户与供应商高度互信，双方愿意分享知识甚至相关数据；</li>
+      <li>双方都认同供应链双赢的理念，共同创造商业价值、创造竞争优势，互利共赢；</li>
+      <li>双方在知识、资源或其他领域合作互补，为双方带来更多价值；</li>
+      <li>双方有明确且合理的绩效目标来评价供应链绩效；</li>
+      <li>双方组建跨职能团队，提高协调合作能力；</li>
+      <li>双方愿意采用质量管理理念规范采购行为，实现采购产品质量提升与供应链全过程持续优化的目的。</li>
+    </ol>
+
+    <figure>
+      <figcaption><span class="fig-num">表 2—1</span>采购方选择伙伴式供应源搜寻的优点和缺点</figcaption>
+      <table class="compare">
+        <thead>
+          <tr>
+            <th style="width: 50%">对于采购方而言的优点</th>
+            <th>对于采购方而言的缺点</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>供应量和供应价格的稳定性提高</td><td>若供应商无改良供给意愿，导致产品的成本和质量面临风险</td></tr>
+          <tr><td>分担风险和投资</td><td>更换供应商的灵活度降低</td></tr>
+          <tr><td>供应商反应更快、更积极</td><td>保密风险和知识产权风险</td></tr>
+          <tr><td>协作降低成本，节省成本</td><td>绑定不匹配或不够灵活的供应商</td></tr>
+          <tr><td>引进供应商专业技术、专业知识</td><td>在公共采购领域可能受到监管限制</td></tr>
+          <tr><td>有利于规划销售量和提高仓储效率</td><td>在供应市场发生变化和出现新的机会时无法做出新的选择</td></tr>
+          <tr><td>有利于制定长期的改进计划</td><td>增加关系管理成本</td></tr>
+          <tr><td>有利于注重关系管理</td><td>相互依赖可能导致合作缺少灵活性，导致较高的决策成本</td></tr>
+        </tbody>
+      </table>
+    </figure>
+
+    <figure>
+      <figcaption><span class="fig-num">表 2—2</span>供应商选择伙伴式供应源搜寻的优点和缺点</figcaption>
+      <table class="compare">
+        <thead>
+          <tr>
+            <th style="width: 50%">对于供应商而言的优点</th>
+            <th>对于供应商而言的缺点</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>有利于投资业务的发展</td><td>可能绑定不匹配或不够灵活的客户</td></tr>
+          <tr><td>有助于改善产品服务</td><td>收入和风险的分担可能不公平</td></tr>
+          <tr><td>有利于提前规划产能、提高效率</td><td>存在滥用客户信息的风险</td></tr>
+          <tr><td>有利于和采购方共同分担成本和风险</td><td>增加关系管理的费用</td></tr>
+          <tr><td>有利于提高生产效率、降低生产成本</td><td>对客户的依赖可能丧失灵活性</td></tr>
+          <tr><td>有利于参考采购方的专业技术和专业知识</td><td>在公共采购领域受到监管限制，带来决策困难</td></tr>
+          <tr><td>有利于注重关系管理</td><td>在供应市场发生变化时无法做出新的选择</td></tr>
+        </tbody>
+      </table>
+    </figure>
+
+    <h3 class="subsection-title">四、独家供应源搜寻</h3>
+
+    <p><strong>独家供应源搜寻</strong>（sole sourcing）不同于单供应源搜寻，独家供应源搜寻只能在供应市场中找到一家供应商进行采购。唯一一家供应商独占相关市场的市场结构被称为<strong>垄断</strong>。</p>
+
+    <h4 class="minor-title">垄断供应商形成的三个条件</h4>
+    <ol class="info-list">
+      <li><strong>独此一家。</strong>产品或服务供应市场只有一个供应商。它可以是一个单一的企业或一个共同控制供应的生产集团，如石油输出国组织（欧佩克）。</li>
+      <li><strong>市场门槛高。</strong>供给市场准入门槛很高，导致其他竞争对手无法进入。如企业的启动成本很高，独家拥有版权、设计、专利、专有技术或工艺的专有所有权，生产者垄断了供应源或分销渠道。</li>
+      <li><strong>无法被替代。</strong>供应商提供的产品或服务没有类似的替代品。</li>
+    </ol>
+
+    <p>在具备上述三个条件时，垄断企业基本可以控制供应，拥有决定商品市场价格的绝对权力，成为<strong>价格制定者</strong>。当采购方需要向独家供应源进行采购时，应注意以下问题：</p>
+
+    <p><strong>首先，</strong>对于采购方来说，主要关注的是供应商在垄断供应市场上的绝对权力，因为采购方不能将自己的业务转让给他人，所以垄断经营者对交易条款有绝对的控制权。</p>
+
+    <p><strong>其次，</strong>在供应商垄断市场的情况下，由于小型采购业务对大型供应商的影响可能微乎其微，采购价格通常较高，因此采购方不能对供应方施加压力以降低价格或要求其提高产品质量和服务水平。</p>
+
+    <p><strong>此外，</strong>垄断供应商按照采购方的要求提供产品的意愿不强。采购方不能按照其要求的规格定制产品，甚至在定制或创新方面没有选择，这对于采购方在高度专业化或快速变化的市场中获得竞争优势来说是一个严重的问题。但如果定制化产品能给垄断供应商带来更高的利润，垄断供应商就会利用资源进行定制化且具有灵活性和创新性的生产。</p>
+
+    <div class="thinking-box">
+      <div class="thinking-box-header">💭 想一想</div>
+      <p>许多企业对某些重要原材料过于依赖独家供应商，导致供应商往往能左右采购价格，对采购方施加极大的影响或压力。这样，采购方就落入供应商垄断供货的控制之中。请想一想：哪些措施可以应对这种情况？</p>
+      <p style="font-size: 13px; color: #8a6510;">小提示：全球采购、增强相互的依赖程度、协商长期合作等。</p>
+    </div>
+
+    <h3 class="subsection-title">五、多供应源搜寻</h3>
+
+    <p>当供应商基础中的供应商数量太少时，采购方可能面临以下潜在风险：一是过度依赖少数供应商，当供应商无法供货时，采购方无法解决，如供应商出现财务或声誉危机而导致采购失败；二是导致供应中断，如罢工、技术或者自然灾害等问题的产生将导致供应中断；三是首选供应商失去自我完善能力，不再具有竞争价值优势；四是被长期合作关系"绑架"，即使发现供应商业绩低下时，采购方也无法淘汰供应商；五是失去与新的有竞争力的供应商合作的机会。</p>
+
+    <p><strong>多供应源搜寻</strong>（multiple sourcing）是指利用更多通过资格预审和审批的潜在供应商来满足采购方对任何类型采购的需求，从而有效控制供应风险。</p>
+
+    <figure>
+      <figcaption>多供应源搜寻的优缺点对比</figcaption>
+      <table class="compare">
+        <thead>
+          <tr>
+            <th style="width: 50%">优点</th>
+            <th>缺点</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>当供应短缺或中断、需求不可预测或供应商破产时，企业还有许多稳定且被认可的供应商作为替代</td><td>产生高采购成本，使采购方的交易和管理成本更高</td></tr>
+          <tr><td>当采购方和供应商的环境发生变化时，采购方仍然可以获得良好的价格、交易条件等</td><td>错失与少数供应商形成紧密合作的机会</td></tr>
+          <tr><td>有利于保持供应商基础的竞争力，促进供应商之间的公平竞争</td><td>造成浪费现象，如保留较多不能满足企业需求的供应商，造成库存产品数量增加</td></tr>
+        </tbody>
+      </table>
+    </figure>
+
+    <h3 class="subsection-title">六、供应商数量优化</h3>
+
+    <p>供应商数量优化是指<strong>确定采购组织中供应商的理想数量</strong>。强有力的合作供应商关系可以使采购者专注于与少数发达可靠的供应伙伴进行磋商。供应商数量优化可以给企业带来以下好处：</p>
+    <ol class="info-list">
+      <li>避免多供应源搜寻带来的效率低下的弊端；</li>
+      <li>与优秀的供应商建立更密切、更长期的合作业务关系，以获得潜在利益；</li>
+      <li>保证有足够的、经过审批的供应商，防止供应失败、短缺或其他供应风险，从而保证供应安全。</li>
+    </ol>
+
+    <p>供应商数量优化的目的是充分利用企业的购买力，以最优供应商数量获得最有竞争力的价格和最优质的产品，保证供应安全。为了使供应商基础得到最大限度的优化，采购方应当对现有供应商进行绩效、成本、服务、质量、业务和建立更密切关系的潜力等方面的评估，制定资质合格的供应商名单，淘汰不必要的供应商。</p>
+
+    <div class="supp-box">
+      <div class="supp-box-header">
+        <div class="supp-icon">补</div>
+        <div class="supp-box-title">补充资料：企业风险调查</div>
+      </div>
+      <p>一项企业风险调查报告显示，企业最忧虑的前三项风险依次是：<strong>资讯网络与通信系统的中断、恶劣天候、外包厂商未能践约</strong>。资讯网络与通信系统的中断为第一要素，凸显出现今供应链的运作对资讯和通信系统的准确性、及时性的依赖。一旦后者出现超载、中断、受扰等情况，则前者的商流、物流、资金流都将承受无法补救的损害。</p>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2 ============ -->
+  <section id="section-2">
+    <h2 class="section-title">
+      <span class="section-num">Section 02</span>
+      第二节　供应源搜寻战略
+    </h2>
+
+    <p>当采购方确定供应商选择范围后，就需要进一步对供应源进行优化选择。</p>
+
+    <h3 class="subsection-title">一、自制和外购</h3>
+
+    <p>"<strong>自制</strong>"是指采购方只购买原材料就能生产出全部产品或开发出自己的服务，最终产品的价值几乎全部来自采购商企业内部的交易。"<strong>外购</strong>"是指采购方所需的绝大多数产品都是从外部供应商或分包商处购入，最终产品的价值几乎都是由外部供应商提供的。</p>
+
+    <h4 class="minor-title">采用自制还是外购的五个考量因素</h4>
+    <ol class="info-list">
+      <li>采购的产品（如半成品）和服务（如采购物流服务）对于总生产成本的影响大小；</li>
+      <li>自制产品的竞争力和生产能力、产品购买和加购的难度，以及未来继续收购的可能；</li>
+      <li>合适的外部供应商是否存在。若缺乏合适的外部供应商，企业将不得不通过自制供给产品；</li>
+      <li>企业的资源、知识和技能的储备是否充足；</li>
+      <li>将关键活动和相关知识产权、质量控制和信誉资产的控制权转移给外部供应商的风险是否可以承担。</li>
+    </ol>
+
+    <div class="thinking-box">
+      <div class="thinking-box-header">💭 想一想</div>
+      <p><strong>问题：</strong>企业在进行自制或外购决策时，通常面临什么情况？是否都属于短期经营决策？</p>
+      <div class="thinking-answer">
+        <p><strong>答：</strong>通常面临以下三种情况：①企业有剩余生产能力，且剩余生产能力无法转移；②企业有剩余生产能力，但剩余生产能力可以转移，如对外出租或用于其他产品的生产；③如果自制产品，企业需添加新的固定资产。</p>
+        <p>在第①、②种情况下，由于自制产品不涉及固定资产投资，无论自制还是外购对企业的影响都是短期的，因此显然属于<strong>短期经营决策</strong>。在第③种情况下，由于需要进行固定资产投资，会对企业未来相当长时期的生产经营活动产生影响，因此属于<strong>长期投资决策</strong>。</p>
+      </div>
+    </div>
+
+    <p>目前，采购方对核心竞争力的关注导致大量企业选择外包或分包等形式进行供应源搜寻，如维修、企业接洽、仓储运输、员工招聘、培训等辅助职能，甚至包括销售、客服等核心职能。</p>
+
+    <h3 class="subsection-title">二、企业内部交易</h3>
+
+    <p><strong>企业内部交易</strong>（intra-company trading）是指企业内部各部门之间的业务往来。大型企业或集团中的公司、部门或战略业务单位可以向集团中的另一家公司提供产品或服务。</p>
+
+    <h4 class="minor-title">企业内部交易的四个目的</h4>
+    <ol class="info-list">
+      <li>充分发挥供应商子部门的生产能力，当外部订单不足时维持企业的正常生产经营；</li>
+      <li>在经济衰退和外部订单短缺的情况下，帮助供应商实体分担固定成本；</li>
+      <li>确保供应商实体的盈利能力；</li>
+      <li>确保集团整体的盈利能力。</li>
+    </ol>
+
+    <p>企业内部交易一般有两种方式：一是企业内部制定交易政策规定，不考虑价格和其他因素，规定某些商品必须从内部供应商处采购；二是对内部供应商和外部供应商的报价进行共同评估，平等竞争，将订单交给能够实现价值最优化的供应商。</p>
+
+    <p>企业内部交易的主要风险可能来自内部供应的竞争力低于外部供应的竞争力。采购人员的目标是为企业实现价值最优化的采购，当集团内部的一家公司能够满足其需求时，内部购买可以实现价值最优化，但当内部公司不能满足采购需求，而要求必须进行内部采购时，采购人员会做出非最优决策，从而导致内部供应商无法提供价值最优化的产品且与外部供应市场产生疏远。</p>
+
+    <div class="supp-box">
+      <div class="supp-box-header">
+        <div class="supp-icon">补</div>
+        <div class="supp-box-title">补充资料：××集团内部交易管理实施办法（举例）</div>
+      </div>
+
+      <h5>1. 目的</h5>
+      <p>① 规范集团内部交易行为，整合集团资源，发挥各部门协作作用，降低不经济行为。<br>② 确定内部交易产品范围、商品定价、交易核算办法，提供业绩评价及考核依据。</p>
+
+      <h5>2. 适用范围</h5>
+      <p>×××× 集团全资子公司、控股子公司。</p>
+
+      <h5>3. 职责</h5>
+      <p>3.1 ×××× 财务部收集、核算和报告内部交易情况。<br>3.2 各主体根据本实施办法履行相关义务。<br>3.3 集团总裁确认各部门间内部交易是否可行。</p>
+
+      <h5>4. 内容</h5>
+      <h6>4.1 内部交易定义</h6>
+      <p>本办法所称内部交易是指发生在 ×××× 集团内部各核算主体之间的资源使用和被使用的经济行为。</p>
+
+      <h6>4.2 内部交易实施原则</h6>
+      <p><strong>4.2.1 内部优先原则。</strong>为了提升集团内部资源的利用效率和各主体协同效应，各核算主体应优先考虑购买集团内部其他核算主体的产品或服务。</p>
+      <p><strong>4.2.2 经济和竞争原则。</strong>集团总部鼓励各核算主体之间进行内部交易但并不限制集团内各核算主体向外单位购买价廉物美的产品或优质的服务，但如果涉及金额较大（暂定为年采购额五万元或每次采购额两万元以上的交易），则应由总经理室决定是否采购。</p>
+      <p><strong>4.2.3 内部投诉和积极改善原则。</strong>提供产品或劳务的核算主体应该以市场的眼光对待集团内部交易，如果造成违约或其他有损另一方的行为，商品购买方或劳务接受方有权向总经理室投诉。</p>
+
+      <h6>4.3 内部交易定价原则</h6>
+      <ol class="info-list" style="margin: 8px 0;">
+        <li>如果为货物买卖，交易价格每月由财务部提出，交总裁批准；</li>
+        <li>如果为固定资产转售，交易价格按销售方的账面净值；</li>
+        <li>如果为提供劳务，交易价格由双方协商，财务部审核，交总裁批准；</li>
+        <li>如果为房屋、设备、人才租赁，财务管理部提出指导价格，该价格每季度调整一次。</li>
+      </ol>
+
+      <h6>4.4 内部交易类型及核算方法</h6>
+
+      <p style="margin-top: 12px; font-size: 13.5px;"><strong>4.4.1 货物购买和销售</strong>（规范该类型内部交易能够使集团整体减少增值税支出）：</p>
+
+      <figure style="margin: 10px 0;">
+        <table>
+          <thead>
+            <tr><th>事项</th><th>货物销售方</th><th>货物购买方</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="label-col">结算方式</td><td colspan="2" style="text-align:center;">按月结算，按季考核</td></tr>
+            <tr><td class="label-col">入账金额</td><td>账面销售金额 = 库存产品发出成本</td><td>账面入账成本 = 销售方提供的发票</td></tr>
+            <tr><td class="label-col">内部交易利润分配</td><td>当期内部交易利润 = 内部交易协议金额 − 库存产品发出成本</td><td>1. 转销售：当期内部交易费用 = 内部交易协议金额 − 库存产品发出成本<br>2. 转作固定资产：当期内部交易费用 =（内部交易协议金额 − 库存产品成本）/ 摊销年限</td></tr>
+          </tbody>
+        </table>
+      </figure>
+
+      <p style="margin-top: 14px; font-size: 13.5px;"><strong>4.4.2 不动产或其他资产的购买和销售：</strong></p>
+
+      <figure style="margin: 10px 0;">
+        <table>
+          <thead>
+            <tr><th>事项</th><th>资产销售方</th><th>资产购买方</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="label-col">结算方式</td><td colspan="2" style="text-align:center;">按发生时进行结算，按季考核</td></tr>
+            <tr><td class="label-col">入账金额</td><td>资产转出价格 = 资产账面净值</td><td>资产入账价格 = 资产账面净值</td></tr>
+            <tr><td class="label-col">内部责任利润分配</td>
+              <td>1. 不动产：当期内部交易利润 = 资产转出价格 × 营业税金及附加率<br>2. 不动产外的固定资产：不计算内部交易损益<br>3. 无形资产：资产不转出，当期内部交易利润 = 当期摊销额<br>4. 长期投资：不结算损益</td>
+              <td>1. 不动产：当期内部交易损失 =（资产入账价格 × 营业税金及附加率）/ 预计摊销年限<br>2. 不动产外的固定资产：不计算内部交易损益<br>3. 无形资产：资产不转入，当期内部交易费用 = 销售方的当期摊销额<br>4. 长期投资：不结算损益</td>
+            </tr>
+          </tbody>
+        </table>
+      </figure>
+
+      <p style="margin-top: 14px; font-size: 13.5px;"><strong>4.4.3 劳务的提供或取得：</strong>劳务的范围主要包括提供代理、广告、客户服务、软件开发及技术咨询服务等。</p>
+
+      <figure style="margin: 10px 0;">
+        <table>
+          <thead>
+            <tr><th>事项</th><th>劳务提供方</th><th>劳务取得方</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="label-col">结算方式</td><td colspan="2" style="text-align:center;">按季度结算</td></tr>
+            <tr><td class="label-col">入账金额</td><td colspan="2" style="text-align:center;">不在账面反映</td></tr>
+            <tr><td class="label-col">内部责任利润分配</td>
+              <td>1. 未形成著作权或专利权：当期内部交易利润 = 交易双方协商金额<br>2. 形成著作权或专利权：当期内部交易利润 = 交易双方协商金额 + 申请著作权或专利权而产生的费用</td>
+              <td>1. 未形成著作权或专利权：当期内部交易支出 = 交易双方协商金额<br>2. 形成著作权或专利权：当期内部交易支出同上</td>
+            </tr>
+          </tbody>
+        </table>
+      </figure>
+
+      <p style="margin-top: 14px; font-size: 13.5px;"><strong>4.4.4 房屋、设备以及人才租赁：</strong></p>
+
+      <figure style="margin: 10px 0;">
+        <table>
+          <thead>
+            <tr><th>事项</th><th>出租方</th><th>承租方</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="label-col">结算方式</td><td colspan="2" style="text-align:center;">按季度结算</td></tr>
+            <tr><td class="label-col">入账金额</td><td colspan="2" style="text-align:center;">不在账面反映</td></tr>
+            <tr><td class="label-col">内部责任利润分配</td><td>当期内部交易责任利润 = 按指导价格结算金额</td><td>当期内部交易责任支出 = 按指导价格结算金额</td></tr>
+          </tbody>
+        </table>
+      </figure>
+
+      <div class="supp-source">资料来源：百度文库（节选改编）</div>
+    </div>
+
+    <p>企业应制定明确的内部交易规定，如鼓励使用集团内公司的材料和服务。如果集团下属公司的报价不如竞争对手的报价好，则应给予竞争对手平等竞争的机会；当集团下属企业能满足采购方的需求时，就应该有报价的机会，内部供应商均应与其他供应商平等对待。</p>
+
+    <h4 class="minor-title">调拨价格（Transfer Price）</h4>
+
+    <p><strong>调拨价格</strong>（transfer price）是指企业内的某一部门向同一企业内的另一个部门收取的内部交易价格。假设一个公司只有一个制造部门和一个销售部门，制造部门生产的产品根据协议的调拨价格划拨给销售部门，这个价格就是制造部门的收入和销售部门的部分成本。</p>
+
+    <p>调拨价格是一种内部的价格机制，但从会计和绩效评估角度看，这两个部门均为<strong>利润中心</strong>。调拨价格的高低对调出部门和接收部门的利润均有显著影响。如当调拨价格很高时，调出部门的利润会很高，而接收部门的利润会被高昂的采购成本所削减。</p>
+
+    <div class="thinking-box">
+      <div class="thinking-box-header">💭 想一想</div>
+      <p>通过课外书籍、多媒体资源等渠道，搜索跨国公司通过调拨价格规避关税的案例，并对案例作简要评述。</p>
+    </div>
+
+    <p>企业在制定调拨价格时，主要考虑三个因素：</p>
+    <ol class="info-list">
+      <li><strong>目标的一致性。</strong>管理会计制度和制定调拨价格政策责任部门有责任考虑集团整体利益的一致性，不能为个别单位的利益作出次优决策。</li>
+      <li><strong>绩效测量。</strong>调拨定价机制能够合理反映战略业务部门管理绩效高低。</li>
+      <li><strong>保持部门的自主性。</strong>调拨定价不应削弱战略业务部门的盈利能力，应通过独立管理提高集团的灵活性和响应速度。</li>
+    </ol>
+
+    <p>调拨价格的设定需要注意以下两点：</p>
+
+    <p><strong>首先，</strong>当供应部门能够在公开市场上销售其所有产品，采购部门能够在公开市场上满足其所有需求时，这个市场被称为<strong>完全竞争市场</strong>。当中间产品在完全竞争市场买卖时，市场价格是最佳调拨价格。</p>
+
+    <p><strong>其次，</strong>当企业内部产能过剩，即外部对商品的需求能够得到充分满足，企业有剩余产能生产更多商品时，最佳的调拨价格是供应部门的<strong>边际成本</strong>，即为了供内部消费而制造的额外商品的成本。</p>
+
+    <p>但是，需要特别注意的是，使用边际成本价格调拨产品对于供应部门是不公平的，因为没有利润空间。为了公平对待供应部门，有三种定价方法可供选择：</p>
+
+    <ol class="info-list">
+      <li><strong>成本加成定价法</strong>（cost-plus pricing）：以边际成本或总成本加上价格涨幅构成调拨价格。但是这种方法往往引起加价高低的争议，不利于目标的一致性。</li>
+      <li><strong>双重定价</strong>（dual pricing）：供应部门以一种调拨价格记账，采购部门以另一种调拨价格记账，中间差额计入母公司的"调整账户"。但这种方法不易控制。</li>
+      <li><strong>两部收费法</strong>（two-part tariff）：调拨以边际成本计价，但为了补偿供应部门的固定成本，接收部门需要向其支付固定金额的款项。这种方法相对前两种方法经常受到各部门的欢迎和接受。</li>
+    </ol>
+
+    <p>当存在"<strong>限制性生产约束</strong>"（如销售部门的权力有限或资源稀缺）时，最佳调拨价格是供应部门满足内部客户的边际成本加上<strong>影子价格</strong>（shadow price）。影子价格是指不能对外销售从而不能为利润作出贡献的机会成本，可以反映内部供应商为了满足内部需求而放弃外部销售的牺牲。</p>
+
+    <h3 class="subsection-title">三、外包</h3>
+
+    <p>外包是指企业动态地配置自身和其他企业的功能和服务，并利用企业外部的资源为企业内部的生产和经营服务。采购方可将组织的非核心业务委托给外部的专业公司，从而实现降低营运成本、提高品质、集中人力资源、提高顾客满意度等目的。</p>
+
+    <h4 class="minor-title">企业从事外包业务的七个参考因素</h4>
+    <ol class="info-list">
+      <li>外包决策需要基于明确的目标和可衡量的收益，并需经过缜密的成本效益分析；</li>
+      <li>外包关系是一种长期的合作关系，供应商的绩效将体现在外包企业的声誉上。因此，必须从质量、可靠性、合作意愿、道德和社会责任等方面对供应商进行严格的筛选；</li>
+      <li>企业应与供应商签订明确的合同规定各种风险，包括成本和责任的划分等；</li>
+      <li>供应商应明确服务水平、标准和关键绩效指标，并得到双方认可，给予适当的奖惩；</li>
+      <li>应根据关键绩效指标和服务水平协议，持续、严格地监控所提供产品和服务的质量；</li>
+      <li>坚持合同和供应商管理，可以保证供应商信守合同并建设性地处理纠纷，防止企业将绩效和声誉的控制权交给承包商；</li>
+      <li>合同评审。从合同履行中评估合同是否应该续签、修改或终止。</li>
+    </ol>
+
+    <figure>
+      <figcaption><span class="fig-num">表 2—5</span>外包的优缺点</figcaption>
+      <table class="compare">
+        <thead>
+          <tr><th style="width: 50%">优点</th><th>缺点</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>有助于企业合理化调整规模，降低人员费用、设施成本等</td><td>服务成本、管理成本可能提高</td></tr>
+          <tr><td>将管理、人员以及其他资源集中融入企业的核心活动，提升竞争力</td><td>由于监管困难和高成本，难以确保服务质量以及企业社会责任的履行</td></tr>
+          <tr><td>可以借助承包方的专业知识、技术以及资源</td><td>企业有可能失去自己在服务领域中的专长、知识、人脉或技术</td></tr>
+          <tr><td>获得规模经济的效益</td><td>在绩效管理和风险控制方面可能失去控制权</td></tr>
+          <tr><td>可以施行有竞争力的绩效激励</td><td>可能带来机密数据泄露、知识产权归属确认等问题</td></tr>
+        </tbody>
+      </table>
+    </figure>
+
+    <p>外包一般只应用于：<strong>非核心竞争力活动</strong>；外部承包商能够从事的工作和活动；通过外包可以为企业带来更多获取资金价值的活动。</p>
+
+    <h3 class="subsection-title">四、本地供应源搜寻和国际供应源搜寻</h3>
+
+    <p>当企业确定要采购的产品和服务后，通常都会面临一个问题，就是如何制定供应源搜寻策略。对于采购方而言，首先要明确的就是企业的采购行为是属于"<strong>本地供应源搜寻</strong>"还是"<strong>国际供应源搜寻</strong>"。</p>
+
+    <p>"<strong>本地供应源搜寻</strong>"（local sourcing）是指从容易接近或双方距离很近的供应商处购买商品或服务。"<strong>国际供应源搜寻</strong>"（international sourcing）是指从海外或其他国家的供应商处购买商品或服务，基本上是产品进口。</p>
+
+    <p>本地供应源搜寻有距离短、沟通方便、运输成本低等优点，当出现不可预见的加急订单时更容易处理，能实现准时按需供应，从而减少库存堆积问题的产生。国际供应源搜寻在节约成本和地理产品方面（如矿产和农产品）有很大的优势。</p>
+
+    <figure>
+      <figcaption><span class="fig-num">表 2—6</span>本地供应源搜寻和国际供应源搜寻的优缺点</figcaption>
+      <table class="compare">
+        <thead>
+          <tr><th style="width: 50%">本地供应源搜寻的优点</th><th>本地供应源搜寻的缺点</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>为当地社区提供资金、雇用当地员工、培养当地人员的技能等，为声誉和品牌带来社会效益</td><td>本地供应源可能难以提供所需的物资、技能和服务</td></tr>
+          <tr><td>有利于供应商开发和管理合同</td><td>与供应商社会关系过于密切可能出现道德和声誉风险</td></tr>
+          <tr><td>供应商了解当地市场的现状、熟悉当地法规标准</td><td>供应商规模较小导致采购成本较高，依赖性问题比较严重</td></tr>
+          <tr><td>减少运输成本、支付成本和沟通成本等</td><td>本地供应源搜寻政策可能导致本地供应商失去进取心</td></tr>
+          <tr><td>缩短供应链，如可以实现准时制、减小运输对环境造成的影响</td><td>可能允许地域歧视</td></tr>
+        </tbody>
+        <thead>
+          <tr><th>国际供应源搜寻的优点</th><th>国际供应源搜寻的缺点</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>供应能力更强</td><td>面临汇率风险、货币兑付等问题</td></tr>
+          <tr><td>获得具有竞争力的价格和节约成本</td><td>高昂的查询和交易成本</td></tr>
+          <tr><td>减少环境和劳工的限制</td><td>降低成本和标准会带来合规性和质量风险等问题</td></tr>
+          <tr><td>可充分利用信息通信系统和物流系统</td><td>不同的法律、法规、语言和文化带来的冲突</td></tr>
+          <tr><td>国际贸易可以促进国际关系的发展</td><td>出现政治不稳定等额外风险；交通运输对于环境的影响</td></tr>
+        </tbody>
+      </table>
+    </figure>
+
+    <p>近年来，借助国际供应源搜寻的采购大幅增加，究其原因：一是运输技术的进步缩短了物流的时间，降低了相关的风险；二是随着信息和通信技术的发展，沟通、货物追踪和绩效监控不再受距离的限制；三是贸易壁垒的不断减少促进了货物、投资和服务的流动；四是随着供应源搜寻效率的提高，采购方可以从世界各地寻找成本最低的供应商；五是受国家或地区性供应因素影响，一些商品（特别是原材料和农产品）只在特定国家提供，或由于特殊原因在特定国家供应的效率更高；六是技术标准的统一使采购方能够购买标准化的零部件和相互兼容的系统。</p>
+
+    <p>除此之外，在采购寻源行为中，既包括"本地供应源搜寻"，也包括"国际供应源搜寻"的行为，可以称为"<strong>全球供应源搜寻</strong>"（global sourcing），也就是说建立一个国际的供应网络，以灵活、竞争、协调的方式进行采购以满足企业的需求。</p>
+
+    <!-- Case 1 -->
+    <div class="case-box">
+      <div class="case-box-header">
+        <span class="case-tag">小案例</span>
+        <span class="case-title">业务外包，用工责任也"一包了之"？</span>
+      </div>
+      <p>平台经济创造了大量就业机会，依托互联网平台就业的网约配送员、网约车驾驶员、货车司机等新就业形态劳动者数量大幅增加。为降低用人成本，以新就业形态名义招揽用工，很多平台企业采用了外包模式，不过有些企业在业务外包的同时把责任也"包"出去了。</p>
+      <p>"发包公司岂能'一包了之'，外包用工亟须规范。"为此，全国人大代表柴闪闪、李丰，上海市人大代表林丽平等建议，进一步规范外包类灵活用工模式，以提升就业质量。</p>
+      <div class="case-subhead">"外包"模式为何受青睐</div>
+      <p>"我一位朋友想参加沪惠保但是不符合条件。尽管他已在上海工作五六年，公司为其交的社保却在浙江省，而购买沪惠保的条件之一是要求在本地参保。"因朋友的一次求助，柴闪闪关注起外包劳动者的合法权益问题。</p>
+      <p>柴闪闪和李丰代表一起做了一个调查。"业务外包作为一种可随市场主体业务调整进度需要'招之即来、挥之即去'的灵活用工模式，被越来越多的用人单位所青睐。"对发包方来说，相比传统的劳务派遣用工模式，外包不仅风险最小化，还带来用工及运营成本的大幅降低；对于择业者而言，往往因外包公司入职门槛低而作为初次就业的不得已选择。</p>
+      <div class="case-source">资料来源：王海燕. 业务外包，用工责任也"一包了之"？[N]. 解放日报, 2022—03—27 (006).</div>
+      <div class="case-questions">
+        <div class="case-questions-label">思考问题</div>
+        <ol>
+          <li>在本案例中，采购服务外包应注重哪些方面？</li>
+          <li>如何使企业进一步规范使用外包类灵活用工模式？</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 3 ============ -->
+  <section id="section-3">
+    <h2 class="section-title">
+      <span class="section-num">Section 03</span>
+      第三节　合作关系的建立
+    </h2>
+
+    <h3 class="subsection-title">一、采购方与供应商的关系</h3>
+
+    <p>采购方和供应商之间有多种类型的关系，从疏远到密切的顺序如下：</p>
+
+    <div class="spectrum">
+      <div class="spectrum-axis">
+        <span>← 疏远 / 交易型</span>
+        <span>密切 / 合作型 →</span>
+      </div>
+      <div class="spectrum-track"></div>
+      <ol class="spectrum-list">
+        <li><strong>现场购买</strong><span class="en">spot buying</span>当需求出现时，充分利用现场最合适的条款进行一次性采购。</li>
+        <li><strong>经常性交易</strong><span class="en">regular trading</span>与一组熟悉且值得信赖的首选供应商进行多次合作。</li>
+        <li><strong>固定或按需分批发货合同</strong><span class="en">fixed or call-off contracts</span>框架协议或总括订单：与供应商签订一个时间段的供应协议。</li>
+        <li><strong>单供应源搜寻</strong><span class="en">single sourcing</span>将业务交给体现了高度的信任和承诺的独家首选供应商。</li>
+        <li><strong>战略联盟</strong><span class="en">strategic alliance</span>采购方与供应商为某一领域的长期共同利益而进行合作，如联合研发新产品。</li>
+        <li><strong>伙伴关系</strong><span class="en">partnership</span>双方商定在一系列事务上长期密切合作，协作研发和解决过程中的问题。</li>
+      </ol>
+    </div>
+
+    <h4 class="minor-title">合作关系建立的六大决定因素</h4>
+    <ol class="info-list">
+      <li><strong>采购物品的性质和重要性。</strong>低价值的、日常性的或一次性的采购不值得耗费巨资展开长期协作，而复杂的、定制化的、高价值的、供应市场不稳定的采购物品才值得投资。</li>
+      <li><strong>供应商的竞争力、能力、合作程度、绩效以及双方互惠行为和相互信任程度，</strong>特别是信任是建立更紧密伙伴关系的必要基础。</li>
+      <li><strong>地理距离。</strong>如果缺乏通信基础设施，则采购方很难与海外供应商建立并保持密切的关系。</li>
+      <li><strong>供应伙伴的兼容性。</strong>如果双方的战略目标、价值观等高度不兼容，则跨越这些障碍的成本就会过高。</li>
+      <li><strong>企业和采购部门的目标以及优先顺序。</strong>首先应考虑最优价格，还是供应安全与质量、全生命周期的资金价值或通过创新实现的长期增值？</li>
+      <li><strong>供应市场的状况。</strong>当供应有风险时，希望有多个供应源；当价格波动严重时，希望现场采购；当市场变化迅速时，不希望被长期供货协议绑定。</li>
+    </ol>
+
+    <h3 class="subsection-title">二、供应商转换</h3>
+
+    <p>在现实采购行为中，供应源搜寻经常会面对的一个问题是：采购方是否存在更换供应商的意愿，即淘汰现有供应商，与其他的供应商或新的供应商展开合作？</p>
+
+    <h4 class="minor-title">转换或更换供应商的四个原因</h4>
+    <ol class="info-list">
+      <li>现有供应商的绩效或可靠性存在问题；</li>
+      <li>当目前的合同即将到期并将续签时，出现了更具竞争力的供应商；</li>
+      <li>新供应商具备旧的供应商所不具备的能力，能够更好地把握新的机遇，如新技术、精益供应等；</li>
+      <li>在低风险、供应充裕、标准化程度高、与供应商关系不太密切、纯粹交易性的采购项目中，采购方很容易利用供应商之间的价格竞争来更换供应商。</li>
+    </ol>
+
+    <p>采购方应注意供应商转换所引起的变化和成本，特别是在双方关系非常稳定，并且已经基于这种关系开展了项目计划和投资时所产生的"<strong>转换成本</strong>"。</p>
+
+    <figure>
+      <figcaption><span class="fig-num">表 2—7</span>供应商转换的成本和风险</figcaption>
+      <table class="compare">
+        <thead>
+          <tr><th style="width: 50%">供应商转换的成本</th><th>供应商转换的风险</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>需要识别新的供应商并进行资格审核</td><td>新供应商能力不足</td></tr>
+          <tr><td>需要启动和管理招标过程或其他询价和合同授予过程</td><td>流程、文化不兼容。例如：需要与旧的供应商整合系统并根据交易情况进行调整，对事物的理解方式和行为模式差异显著</td></tr>
+          <tr><td>需要处理旧供应商尚未交付的货品、未结清款项、提前取消需要支付的违约金等</td><td>知识的损失。例如：老供应商的质量管控体系文件不齐全，造成新供应商接手的学习成本增加；老供应商处的数据和文本外流</td></tr>
+          <tr><td>需要改变内部系统和流程以满足新供应商的需求</td><td>新供应商和采购方需要经过一定磨合才能完成绩效</td></tr>
+          <tr><td>需要培训和帮助新供应商熟悉各种系统、程序和要求</td><td>可能遇到新的、以前未知的供应风险，如政局不稳、劳工问题、企业社会责任问题、汇率风险、运输风险等</td></tr>
+          <tr><td>合同的拟定和管理，如在合作关系的早期阶段可能需要密切的监控和联络</td><td>新老供应商交接可能出现问题：拿不到设计、文档、在制品等</td></tr>
+          <tr><td>风险减缓措施和纠正措施所支付的成本</td><td></td></tr>
+        </tbody>
+      </table>
+    </figure>
+
+    <p>需要注意的是：虽然转换供应商存在潜在好处，但仍然有诸多弊端。在发展长期供应商合作方面所投入的时间和精力可能会对现有供应商造成心理压力，若当前的供应合作令人满意并经得起考验，采购方可以通过持续改进或创新方案的设计与运用，来提高现有供应商的供货品质和效率。</p>
+
+    <p>当确实需要更换供应商时，应注意以下几点：一是应提前向需要续签合同的供应商发出通知，以便采购方与关键利益相关者讨论续签或转换方案；二是提前做好转换计划和风险管理。</p>
+
+    <h3 class="subsection-title">三、联合采购</h3>
+
+    <p>当单靠一个企业自身的需求不足以吸引高质量供应商注意或获得折扣时，采用联合采购最为有利。<strong>采购联合体</strong>（buying consortium）是由多个不同的企业组成的购买商品或服务的集团。当一组企业认为集中需求能为各方带来利益，如产生更大的合同金额、获得规模经济、有更强的议价能力以保证优惠条件等的时候，会产生采购联合体。</p>
+
+    <p>采购联合体与供应商协商时所产生的费用，由采购联合体成员分摊。采购单元可以是其中一个成员单位的采购职能部门，也可以是第三方采购服务组织。采购联合体与供应商之间的关系更可能是<strong>交易型关系</strong>，因为供应商很难与由不同企业组成的团体发展长期伙伴关系。</p>
+
+    <figure>
+      <figcaption>联合采购的好处与弊端</figcaption>
+      <table class="compare">
+        <thead>
+          <tr><th style="width: 50%">联合采购的好处</th><th>联合采购的成本与缺点</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>提高议价能力，获得单独采购无法享受的折扣</td><td>沟通和协调、工作人员的发展和政策制定等方面都要花费成本与精力</td></tr>
+          <tr><td>建立框架协议，简化每个成员的采购行政管理，大大降低交易成本和合同签订成本</td><td>联合采购小组成员之间存在透明度问题，可能具有商业或知识产权风险</td></tr>
+          <tr><td>带来不同的专业技能、知识和关系网络，对特定类别的采购作用明显</td><td>谈判和决策的过程时间长且效率不高，阻碍供应商和采购联合体进行交易</td></tr>
+          <tr><td></td><td>巨大订单合同使中小企业无法获得此类业务，会抑制供应市场的创新</td></tr>
+          <tr><td></td><td>联合采购成员没有义务必须按照商定的规格进行采购</td></tr>
+          <tr><td></td><td>大型联合采购会触犯防止市场主导者滥用其市场支配地位的法律及法规</td></tr>
+        </tbody>
+      </table>
+    </figure>
+  </section>
+
+  <!-- ============ SECTION 4 ============ -->
+  <section id="section-4">
+    <h2 class="section-title">
+      <span class="section-num">Section 04</span>
+      第四节　合同授予
+    </h2>
+
+    <p>采购合同的授予形式根据采购类型和企业政策的变化而变化。为了满足特定采购的需求，企业需提前与供应商达成框架协议或签订长期合同。如果双方事先达成协议，采购方只需将需求以采购订单或总括订单的形式通知合同供应商。</p>
+
+    <p>当企业只能与一个供应商合作时，企业将与可靠的供应商合作协商首选供应商或独家供应商协议。在这种情况下，采购方可以直接与选定的首选供应商或独家供应商进行合同谈判并授予合同。</p>
+
+    <p>企业可以向一个或多个入围的供应商发函"<strong>询价</strong>"（enquiry），询价的形式可以是报价邀请、信息征询函、提案邀请函等。这些询价函通常包括的内容有：采购人员的详细联系方式、日期、所需货物或服务的数量和描述、所需货物的交货地点和日期、采购方的标准条款和条件等。</p>
+
+    <div class="supp-box">
+      <div class="supp-box-header">
+        <div class="supp-icon">补</div>
+        <div class="supp-box-title">补充资料：同品牌不同型号参与询价按一家算还是多家算？</div>
+      </div>
+      <p>"最近我参与一个车辆询价采购项目时，采购人对供应商数量的计算方法让我很迷惑。"某汽车企业大客户项目负责人咨询《政府采购信息》报记者，"18 万元内 SUV 车型项目询价采购，结果同一个品牌的三家经销商用三款不同的车型参与询价，三款车型都符合配备标准。采购人认为三家经销商提供的响应产品是不同型号的，所以应按照三家供应商来计算。那么，同一品牌的三家经销商提供不同型号的产品响应，是按一家还是三家供应商来计算呢？"</p>
+      <p>"如果上述案例中采用的是公开招标或邀请招标方式，不管提供的是不同型号产品，还是不同版本的产品，只要是同一品牌的供应商，都是按照一个投标人来计算的。"政府采购业界资深专家曹石林表示。</p>
+      <p>《政府采购货物和服务招标投标管理办法》（财政部令第 87 号）第三十一条规定："采用最低评标价法的采购项目，提供相同品牌产品的不同投标人参加同一合同项下投标的，……确定一个参加评标的投标人。……使用综合评分法的采购项目，提供相同品牌产品且通过资格审查、符合性审查的不同投标人参加同一合同项下投标的，按一家投标人计算。"</p>
+      <div class="supp-source">资料来源：修霄云. 同品牌不同型号参与询价按一家算还是多家算？[N]. 政府采购信息报, 2022—05—23 (013).</div>
+    </div>
+
+    <h3 class="subsection-title">一、与供应商直接谈判</h3>
+
+    <p>谈判不仅可以作为达成合同的主要手段，也可以作为投标的辅助手段。采购谈判过程可定义为<strong>一个制定计划、审核要点和综合分析的过程，目的是在买方和卖方之间达成可接受的协议</strong>。</p>
+
+    <h4 class="minor-title">合同谈判中采购方的五个主要目标</h4>
+    <ol class="info-list">
+      <li>为一定数量和质量的商品获得优惠的价格；</li>
+      <li>使供应商按时履行合同；</li>
+      <li>控制合同的履行方式；</li>
+      <li>说服供应商给予采购方最大限度的配合；</li>
+      <li>与实力雄厚的供应商建立合作关系。</li>
+    </ol>
+
+    <p>在合作中，谈判的目标往往是多方面的，谈判的目标应按优先顺序分为三个层次：<strong>高目标、中目标、低目标</strong>。在大多数谈判中，每一方都需要作出一定程度的让步，将谈判目标划分优先等级有助于谈判者确定可以放弃或退让（低优先等级目标）的领域以及没有谈判余地（高优先等级目标）的领域。如果一方的低优先等级目标恰好是另一方的中优先等级或高优先等级目标，双方就会有很大的潜在谈判空间。</p>
+
+    <h4 class="minor-title">两种谈判方式</h4>
+    <p>与供应商谈判合同条款有两种方式：</p>
+    <ul class="info-list">
+      <li><strong>分配式谈判</strong>（distributive bargaining）：分配有限的资源，即一方多得意味着另一方就少得，有时这种谈判方式被称为<strong>零和博弈</strong>或输赢模式。如买方降低价格，供应商的利润就会降低。</li>
+      <li><strong>整合式谈判</strong>（integrative bargaining）：目的是通过合作解决问题，寻求更可行的解决方案。这种做法的目的是找到一个双方都满意的<strong>双赢解决方案</strong>，也被称为"增值谈判"（added value negotiating）。</li>
+    </ul>
+
+    <p>分配式谈判也称"<strong>对抗性谈判</strong>"，整合式谈判也称"<strong>合作性谈判</strong>"，其特点对比如下：</p>
+
+    <figure>
+      <figcaption><span class="fig-num">表 2—3</span>对抗性谈判和合作性谈判的特点</figcaption>
+      <table class="compare">
+        <thead>
+          <tr><th style="width: 50%">对抗性谈判</th><th>合作性谈判</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>强调以竞相牺牲对方为目标</td><td>强调以探讨与对方之间的共性为目标</td></tr>
+          <tr><td>以对认定对手的保密、信息的保留和不信任为战略基础</td><td>以对认定合作伙伴的开放、分享信息和高度信任为战略基础</td></tr>
+          <tr><td>通常希望谈判结果不实地表达，很少考虑或同情对方的处境</td><td>通常希望各方都明确谈判结果，谈判各方互相考虑，且同情对方的实际情况</td></tr>
+          <tr><td>谈判的策略具有很大的不可预见性</td><td>谈判策略多样，谈判的战略可预见</td></tr>
+          <tr><td>谈判各方使用威胁、恐吓甚至最后通牒等手段以防备对手</td><td>避免使用威胁等手段，认为类似手段只会对问题的合理解决起反作用</td></tr>
+          <tr><td>谈判各方坚持己见，反对对方所提出的合理或不合理的意见</td><td>各方均认为谈判应机动、灵活，强调运用创造力和逻辑推理就分歧提出建设性的解决方案</td></tr>
+          <tr><td>具有敌对性和侵略性，即"我方反对他方"</td><td>谈判各方认为对方也在为谈判的成功而努力，并且会低调处理可能存在的某些敌意</td></tr>
+          <tr><td>一方认为另一方若实现谈判的目的会影响自己的利益，阻挠谈判目的的实现</td><td>双方认为只要是对谈判中的一方有利，就是对双方有利，是一种较为健康的合作方式</td></tr>
+          <tr><td>最基本的谈判态度是"非赢即输"</td><td>最基本的态度是努力使双方都能达到各自的目的，即"双赢"的局面</td></tr>
+          <tr><td>谈判陷入僵局的时候，谈判即可能破裂</td><td>谈判陷入僵局时，高层管理人员、调停者或仲裁人可能需要干预以进一步解决问题</td></tr>
+        </tbody>
+      </table>
+    </figure>
+
+    <h3 class="subsection-title">二、招标的适用范围</h3>
+
+    <p>有些企业喜欢采用<strong>竞争性招标</strong>的方式，从潜在供应商中选择方案最优或价格最低的供应商。</p>
+
+    <figure>
+      <figcaption><span class="fig-num">表 2—4</span>竞争性招标的使用</figcaption>
+      <table class="compare">
+        <thead>
+          <tr><th style="width: 50%">使用竞争性招标的五条标准</th><th>不适合竞争性招标的四种情形</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>采购价值足够高</td><td>无法准确估算生产成本</td></tr>
+          <tr><td>规格明确，潜在供应商明确履行合同的成本</td><td>价格不是合同授予的唯一或最重要的决定因素</td></tr>
+          <tr><td>市场上有较多潜在的供应商</td><td>规格可能会随着合同的进展而变化</td></tr>
+          <tr><td>潜在供应商具备技术资质，希望获得此项业务</td><td>启动成本是需求采购中的主要因素</td></tr>
+          <tr><td>有充裕的时间完成招标程序</td><td></td></tr>
+        </tbody>
+      </table>
+    </figure>
+
+    <h4 class="minor-title">竞争性招标的优点</h4>
+    <ol class="info-list">
+      <li>保证公平，形成供应商之间的真正竞争；</li>
+      <li>确保采购决策按照成本和资金价值的原则进行；</li>
+      <li>鼓励大量供应商参与招标（特别是公开招标或广告招标），鼓励创造性的解决方案。</li>
+    </ol>
+
+    <h4 class="minor-title">竞争性招标的不足</h4>
+    <ol class="info-list">
+      <li>竞争可能会使非常合适的潜在投标者"望而生畏"；</li>
+      <li>如果对投标人的资格预审不充分，可能会导致程序后期出现运营风险；</li>
+      <li>竞争性招标基本是以最低价格为中标基础的，这种竞争可能导致一些重要指标被忽视；</li>
+      <li>竞争性招标可能给采购方带来沉重的行政管理负担；</li>
+      <li>合同授予可能是一次性的，因此供应商和采购方进行长期合作的意愿不强。</li>
+    </ol>
+
+    <h3 class="subsection-title">三、招标的分类</h3>
+
+    <div class="tender-grid">
+      <div class="tender-card">
+        <h5>公开招标</h5>
+        <div class="en">open procedures</div>
+        <p>通过公开的逆向电子拍卖等多种大范围广告的方式邀请所有潜在投标方进行竞价。企业按照招标书及相关招标文件的要求对所有投标进行评审，并严格按照竞争性标准（如最低价格或最佳价值）授予合同。</p>
+      </div>
+      <div class="tender-card">
+        <h5>选择性或限制性招标</h5>
+        <div class="en">selective or restricted procedures</div>
+        <p>要求在投标前对响应招标广告的潜在供应商进行资格预审。资格预审问卷通常用于审查供应商的技术能力和财务状况。一般选择 3 ～ 10 家供应商参与投标。</p>
+      </div>
+      <div class="tender-card">
+        <h5>限制性公开招标</h5>
+        <div class="en">restricted open procedures</div>
+        <p>在有限定的媒体上（如相关技术刊物和行业网站）发布招标广告公开邀请潜在供应商参与合同竞争，这种招标方法在一定程度上起到了资格预审的作用。</p>
+      </div>
+      <div class="tender-card">
+        <h5>谈判招标</h5>
+        <div class="en">negotiated procedures</div>
+        <p>选择少数供应商与采购方直接谈判。在谈判程序的最后，采购方对每个供应商提交的最终报价进行竞争性评估和比较，从中选择最佳报价。</p>
+      </div>
+    </div>
+
+    <p>招标形式有很多种，但当采购方有选择权时，通常采用<strong>选择性招标</strong>，原因如下：</p>
+    <ol class="info-list">
+      <li>与公开招标和谈判招标相比，选择性招标更能为采购方和供应商节省时间和金钱；</li>
+      <li>与公开招标相比，通过资格预审进行的选择性招标降低了供应商后期出现技术能力或生产能力问题的可能性；</li>
+      <li>直接淘汰了没有机会的供应商，节省了其精力和金钱。</li>
+    </ol>
+
+    <h3 class="subsection-title">四、潜在投标方的资格预审</h3>
+
+    <p>根据既定标准对潜在投标方进行资格预审，可以系统地排除由于以下原因不应进入后续招标过程的供应商：</p>
+    <ol class="info-list">
+      <li>不具备近期从事相关种类工作的经验；</li>
+      <li>不具备完成工作所需的稳定财务或经济资源；</li>
+      <li>不具备成功完成工作所需的人力或管理资源；</li>
+      <li>不具备必要的技术、设施或能力，如设计能力、质量或风险管理能力、逆向物流能力等；</li>
+      <li>严重依赖分包，但不具备有效管理供应链的能力；</li>
+      <li>风险太高，如曾犯有欺诈罪或曾有不道德的交易行为。</li>
+    </ol>
+
+    <p>供应商的资格预审和谈判将给投标过程带来额外的成本，因此，采购方无须对标准化、低风险和低价值的采购需求进行资格预审和谈判。在资格预审之前，采购方最好使用细分、优先级排序和风险分析工具（如卡拉杰克矩阵或帕累托分析）来确定采购是否具有高价值或高风险，从而决定采用招投标的类型。</p>
+  </section>
+
+  <!-- ============ SECTION 5 (实践指导) ============ -->
+  <section id="section-5">
+    <h2 class="section-title">
+      <span class="section-num">Section 05</span>
+      第五节　实践指导
+    </h2>
+
+    <h3 class="subsection-title">一、实践任务</h3>
+    <p>通过本章学习，引导学生从战略、政策以及相关背景的角度了解供应源搜寻的方法，要求学生了解单供应源搜寻、双供应源搜寻以及多供应源搜寻的基本概念，掌握供应源垄断形成的基本条件和企业内部交易的主要目标，熟知招投标的方式。</p>
+
+    <h3 class="subsection-title">二、实践步骤</h3>
+    <ol class="info-list">
+      <li>分组讨论并交流，找出分析案例中的关键问题；</li>
+      <li>确定是否还需查找与已找出关键问题相关的背景资料；</li>
+      <li>筛选并优化分析此案例的答题思路；</li>
+      <li>明确构成小组分析逻辑的依据，并展开进一步的逻辑整理；</li>
+      <li>小组形成文字报告并汇报。</li>
+    </ol>
+
+    <h3 class="subsection-title">三、实践要求</h3>
+    <ol class="info-list">
+      <li><strong>彻底读懂案例</strong>——对案例进行反复阅读，对案例中的背景资料、主要事实、面临的难题及难点、重要论点、重要结论和针对性的对策建议等内容进行——记录。</li>
+      <li><strong>分组交流讨论</strong>——对案例中的主要角色所面临的问题进行分析，归纳总结，并通过电子资料、图书馆实体资料等获取相关领域的多方面知识。</li>
+      <li><strong>全面并正确概括问题</strong>——根据案例的相关资料找出问题的症结所在，并对需要解决的问题进行正确概括。</li>
+      <li><strong>撰写分析报告</strong>——以所学理论为指导分析资料；要求全面充实，紧扣主题，结构合理。</li>
+    </ol>
+
+    <h3 class="subsection-title">四、实践内容：日本地震与汽车零部件供应</h3>
+
+    <div class="case-box">
+      <div class="case-box-header">
+        <span class="case-tag">实践案例</span>
+        <span class="case-title">零部件供应源应多元化</span>
+      </div>
+      <p>2011 年 3 月 11 日，日本地震导致其本国零部件供应商纷纷停产，虽然有少数企业恢复生产，但是由于道路运输不畅，产品无法往外输送。与其有合作关系的车企间供应链条断裂，各车企面临减产风险。</p>
+      <p>电装作为日本最大汽车零部件供应商，只是日本零部件企业的一个代表。日本地震对全球汽车生产的影响开始逐步显露，越来越多的国家和车企开始面临零部件供应短缺，有些甚至已经减产或停产。</p>
+      <p>据了解，法国汽车制造商<strong>标致雪铁龙</strong>表示，日本爆发特大地震之后，该公司位于日本的电子配件供应商生产受到冲击，因此公司旗下的柴油引擎生产将于 3 月 23 日开始放缓。<strong>雷诺公司</strong>也发表声明称，该公司不得不将其韩国汽车工厂的月产量削减 15% ～ 20%，约合 3 000 多辆。</p>
+      <p>中国吉利控股的瑞典<strong>沃尔沃汽车公司</strong>也宣布，因日本大地震造成的零部件供应短缺，该公司位于瑞典哥德堡的托斯兰达（Torslanda）工厂和比利时的根特（Gent）工厂的生产均受到了影响。沃尔沃汽车对日本进口零部件依赖程度较高，约有 10% 的汽车零部件购自日本。</p>
+      <p>尽管日系车企在华合资公司国产率很高，基本上都在 80% 以上，但是，发动机等核心零部件往往需要从日本进口。而且，已经在中国设厂的一级供应商的一些核心零部件，是其在日本本土的二三级供应商供应的。</p>
+      <p>据汽车工业协会统计，2010 年从日本进口的汽车零部件占我国进口汽车零部件总额的 <strong>39.9%</strong>，价值 109.1 亿美元，位列第一。从零部件分类看，传动系统、制动系统、发动机零部件、转向系统零部件进口占我国 2010 年对应类别零部件进口金额的 53.6%、45.9%、43.4%、40.6%、34.7%。</p>
+      <p>地震的后遗症让车企认识到日本零部件的影响力，日本汽车产业模式的弊端彻底暴露。<strong>汽车零部件供应来源应更开放、更多元化是车企可持续发展的重要考虑因素。</strong></p>
+      <div class="case-source">资料来源：李秋. 零部件供应源应多元化 [N]. 中国商报, 2011—03—25 (B02).</div>
+    </div>
+
+    <h3 class="subsection-title">五、实践范例：芯片业布局升级　难解汽车缺芯"近渴"</h3>
+
+    <div class="case-box">
+      <div class="case-box-header">
+        <span class="case-tag">前沿研究</span>
+        <span class="case-title">芯片业布局升级　难解汽车缺芯"近渴"</span>
+      </div>
+      <p>芯片短缺已成为威胁全球汽车业乃至经济复苏的一大风险，从目前各国和大型厂商采取的措施来看，未来芯片业布局将逐步升级，呈现出区域转移等特点。但是，由于全球经济生态转型、主要厂商恢复产能尚需时日等因素，"缺芯"困境短期难以解决。</p>
+      <p>此轮芯片广泛性缺货的主要原因，是疫情导致上游产品 8 英寸晶圆的全球产能一度紧张，与此同时家庭智能电器需求激增。此外，近期日本厂商火灾、美国暴风雪致使部分晶圆厂短暂停工。</p>
+      <p>于汽车界而言，后疫情时代汽车销量恢复速度超预期、车企芯片采购滞后、芯片涨价导致囤货等，都加剧了芯片缺货危机。近年来，欧美传统科技厂商的产业重心转移，芯片生产阵地由亚洲控制。</p>
+      <p>目前，全球大部分处理器均在亚洲生产，其中，中国台湾的台积电和韩国的三星占据主导地位。数据显示，美国在全球芯片制造产能中所占份额从 1990 年的 <strong>37%</strong> 下降到 2020 年的 <strong>12%</strong>，同期欧洲下降了 35 个百分点至 9%。目前，中国大陆芯片制造产能所占市场份额在 15% 以下，这一数字未来十年预计将增长到 24%。</p>
+      <p>业界同时注意到，中国在芯片生产方面显现出成本优势。据《金融时报》报道，中国晶圆厂的成本比美国低 37% ～ 50%。自 2015 年以来，中国大陆半导体行业已经宣布了约 84 个外国直接投资（FDI）项目，其中 44% 在制造业。</p>
+      <p>业界人士认为无论芯片在全球哪个区域生产，短缺都会发生，原因是芯片短缺受大环境影响很大。比如，受工厂失火事件影响的日本瑞萨芯片供应中断的时间可能会比预期更长。要在三个或四个月完全恢复生产将是极度困难的，而这可能会影响车厂至少六个月的生产活动。</p>
+      <p>工信部副部长表示，近期汽车芯片供应短缺既是全球共性问题，也反映出我国自主供给能力不足的深层次矛盾。汽车芯片是关乎产业核心竞争力的重要器件，需要统筹发展和安全，坚持远近结合、系统推进，提升全产业链水平，有力支撑汽车和半导体产业高质量发展。</p>
+      <div class="case-source">资料来源：闫磊. 芯片业布局升级 难解汽车缺芯"近渴" [N]. 经济参考报, 2021—04—09 (007).</div>
+    </div>
+
+    <!-- 案例分析 -->
+    <div class="case-box">
+      <div class="case-box-header">
+        <span class="case-tag">案例分析</span>
+        <span class="case-title">如何选择私有云 IaaS 供应商？</span>
+      </div>
+      <p>无论是全球还是亚太市场，<strong>IaaS</strong>（基础设施即服务）都是最受企业用户青睐的，并且在未来几年内，它仍将是云计算市场增长的主要驱动力。不过，当企业用户真正想要去选择部署私有 IaaS 方案时，可能会发现还是有不少令其感到困惑的地方。</p>
+
+      <div class="case-subhead">"苹果"红了？</div>
+      <p>目前，就市场上用于帮助企业用户构建私有云的 IaaS 解决方案而言，用"乱花渐欲迷人眼"来形容丝毫不为过：国内外这些大大小小的传统 IT 厂商，无论以前是卖服务器还是卖存储的，抑或是卖软件的，早已开始售卖自家的 IaaS 方案。</p>
+      <p>"如果用十分制来衡量（IaaS 方案）成熟度的话，我认为只有七八分。"陈滢如此回答。在陈滢看来，未到"十分成熟"的理由主要有两点：一是市场上各 IaaS 方案整体用户体验大多不太好，管理工具通常比较复杂，易用性也不算好；二是当前很多企业级 IaaS 方案是商业化软件，对开源拥抱不足。</p>
+      <p>吴启新给出的解释则是，任何一个技术、产品或方案，一定要经过客户实地的生产环境的验证，并且在客户中有相当的普及程度才能称得上成熟。</p>
+
+      <div class="case-subhead">选择太多也是烦恼</div>
+      <p>除了企业级 IaaS 方案成熟度问题，有个也算奇特的现象可能也会令某些企业用户感到困惑——当那些服务器厂商、存储厂商、网络厂商、虚拟化厂商、开源软件厂商等都来向你兜售自家 IaaS 方案时，你是不是也会犯嘀咕："大家都卖同一类方案，选谁家的？"</p>
+      <p>用户究竟怎么选，三位专家均表示，跟用户目前的业务、喜好和原来的遗留系统有很大关系。"例如，有些用户一直用 IBM 的系统，他们自然会偏向选择 IBM 的云方案。有些用户喜欢开放的环境，那他们就愿意选择 VMware 的产品。还有些用户则会去尝试开源的方案。但是<strong>每种方案都是各有利弊的，企业用户选择之初对此就应该了然于胸，要有自己的主心骨</strong>。"陈滢说。</p>
+
+      <div class="case-subhead">云会是另一种"孤岛"吗？</div>
+      <p>IT 孤岛是困扰企业级用户多年的老大难问题。云的互通性问题肯定存在，但要分以下三种情况：</p>
+      <ol class="info-list">
+        <li><strong>私有云与公有云之间的互通性。</strong>现在 IT 厂商在设计其私有 IaaS 方案时都考虑了这一点，逐渐做到了对亚马逊等主流公有云服务的支持。</li>
+        <li><strong>企业内部不同种类私有云之间共生互通的问题。</strong>不同 IaaS 平台底层支持的虚拟化技术主要就是 vSphere、Hyper-V、XEN、KVM 这几种。</li>
+        <li><strong>用户从一个私有云彻底迁移到另一个私有云。</strong>通常是新厂商会提供专门的工具与服务帮助企业用户进行迁移，但用户在选择方案之初还是要充分评估被锁定的风险究竟有多大。</li>
+      </ol>
+
+      <p>支持应用与数据在各种云之间的无缝迁移是云计算厂商们意识到且正在努力的方向，但是企业用户在签订相关合同时，将可能发生的数据迁移事项写入合同也是必要的。</p>
+
+      <div class="case-source">资料来源：周源. 如何选择私有 IaaS 供应商？(2013—04—16). https://www.51cto.com/article/389744.html.</div>
+      <div class="case-questions">
+        <div class="case-questions-label">思考问题</div>
+        <ol>
+          <li>结合案例，谈一谈在选择供应商时应该注意的供应标准主要体现在哪几个方面？</li>
+          <li>小企业可以从上述案例中学习到什么？如何将私有云供应商 IaaS 选择中的经验与标准结合到小企业的采购行为中？</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EXERCISES ============ -->
+  <section id="exercises" class="exercises">
+    <div class="exercises-header">
+      <div class="icon">练</div>
+      <h2>练习与思考</h2>
+    </div>
+
+    <div class="ex-section">
+      <h3 class="ex-section-title"><span class="ex-num">一</span>名词解释</h3>
+      <ol class="term-list">
+        <li>供应商基础</li>
+        <li>调拨价格</li>
+        <li>垄断</li>
+        <li>企业内部交易</li>
+      </ol>
+    </div>
+
+    <div class="ex-section">
+      <h3 class="ex-section-title"><span class="ex-num">二</span>单项选择题</h3>
+
+      <div class="quiz-question">
+        <div class="q-stem"><span class="q-num">1.</span>对潜在供应商进行资格预审，取 3 ～ 10 家入围并发出招标邀请的招标类型是（　　）。</div>
+        <ul class="q-options">
+          <li><span class="opt-letter">A.</span>公开招标</li>
+          <li><span class="opt-letter">B.</span>选择性招标</li>
+          <li><span class="opt-letter">C.</span>限制性公开招标</li>
+          <li><span class="opt-letter">D.</span>限制性邀请招标</li>
+        </ul>
+      </div>
+
+      <div class="quiz-question">
+        <div class="q-stem"><span class="q-num">2.</span>伙伴式供应源搜寻对于采购方而言的优点是（　　）。</div>
+        <ul class="q-options">
+          <li><span class="opt-letter">A.</span>分担风险和投资</li>
+          <li><span class="opt-letter">B.</span>关系管理成本</li>
+          <li><span class="opt-letter">C.</span>关系管理投资</li>
+          <li><span class="opt-letter">D.</span>在欧盟的公共采购领域受到规章限制</li>
+        </ul>
+      </div>
+
+      <div class="quiz-question">
+        <div class="q-stem"><span class="q-num">3.</span>采购方与供应商之间的（　　）交易类型关系较为密切。</div>
+        <ul class="q-options">
+          <li><span class="opt-letter">A.</span>现场购买</li>
+          <li><span class="opt-letter">B.</span>经常性交易</li>
+          <li><span class="opt-letter">C.</span>伙伴关系</li>
+          <li><span class="opt-letter">D.</span>单供应源搜寻</li>
+        </ul>
+      </div>
+
+      <div class="quiz-question">
+        <div class="q-stem"><span class="q-num">4.</span>伙伴式供应源搜寻对于供应商而言的优点是（　　）。</div>
+        <ul class="q-options">
+          <li><span class="opt-letter">A.</span>协作降低成本，节省成本</li>
+          <li><span class="opt-letter">B.</span>增加关系管理投资的费用</li>
+          <li><span class="opt-letter">C.</span>客户滥用透明度的风险</li>
+          <li><span class="opt-letter">D.</span>分担风险和投资</li>
+        </ul>
+      </div>
+
+      <div class="quiz-question">
+        <div class="q-stem"><span class="q-num">5.</span>在下列哪种情况下应选择伙伴式供应源搜寻？（　　）</div>
+        <ul class="q-options">
+          <li><span class="opt-letter">A.</span>供应市场有限，高水平、可靠的供应商数量有限</li>
+          <li><span class="opt-letter">B.</span>总需求量小</li>
+          <li><span class="opt-letter">C.</span>供应商的声誉、质量和价格等优势远远超过竞争对手</li>
+          <li><span class="opt-letter">D.</span>供货启动成本高</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ex-section">
+      <h3 class="ex-section-title"><span class="ex-num">三</span>多项选择题</h3>
+
+      <div class="quiz-question">
+        <div class="q-stem"><span class="q-num">1.</span>下列哪些是使用竞争性招标的标准？（　　）</div>
+        <ul class="q-options">
+          <li><span class="opt-letter">A.</span>采购价值足够高</li>
+          <li><span class="opt-letter">B.</span>规格明确，潜在供应商明确履行合同的成本</li>
+          <li><span class="opt-letter">C.</span>市场上有较多潜在的供应商</li>
+          <li><span class="opt-letter">D.</span>无法准确估算生产成本</li>
+        </ul>
+      </div>
+
+      <div class="quiz-question">
+        <div class="q-stem"><span class="q-num">2.</span>垄断市场形成的条件包括（　　）。</div>
+        <ul class="q-options">
+          <li><span class="opt-letter">A.</span>独此一家</li>
+          <li><span class="opt-letter">B.</span>市场门槛高</li>
+          <li><span class="opt-letter">C.</span>无法被替代</li>
+          <li><span class="opt-letter">D.</span>产品质量好</li>
+        </ul>
+      </div>
+
+      <div class="quiz-question">
+        <div class="q-stem"><span class="q-num">3.</span>合作关系的建立主要取决于（　　）。</div>
+        <ul class="q-options">
+          <li><span class="opt-letter">A.</span>采购物品的性质和重要性</li>
+          <li><span class="opt-letter">B.</span>地理距离</li>
+          <li><span class="opt-letter">C.</span>供应伙伴的兼容性</li>
+          <li><span class="opt-letter">D.</span>供应市场的状况</li>
+        </ul>
+      </div>
+
+      <div class="quiz-question">
+        <div class="q-stem"><span class="q-num">4.</span>伙伴式供应源搜寻的特征包括（　　）。</div>
+        <ul class="q-options">
+          <li><span class="opt-letter">A.</span>合作伙伴的文化相互匹配</li>
+          <li><span class="opt-letter">B.</span>高度互信，客户与供应商之间的知识分享和公开</li>
+          <li><span class="opt-letter">C.</span>双方都认同供应链内双赢的理念</li>
+          <li><span class="opt-letter">D.</span>双方的专业知识、资源互补</li>
+        </ul>
+      </div>
+
+      <div class="quiz-question">
+        <div class="q-stem"><span class="q-num">5.</span>联合采购的好处有哪些？（　　）</div>
+        <ul class="q-options">
+          <li><span class="opt-letter">A.</span>提高议价能力，获得单独采购无法获得的折扣</li>
+          <li><span class="opt-letter">B.</span>降低交易成本和合同签订成本</li>
+          <li><span class="opt-letter">C.</span>联合采购成员带来不同的专业技能、知识和关系网络</li>
+          <li><span class="opt-letter">D.</span>谈判时间长且效率低下</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ex-section">
+      <h3 class="ex-section-title"><span class="ex-num">四</span>简答题</h3>
+      <div class="essay-q"><span class="q-num">1.</span>简要分析联合采购的好处。</div>
+      <div class="essay-q"><span class="q-num">2.</span>试述企业内部交易的主要目的。</div>
+    </div>
+
+    <div class="ex-section">
+      <h3 class="ex-section-title"><span class="ex-num">五</span>论述题</h3>
+      <div class="essay-q"><span class="q-num">1.</span>采购方与供应商谈判的主要目标有哪些？</div>
+    </div>
+  </section>
+
+</main>

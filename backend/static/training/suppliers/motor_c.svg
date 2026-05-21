@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Motor supplier C">
+  <rect width="640" height="360" fill="#f0fdf4"/>
+  <rect x="66" y="100" width="330" height="140" rx="16" fill="#16a34a"/>
+  <circle cx="430" cy="170" r="74" fill="#14532d"/>
+  <circle cx="430" cy="170" r="40" fill="#bbf7d0"/>
+  <rect x="490" y="156" width="84" height="28" rx="14" fill="#86efac"/>
+  <text x="60" y="310" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#052e16">C · Nanling Machinery</text>
+</svg>

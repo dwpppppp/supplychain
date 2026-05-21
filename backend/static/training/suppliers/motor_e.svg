@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Motor supplier E">
+  <rect width="640" height="360" fill="#fdf2f8"/>
+  <rect x="68" y="104" width="326" height="136" rx="16" fill="#db2777"/>
+  <circle cx="426" cy="172" r="72" fill="#831843"/>
+  <circle cx="426" cy="172" r="38" fill="#fbcfe8"/>
+  <rect x="486" y="158" width="82" height="28" rx="14" fill="#f9a8d4"/>
+  <text x="60" y="310" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#500724">E · Haixi Power</text>
+</svg>

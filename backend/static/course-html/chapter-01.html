@@ -1,0 +1,2141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一章 供应源搜寻的基本流程 · 采购寻源基础</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --bg-elevated: #ffffff;
+    --bg-subtle: #f3f1ec;
+    --ink: #1a1a1a;
+    --ink-soft: #4a4a4a;
+    --ink-muted: #8a8580;
+    --line: #e6e2da;
+    --line-strong: #d4cfc4;
+    --accent: #b91c4d;
+    --accent-soft: #fdf2f5;
+    --accent-line: #f4d7e0;
+    --highlight: #fff8e7;
+    --highlight-line: #ead9a8;
+    --code-bg: #f5f2eb;
+    --shadow-sm: 0 1px 2px rgba(20, 15, 8, 0.04);
+    --shadow-md: 0 4px 16px rgba(20, 15, 8, 0.06);
+    --shadow-lg: 0 12px 40px rgba(20, 15, 8, 0.10);
+
+    --serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
+    --sans: "Noto Sans SC", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    --mono: "JetBrains Mono", "SF Mono", Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.8;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ======= LAYOUT ======= */
+  .layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr) 240px;
+    max-width: 1440px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+
+  /* ======= SIDEBAR (LEFT) ======= */
+  .sidebar {
+    border-right: 1px solid var(--line);
+    padding: 32px 24px 64px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--bg);
+  }
+
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 24px;
+  }
+  .brand-mark {
+    width: 32px;
+    height: 32px;
+    background: var(--accent);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 18px;
+    flex-shrink: 0;
+    align-self: center;
+  }
+  .brand-text { line-height: 1.2; }
+  .brand-title {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .brand-sub {
+    font-size: 11px;
+    color: var(--ink-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .nav-section { margin-bottom: 28px; }
+  .nav-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-left: 8px;
+  }
+  .nav-list { list-style: none; }
+  .nav-list li {
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+  .nav-list a {
+    display: block;
+    padding: 7px 12px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.15s ease;
+    border-radius: 0 4px 4px 0;
+  }
+  .nav-list a:hover {
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .nav-list a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: var(--accent-soft);
+    font-weight: 500;
+  }
+  .nav-list .nav-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-right: 8px;
+  }
+  .nav-list a.active .nav-num { color: var(--accent); }
+
+  /* ======= MAIN CONTENT ======= */
+  .main {
+    padding: 56px 64px 120px;
+    min-width: 0;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 28px;
+    font-family: var(--mono);
+  }
+  .breadcrumb span { color: var(--line-strong); }
+  .breadcrumb a { color: var(--ink-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--accent); }
+  .breadcrumb .current { color: var(--ink-soft); }
+
+  .chapter-header {
+    margin-bottom: 56px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .chapter-eyebrow {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding: 4px 10px;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-line);
+  }
+  h1.chapter-title {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 44px;
+    line-height: 1.2;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+  .chapter-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-top: 20px;
+  }
+  .chapter-meta-item { display: flex; align-items: center; gap: 6px; }
+  .chapter-meta-item svg { opacity: 0.6; }
+
+  /* ======= SECTION HEADINGS ======= */
+  h2.section-title {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 30px;
+    color: var(--ink);
+    margin-top: 64px;
+    margin-bottom: 24px;
+    padding-left: 16px;
+    border-left: 4px solid var(--accent);
+    line-height: 1.3;
+    scroll-margin-top: 24px;
+  }
+  h2.section-title .section-num {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--accent);
+    display: block;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  h3.subsection-title {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--ink);
+    margin-top: 40px;
+    margin-bottom: 16px;
+    scroll-margin-top: 24px;
+  }
+
+  h4.minor-title {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--ink);
+    margin-top: 28px;
+    margin-bottom: 12px;
+  }
+
+  /* ======= BODY TEXT ======= */
+  p {
+    font-size: 16px;
+    line-height: 1.85;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    text-align: justify;
+    text-justify: inter-ideograph;
+  }
+  p strong { color: var(--ink); font-weight: 600; }
+
+  /* ======= LEARNING OBJECTIVES ======= */
+  .objective-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--accent-line);
+    border-left: 4px solid var(--accent);
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
+  }
+  .objective-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--accent);
+  }
+  .objective-card-header svg { stroke: var(--accent); }
+  .objective-list {
+    list-style: none;
+    counter-reset: obj;
+  }
+  .objective-list li {
+    counter-increment: obj;
+    padding-left: 36px;
+    position: relative;
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .objective-list li::before {
+    content: counter(obj, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    font-weight: 600;
+  }
+
+  .concept-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 16px 20px;
+    background: var(--bg-subtle);
+    border: 1px dashed var(--line-strong);
+    margin-bottom: 32px;
+  }
+  .concept-tags-label {
+    font-size: 12px;
+    color: var(--ink-muted);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    align-self: center;
+    margin-right: 4px;
+  }
+  .concept-tag {
+    background: var(--bg-elevated);
+    border: 1px solid var(--line-strong);
+    padding: 4px 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-family: var(--serif);
+  }
+
+  /* ======= "想一想" BOX ======= */
+  .thinking-box {
+    background: var(--highlight);
+    border: 1px solid var(--highlight-line);
+    border-left: 4px solid #c9a35a;
+    padding: 20px 24px;
+    margin: 28px 0;
+    position: relative;
+  }
+  .thinking-box-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--serif);
+    font-weight: 700;
+    color: #8a6510;
+    font-size: 15px;
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+  }
+  .thinking-box p {
+    font-size: 14.5px;
+    color: #5a4a20;
+    margin-bottom: 0;
+    line-height: 1.75;
+  }
+  .thinking-box p + p { margin-top: 10px; }
+
+  /* ======= CASE STUDY BOX ======= */
+  .case-box {
+    background: var(--bg-elevated);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--accent);
+    padding: 28px 32px;
+    margin: 32px 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .case-box-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--line-strong);
+  }
+  .case-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    background: var(--accent);
+    color: #fff;
+    padding: 3px 8px;
+    letter-spacing: 0.1em;
+  }
+  .case-title {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .case-box p { font-size: 15px; }
+  .case-source {
+    font-size: 12px;
+    color: var(--ink-muted);
+    font-style: italic;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--line);
+  }
+  .case-questions {
+    margin-top: 16px;
+    padding: 16px 20px;
+    background: var(--bg-subtle);
+    border-left: 3px solid var(--accent);
+  }
+  .case-questions-label {
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  .case-questions ol { padding-left: 20px; }
+  .case-questions li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+
+  /* ======= SUPPLEMENTARY KNOWLEDGE BOX ======= */
+  .supp-box {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-line);
+    padding: 24px 28px;
+    margin: 32px 0;
+  }
+  .supp-box-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--serif);
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--accent-line);
+  }
+  .supp-box-header .supp-icon {
+    width: 28px; height: 28px;
+    background: var(--accent);
+    color: #fff;
+    display: grid; place-items: center;
+    font-size: 14px;
+    font-family: var(--serif);
+  }
+  .supp-box-title { font-size: 16px; }
+  .supp-box p { font-size: 14.5px; color: var(--ink-soft); }
+
+  /* ======= STEPS LIST ======= */
+  .steps-list {
+    counter-reset: step;
+    list-style: none;
+    margin: 24px 0;
+  }
+  .steps-list > li {
+    counter-increment: step;
+    padding-left: 56px;
+    position: relative;
+    margin-bottom: 20px;
+    min-height: 40px;
+  }
+  .steps-list > li::before {
+    content: "第 " counter(step, cjk-decimal) " 步";
+    position: absolute;
+    left: 0;
+    top: 2px;
+    background: var(--ink);
+    color: #fff;
+    font-family: var(--serif);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    width: 48px;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .steps-list > li > strong {
+    display: block;
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .steps-list > li > p {
+    margin-bottom: 0;
+    font-size: 15px;
+  }
+
+  /* ======= ORDERED LIST ======= */
+  .info-list {
+    list-style: none;
+    counter-reset: info;
+    margin: 16px 0 24px;
+  }
+  .info-list > li {
+    counter-increment: info;
+    padding-left: 36px;
+    position: relative;
+    margin-bottom: 14px;
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.75;
+  }
+  .info-list > li::before {
+    content: "(" counter(info) ")";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-family: var(--mono);
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  /* ======= FIGURES & TABLES ======= */
+  figure {
+    margin: 32px 0;
+    background: var(--bg-elevated);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  figcaption {
+    background: var(--bg-subtle);
+    padding: 10px 18px;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ink);
+    border-bottom: 1px solid var(--line);
+  }
+  figcaption .fig-num {
+    color: var(--accent);
+    font-family: var(--mono);
+    margin-right: 10px;
+    font-weight: 500;
+  }
+  .fig-source {
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-style: italic;
+    padding: 8px 18px;
+    background: var(--bg-subtle);
+    border-top: 1px dashed var(--line);
+  }
+
+  /* ======= FLOW DIAGRAM ======= */
+  .flow-diagram {
+    padding: 36px 24px;
+    background: linear-gradient(180deg, #ffffff 0%, #fafaf7 100%);
+  }
+  .flow-diagram svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+
+  /* ======= TABLES ======= */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  table th, table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+    line-height: 1.7;
+  }
+  table th {
+    background: var(--accent-soft);
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 13.5px;
+    border-bottom: 2px solid var(--accent-line);
+  }
+  table tbody tr:hover { background: var(--bg-subtle); }
+  table.center th, table.center td { text-align: center; }
+  table .label-col {
+    background: var(--bg-subtle);
+    font-weight: 600;
+    color: var(--ink);
+    width: 140px;
+    font-family: var(--serif);
+  }
+
+  /* Kraljic matrix */
+  .kraljic {
+    display: grid;
+    grid-template-columns: 60px 1fr 1fr;
+    grid-template-rows: 30px 1fr 1fr;
+    gap: 0;
+    margin: 0;
+    background: #fff;
+  }
+  .kraljic .axis-label {
+    background: var(--bg-subtle);
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+  .kraljic .col-header {
+    grid-row: 1;
+    border-bottom: 1px solid var(--line);
+  }
+  .kraljic .col-low { grid-column: 2; }
+  .kraljic .col-high { grid-column: 3; }
+  .kraljic .row-label {
+    grid-column: 1;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+  .kraljic .row-high { grid-row: 2; }
+  .kraljic .row-low { grid-row: 3; }
+  .kraljic .quadrant {
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-collapse: collapse;
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+  .kraljic .quadrant h5 {
+    font-family: var(--serif);
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .kraljic .quadrant .time {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .kraljic .quadrant p {
+    font-size: 13px;
+    margin-bottom: 6px;
+    line-height: 1.7;
+  }
+  .kraljic .quadrant p strong {
+    color: var(--ink);
+    font-family: var(--serif);
+    margin-right: 4px;
+  }
+
+  /* 10C model */
+  .ten-c-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 24px 0;
+  }
+  .ten-c-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--line);
+    padding: 18px 20px;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .ten-c-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--accent);
+  }
+  .ten-c-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .ten-c-card-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .ten-c-card .c-letter {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .ten-c-card .c-name-cn {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .ten-c-card .c-name-en {
+    font-size: 12px;
+    color: var(--ink-muted);
+    font-family: var(--mono);
+    letter-spacing: 0.05em;
+    margin-left: auto;
+  }
+  .ten-c-card ul {
+    list-style: none;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .ten-c-card ul li {
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 4px;
+  }
+  .ten-c-card ul li::before {
+    content: "·";
+    position: absolute;
+    left: 4px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ======= EXERCISES ======= */
+  .exercises {
+    margin-top: 80px;
+    padding-top: 48px;
+    border-top: 2px solid var(--ink);
+  }
+  .exercises-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .exercises-header h2 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 26px;
+    color: var(--ink);
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+  .exercises-header .icon {
+    width: 36px; height: 36px;
+    background: var(--ink);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-family: var(--serif);
+    font-weight: 700;
+  }
+
+  .ex-section { margin-bottom: 36px; }
+  .ex-section-title {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .ex-section-title .ex-num {
+    font-family: var(--mono);
+    color: var(--accent);
+    margin-right: 10px;
+    font-size: 14px;
+  }
+
+  .term-list { list-style: none; counter-reset: term; }
+  .term-list li {
+    counter-increment: term;
+    padding: 10px 16px;
+    background: var(--bg-subtle);
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: var(--ink);
+    border-left: 3px solid var(--line-strong);
+    transition: all 0.15s ease;
+  }
+  .term-list li:hover {
+    border-left-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .term-list li::before {
+    content: counter(term) ".";
+    font-family: var(--mono);
+    color: var(--accent);
+    margin-right: 10px;
+    font-weight: 500;
+  }
+
+  .quiz-question {
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--line);
+  }
+  .quiz-question .q-stem {
+    font-size: 15px;
+    color: var(--ink);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: var(--mono);
+    margin-right: 8px;
+  }
+  .quiz-question .q-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    list-style: none;
+  }
+  .quiz-question .q-options li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    padding: 6px 12px;
+  }
+  .quiz-question .opt-letter {
+    font-family: var(--mono);
+    font-weight: 600;
+    color: var(--accent);
+    margin-right: 8px;
+  }
+
+  .essay-q {
+    padding: 14px 18px;
+    background: var(--bg-subtle);
+    border-left: 3px solid var(--accent);
+    margin-bottom: 12px;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .essay-q .q-num {
+    color: var(--accent);
+    font-family: var(--mono);
+    margin-right: 8px;
+    font-weight: 500;
+  }
+
+  /* ======= TOC (RIGHT) ======= */
+  .toc {
+    border-left: 1px solid var(--line);
+    padding: 56px 24px 64px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    font-size: 13px;
+  }
+  .toc-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .toc-list { list-style: none; }
+  .toc-list li { margin-bottom: 4px; }
+  .toc-list a {
+    display: block;
+    padding: 5px 10px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 13px;
+    border-left: 2px solid transparent;
+    line-height: 1.5;
+    transition: all 0.15s ease;
+  }
+  .toc-list a:hover {
+    color: var(--accent);
+    border-left-color: var(--accent-line);
+  }
+  .toc-list a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: var(--accent-soft);
+    font-weight: 500;
+  }
+  .toc-list .toc-sub {
+    padding-left: 14px;
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  /* ======= FOOTER NAV ======= */
+  .pagination {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+  .pag-card {
+    padding: 18px 24px;
+    border: 1px solid var(--line);
+    background: var(--bg-elevated);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: block;
+  }
+  .pag-card:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+  .pag-label {
+    font-size: 11px;
+    color: var(--ink-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-family: var(--mono);
+  }
+  .pag-title {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .pag-card.next { text-align: right; }
+  .pag-card.next .pag-label::before { content: ""; }
+  .pag-card.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  /* ======= ANCHOR LINKS ======= */
+  .anchor-target { scroll-margin-top: 24px; }
+
+  /* ======= RESPONSIVE ======= */
+  @media (max-width: 1200px) {
+    .layout { grid-template-columns: 240px minmax(0, 1fr); }
+    .toc { display: none; }
+  }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar {
+      position: relative;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid var(--line);
+    }
+    .main { padding: 32px 24px 80px; }
+    h1.chapter-title { font-size: 32px; }
+    h2.section-title { font-size: 24px; }
+    .ten-c-grid { grid-template-columns: 1fr; }
+    .kraljic { grid-template-columns: 40px 1fr; grid-template-rows: auto auto auto auto auto; }
+    .kraljic .col-header { display: none; }
+    .kraljic .row-label { grid-column: 1; grid-row: span 2; }
+    .quiz-question .q-options { grid-template-columns: 1fr; }
+    .pagination { grid-template-columns: 1fr; }
+  }
+
+  /* ======= PRINT ======= */
+  @media print {
+    .sidebar, .toc, .pagination { display: none; }
+    .layout { display: block; }
+    .main { padding: 0; }
+  }
+
+  /* ======= ENTRANCE ANIMATIONS ======= */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .chapter-header,
+  h2.section-title,
+  .objective-card,
+  .case-box,
+  .thinking-box {
+    animation: fadeUp 0.5s ease backwards;
+  }
+  h2.section-title { animation-delay: 0.05s; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">采</div>
+      <div class="brand-text">
+        <div class="brand-title">采购寻源基础</div>
+        <div class="brand-sub">Sourcing Fundamentals</div>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">章节目录</div>
+      <ul class="nav-list">
+        <li><a href="#" class="active"><span class="nav-num">01</span>供应源搜寻的基本流程</a></li>
+        <li><a href="#"><span class="nav-num">02</span>需求识别与规格制定</a></li>
+        <li><a href="#"><span class="nav-num">03</span>供应市场分析</a></li>
+        <li><a href="#"><span class="nav-num">04</span>合同与谈判</a></li>
+        <li><a href="#"><span class="nav-num">05</span>供应商关系管理</a></li>
+      </ul>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">本章导航</div>
+      <ul class="nav-list">
+        <li><a href="#section-1"><span class="nav-num">§1</span>供应源搜寻的界定</a></li>
+        <li><a href="#section-2"><span class="nav-num">§2</span>供应源搜寻过程</a></li>
+        <li><a href="#section-3"><span class="nav-num">§3</span>潜在供应商的选择</a></li>
+        <li><a href="#section-4"><span class="nav-num">§4</span>资格预审与评估</a></li>
+        <li><a href="#section-5"><span class="nav-num">§5</span>信息收集与验证</a></li>
+        <li><a href="#section-6"><span class="nav-num">§6</span>供应商绩效评估</a></li>
+        <li><a href="#section-7"><span class="nav-num">§7</span>实践指导</a></li>
+        <li><a href="#exercises"><span class="nav-num">★</span>练习与思考</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+
+    <nav class="breadcrumb">
+      <a href="#">首页</a>
+      <span>/</span>
+      <a href="#">采购寻源基础</a>
+      <span>/</span>
+      <span class="current">第一章</span>
+    </nav>
+
+    <!-- Chapter Header -->
+    <header class="chapter-header">
+      <div class="chapter-eyebrow">Chapter 01 · 第一章</div>
+      <h1 class="chapter-title">供应源搜寻的基本流程</h1>
+      <div class="chapter-meta">
+        <div class="chapter-meta-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>
+          <span>预计阅读 35 分钟</span>
+        </div>
+        <div class="chapter-meta-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span>共 7 节 · 32 页</span>
+        </div>
+        <div class="chapter-meta-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+          <span>含案例 3 篇</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Objectives -->
+    <div class="objective-card">
+      <div class="objective-card-header">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        <span>学习目标</span>
+      </div>
+      <ol class="objective-list">
+        <li>了解供应源搜寻的基本概念</li>
+        <li>理解供应商绩效管理的基本含义</li>
+        <li>熟知供应商评估的方法和作用</li>
+        <li>掌握供应源的搜寻过程并尝试结合理论分析实践案例</li>
+      </ol>
+    </div>
+
+    <div class="concept-tags">
+      <span class="concept-tags-label">基本概念</span>
+      <span class="concept-tag">供应源搜寻的定义</span>
+      <span class="concept-tag">供应商的信息来源</span>
+      <span class="concept-tag">供应商等级评定</span>
+    </div>
+
+    <!-- ============ SECTION 1 ============ -->
+    <section id="section-1" class="anchor-target">
+      <h2 class="section-title">
+        <span class="section-num">Section 01</span>
+        第一节　供应源搜寻的界定
+      </h2>
+
+      <h3 class="subsection-title">一、供应源搜寻的基本概念</h3>
+
+      <p>采购通常是指采购方与供应商达成合同后下订单、收货和付款等行为。供应源搜寻通常包括十个重要环节，起始于识别需求，制定产品请购单或物料清单，结束于签订合同，并包括对供应商进行监控、评审等内容。搜寻过程是一个周期性的过程，从确定需求开始，终止于合同和供应商的管理。具体过程参见图 1—1。</p>
+
+      <figure>
+        <figcaption><span class="fig-num">图 1—1</span>一般采购过程流程图</figcaption>
+        <div class="flow-diagram">
+          <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#b91c4d"/>
+              </marker>
+              <style>
+                .flow-box { fill: #fdf2f5; stroke: #b91c4d; stroke-width: 1.5; }
+                .flow-text { font-family: 'Noto Serif SC', serif; font-size: 13px; fill: #1a1a1a; text-anchor: middle; }
+                .flow-line { stroke: #b91c4d; stroke-width: 1.5; fill: none; }
+              </style>
+            </defs>
+
+            <!-- 顶部: 定义需求规格 -->
+            <rect class="flow-box" x="280" y="10" width="160" height="48" rx="2"/>
+            <text class="flow-text" x="360" y="32">定义需求</text>
+            <text class="flow-text" x="360" y="50">规格</text>
+
+            <!-- 左侧: 识别需求 -->
+            <rect class="flow-box" x="50" y="80" width="170" height="48" rx="2"/>
+            <text class="flow-text" x="135" y="102">识别需求</text>
+            <text class="flow-text" x="135" y="120">请购单或物料清单</text>
+
+            <!-- 右侧: 制定合同条款 -->
+            <rect class="flow-box" x="500" y="80" width="170" height="48" rx="2"/>
+            <text class="flow-text" x="585" y="102">制定合同</text>
+            <text class="flow-text" x="585" y="120">条款</text>
+
+            <!-- 左: 合同/供应商管理 -->
+            <rect class="flow-box" x="40" y="158" width="190" height="48" rx="2"/>
+            <text class="flow-text" x="135" y="180">合同 / 供应商管理</text>
+            <text class="flow-text" x="135" y="198">监控、评审和保持绩效</text>
+
+            <!-- 右: 市场调查研究 -->
+            <rect class="flow-box" x="490" y="158" width="190" height="48" rx="2"/>
+            <text class="flow-text" x="585" y="180">市场调查研究</text>
+            <text class="flow-text" x="585" y="198">识别潜在的供应商</text>
+
+            <!-- 左: 授予合同 -->
+            <rect class="flow-box" x="60" y="234" width="150" height="40" rx="2"/>
+            <text class="flow-text" x="135" y="259">授予合同</text>
+
+            <!-- 右: 评估供应商 -->
+            <rect class="flow-box" x="510" y="234" width="150" height="40" rx="2"/>
+            <text class="flow-text" x="585" y="259">评估供应商</text>
+
+            <!-- 左: 谈判 -->
+            <rect class="flow-box" x="40" y="300" width="190" height="40" rx="2"/>
+            <text class="flow-text" x="135" y="325">谈判以获得最佳价值</text>
+
+            <!-- 右: 邀请报价或投标邀请 -->
+            <rect class="flow-box" x="490" y="300" width="190" height="40" rx="2"/>
+            <text class="flow-text" x="585" y="325">邀请报价或投标邀请</text>
+
+            <!-- 底部: 分析报价 -->
+            <rect class="flow-box" x="240" y="380" width="240" height="48" rx="2"/>
+            <text class="flow-text" x="360" y="402">分析报价并选择最有</text>
+            <text class="flow-text" x="360" y="420">希望的供应商</text>
+
+            <!-- Arrows: top to left and right -->
+            <path class="flow-line" d="M 320 35 Q 200 35 145 78" marker-end="url(#arrow)"/>
+            <path class="flow-line" d="M 400 35 Q 520 35 575 78" marker-end="url(#arrow)"/>
+
+            <!-- Left column arrows -->
+            <path class="flow-line" d="M 135 130 L 135 156" marker-end="url(#arrow)"/>
+            <path class="flow-line" d="M 135 208 L 135 232" marker-end="url(#arrow)"/>
+            <path class="flow-line" d="M 135 276 L 135 298" marker-end="url(#arrow)"/>
+            <path class="flow-line" d="M 145 342 Q 200 380 245 400" marker-end="url(#arrow)"/>
+
+            <!-- Right column arrows (top to bottom) -->
+            <path class="flow-line" d="M 585 130 L 585 156" marker-end="url(#arrow)"/>
+            <path class="flow-line" d="M 585 208 L 585 232" marker-end="url(#arrow)"/>
+            <path class="flow-line" d="M 585 276 L 585 298" marker-end="url(#arrow)"/>
+            <path class="flow-line" d="M 575 342 Q 520 380 475 400" marker-end="url(#arrow)"/>
+
+            <!-- Cycle back arrow: 授予合同 -> 合同/供应商管理 -->
+            <path class="flow-line" d="M 135 234 L 135 208" marker-start="url(#arrow)" stroke-dasharray="4 3" opacity="0.6"/>
+
+          </svg>
+        </div>
+        <div class="fig-source">资料来源：英国皇家采购与供应学会. 供应源搜寻 [M]. 北京中交协物流人力资源培训中心，译. 北京：机械工业出版社，2014.</div>
+      </figure>
+
+      <p>普通的采购过程通常分为两个阶段：<strong>第一阶段是合同授予前阶段</strong>，包括识别和定义需求、制定采购计划、制定合同、市场调查研究、评估和选择供应商、接收和评估报价、授予合同；<strong>第二阶段是合同授予后阶段</strong>，包括催货、付款、合同和供应商管理、资产管理和合同签订后的经验教训总结等内容。</p>
+
+      <p>根据采购周期流程和采购行为的界定，供应源搜寻则被认为是一个识别、选择和开发供应商的过程。</p>
+
+      <h3 class="subsection-title">二、供应源搜寻的类型</h3>
+
+      <p>供应源搜寻可分为<strong>战术供应源搜寻</strong>和<strong>战略供应源搜寻</strong>两种类型，两者有着各自的特点。</p>
+
+      <h4 class="minor-title">战术供应源搜寻的特点</h4>
+      <ol class="info-list">
+        <li>决策层次低，主要进行低利润、低风险、日常性的采购；</li>
+        <li>所形成的决策是短期决策，其重点是为了满足具体和准确的需求，并对组织或供应市场的变化做出反应；</li>
+        <li>需求说明和规格要求的表示都非常明确，供应源搜寻的交易决策主要基于公开竞价和采购价格，如市场竞价。</li>
+      </ol>
+
+      <h4 class="minor-title">战略供应源搜寻的特点</h4>
+      <ol class="info-list">
+        <li>决策层次高，适用于高利润、高供应风险的采购；</li>
+        <li>属于长期的可持续性发展的决策；</li>
+        <li>需系统性分析市场、供应商的关注点及其供应能力。</li>
+      </ol>
+
+      <div class="thinking-box">
+        <div class="thinking-box-header">💭 想一想</div>
+        <p>同学们，联系你们身边的采购行为，能不能就战术供应源搜寻和战略供应源搜寻举例说明？</p>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 2 ============ -->
+    <section id="section-2" class="anchor-target">
+      <h2 class="section-title">
+        <span class="section-num">Section 02</span>
+        第二节　供应源搜寻过程
+      </h2>
+
+      <h3 class="subsection-title">一、供应源搜寻过程</h3>
+      <p>供应源搜寻的过程可以用不同类别的模型进行阐述，其中基本的搜寻过程如下所示。</p>
+
+      <ol class="steps-list">
+        <li>
+          <strong>识别需求</strong>
+          <p>通常是产品使用部门提出采购需求，在此基础上，由库存控制部门提出补货申请。补货申请的需求再评估实际上就是根据产品或服务的规格再次定义界定需求规模。</p>
+        </li>
+        <li>
+          <strong>拟定供应源搜寻计划</strong>
+          <p>首先，做出自制（自己提供所需商品和服务）或是外购（向外部供应商采购商品和服务）的决策；其次，确定具体采购的类型、规格等内容，了解与供应源搜寻相关的国内外政策。</p>
+        </li>
+        <li>
+          <strong>市场分析</strong>
+          <p>主要内容包括预测产品的短期和长期需求、估算所需产品的市场价格、预测所购货物和原材料的价格趋势、寻找潜在的供应源、估测不同供应源的安全性和可能带来的风险性等。</p>
+        </li>
+        <li>
+          <strong>供应商资格预审</strong>
+          <p>根据供应源搜寻的目标，设定一系列定量和定性指标作为资格预审标准，对潜在供应商进行资格预审，从中选择能够满足企业需求的供应商。</p>
+        </li>
+        <li>
+          <strong>评估供应商报价并对供应商进行选择</strong>
+          <p>对于资格预审合格的供应商，买方可以通过询价、与供应商谈判、进行正式或非正式的招标等方式评估选择，买方将合同授予提出最佳报价方案的供应商。</p>
+        </li>
+        <li>
+          <strong>合同或合作的形成</strong>
+          <p>买卖双方签订采购订单、合同、框架协议等，以确定销售、采购或订单条款。</p>
+        </li>
+      </ol>
+
+      <div class="thinking-box">
+        <div class="thinking-box-header">💭 想一想</div>
+        <p>在拟定供应源搜寻计划时需要了解供应源搜寻的相关政策，买方可以从哪些方面开始了解呢？买方应当采用什么流程和方法在市场上进行供应源搜寻并选择供应商呢？</p>
+      </div>
+
+      <h3 class="subsection-title">二、不同采购方式的供应源搜寻区别</h3>
+      <p>简单的再采购和有限变更的再采购只涉及一部分采购过程，而新的采购一般要涉及采购所有流程。三种采购方式界定如下。</p>
+
+      <figure>
+        <figcaption><span class="fig-num">表</span>三种采购方式对比</figcaption>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 22%">采购方式</th>
+              <th>核心特征</th>
+              <th style="width: 28%">前提条件</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label-col">简单的再采购</td>
+              <td>直接针对现有供应商的再次重复采购，不涉及其他采购过程，如重新制定规格等过程。</td>
+              <td>买方可能已经与认可的供应商签订了长期供应合同。</td>
+            </tr>
+            <tr>
+              <td class="label-col">有限变更的再采购</td>
+              <td>要求对原始购买合同或框架协议进行部分更改后采购的方式。</td>
+              <td>当需求发生变化时，双方有必要重新谈判并制定合同。</td>
+            </tr>
+            <tr>
+              <td class="label-col">新的采购</td>
+              <td>买方首次购买产品或服务的行为。</td>
+              <td>一般会经历采购过程的所有阶段。</td>
+            </tr>
+          </tbody>
+        </table>
+      </figure>
+
+      <h3 class="subsection-title">三、不同产品的供应源搜寻区别</h3>
+
+      <p>买方需要考虑采购产品的重要程度，对所采购物品对于企业的重要性进行判断。一般可以按照所购产品对于企业的重要程度，分为<strong>低价值、非关键物品</strong>的采购，<strong>较为重要物品</strong>的采购和<strong>关键性物品</strong>的采购，从而制定差异化的供应源搜寻策略。</p>
+
+      <p><strong>对于低价值、非关键物品</strong>的采购，只需根据现有的资料或二手资料，对供应商提供产品的价格、质量、交货等基本条件做一个简单的调查即可。</p>
+
+      <div class="thinking-box">
+        <div class="thinking-box-header">💭 想一想</div>
+        <p>对于一家大型制造业企业而言，当采购卫生纸等日常物品时，需要如何对供应商进行评估？当进行重大的高价值采购（如采购机器设备）时，又需要如何对供应商进行评估？在这两类产品的供应源搜寻过程中，买方应考虑到哪些问题呢？</p>
+      </div>
+
+      <p><strong>对于较为重要物品</strong>的采购，一般需要首先对供应商进行分类。例如：供应商可以分为已批准的供应商（满足某些基本技术和质量标准的供应商）或首选的供应商（在过去的交易中具有良好记录的供应商），采购部门可以直接和其签订订单，无须进一步审查其供应条件。</p>
+
+      <p><strong>对于关键性物品</strong>的采购，在供应商投标之前，须对其进行严格的资格审查，包括利用问卷进行深入调查、通过实地考察进行信息确认、推荐人的考察、产品的抽样等方式。采购方还可要求供应商提供第三方认证，如 ISO 9001 质量管理体系的国际标准认证。</p>
+
+      <h3 class="subsection-title">四、供应源搜寻流程的重要程度</h3>
+      <p>供应源的搜寻工作的排序取决于所需采购内容的重要性程度，<strong>帕累托原理</strong>和<strong>卡拉杰克矩阵</strong>可以对所需购买物品的重要性进行排序。</p>
+
+      <h4 class="minor-title">（一）帕累托原理</h4>
+      <p>帕累托原理（又称"二八法则"）是由意大利经济学家帕累托（Vilfredo Pareto，1848—1923）提出的一种分析工具。它在供应源搜寻中的意义为：<strong>20% 的供应商或供应品，是 80% 的支出、风险或价值的来源</strong>。运用这一原理可以使购买者合理地安排自己的时间、精力和资源，使收益最大化。</p>
+
+      <p>帕累托原理可以用来区分供应商的重要程度。可以将供应商分为重点供应商和普通供应商。采购过程中的大部分精力需集中于从重点供应商处采购产品，如从占供应商总数 20% 的重点供应商处采购占总价值 80% 的供应品。</p>
+
+      <div class="thinking-box">
+        <div class="thinking-box-header">💭 想一想</div>
+        <p>重点供应商提供的物品一般是企业所需的战略物品或需集中采购的物品，比如冰箱厂需要的发动机、计算机企业需要的核心芯片、便携式计算机制造商购买的中央处理器等。采购企业应该用 80% 的精力与其合作，以确保供应。普通供应商提供的物品对企业的生产运行影响相对较小，如办公用品、保洁物品等。企业只需要用 20% 的精力与其沟通采购就可以了。同学们，你们觉得上述观点正确吗？</p>
+      </div>
+
+      <h4 class="minor-title">（二）卡拉杰克（Kraljic）的采购定位矩阵</h4>
+      <p>卡拉杰克的采购定位矩阵用于分析<strong>采购物品的重要性</strong>和<strong>供应市场的复杂性</strong>两个因素。企业可以从自身对所采购商品的年度支出以及该商品通过创收或节约成本的盈利潜力等因素判定采购物品的重要性，从商品供应源搜寻的难度、采购方对供应失败的脆弱性、采购方与供应商在市场中的相对权力等因素判定供应市场的复杂性。</p>
+
+      <figure>
+        <figcaption><span class="fig-num">表 1—1</span>卡拉杰克（Kraljic）矩阵</figcaption>
+        <div class="kraljic">
+          <div class="axis-label col-header col-low">低　供应市场复杂性</div>
+          <div class="axis-label col-header col-high">供应市场复杂性　高</div>
+          <div class="axis-label row-label row-high">物品重要性高</div>
+          <div class="quadrant row-high">
+            <h5>杠杆物品</h5>
+            <div class="time">采购时间：12—24 个月</div>
+            <p><strong>战略：</strong>商业优势最大化，节约成本最大化</p>
+            <p><strong>策略：</strong>保证竞争态势</p>
+            <p><strong>行动方案：</strong>增加竞争性招标</p>
+          </div>
+          <div class="quadrant row-high">
+            <h5>战略性物品</h5>
+            <div class="time">采购时间：可长达 10 年</div>
+            <p><strong>战略：</strong>努力与供应商形成伙伴关系，使风险最小化，创造竞争优势</p>
+            <p><strong>策略：</strong>提升供应商的合作力度</p>
+            <p><strong>行动方案：</strong>对供应商进行过程管理；分析市场竞争态势；让供应商参与产品研发与设计；准备应急方案</p>
+          </div>
+          <div class="axis-label row-label row-low">物品重要性低</div>
+          <div class="quadrant row-low">
+            <h5>普通物品</h5>
+            <div class="time">采购时间：小于 12 个月或更短</div>
+            <p><strong>战略：</strong>简化采购中间环节，提高采购效率</p>
+            <p><strong>策略：</strong>产品标准化，减少采购管理投入</p>
+            <p><strong>行动方案：</strong>合理化供应商数量，最小化管理成本</p>
+          </div>
+          <div class="quadrant row-low">
+            <h5>瓶颈物品</h5>
+            <div class="time">采购时间：取决于可用性与短期灵活性的权衡</div>
+            <p><strong>战略：</strong>需确保供给的连续性</p>
+            <p><strong>策略：</strong>降低供应商的独特性，压缩采购成本</p>
+            <p><strong>行动方案：</strong>开发新供应商；采用中期合同；给予供应商项目外业务</p>
+          </div>
+        </div>
+        <div class="fig-source">资料来源：英国皇家采购与供应学会. 供应源搜寻 [M]. 北京中交协物流人力资源培训中心，译. 北京：机械工业出版社，2014.</div>
+      </figure>
+
+      <p>卡拉杰克矩阵是基于战略层面，用以评估企业的采购组合可能带来供应中断风险的工具。该矩阵用于评估不同采购类型物品适用的供应源搜寻方法，从而使采购职能部门挖掘其采购潜力以实现增值目的。</p>
+
+      <ul class="info-list">
+        <li><strong>对于杠杆物品：</strong>供应源搜寻的首要任务是利用自身在市场中的力量，确保获得最优的采购价格和采购条件。此类物品的采购通常采用竞争性招标或团体采购以确保交易成功。</li>
+        <li><strong>对于普通物品：</strong>供应源搜寻的重点应是降低采购成本。采购方可以采用供应商管理库存、签订总括订单和使用电子采购方案等交易关系进行此类商品的采购，以提高工作效率。</li>
+        <li><strong>对于战略性物品：</strong>供应源搜寻应着眼于和供应商发展一种长期的、基于信任的、互利的采购战略关系。</li>
+        <li><strong>对于瓶颈物品：</strong>供应源搜寻的首要任务是确保供应的连续性和安全性。此类物品的采购一般可以与供应商签订中期或长期合同、开发备用供应源、将激励和惩罚制度纳入合同、持有较高水平的缓冲库存等方法。</li>
+      </ul>
+    </section>
+
+    <!-- ============ SECTION 3 ============ -->
+    <section id="section-3" class="anchor-target">
+      <h2 class="section-title">
+        <span class="section-num">Section 03</span>
+        第三节　潜在供应商的选择
+      </h2>
+
+      <p>为了满足企业的需求，采购人员应时刻关注供应市场和现有供应商的绩效水平。市场调研则可以帮助采购方识别或寻找能够满足采购方需求的潜在供应商。</p>
+
+      <h3 class="subsection-title">一、潜在供应商的信息来源</h3>
+
+      <p>在寻找潜在的合格供应商时，采购方应重点考虑通过以下渠道收集潜在供应商的信息：</p>
+
+      <ol class="info-list">
+        <li><strong>供应商提供的数据资料。</strong>包括供货记录、绩效评估等内容。</li>
+        <li><strong>正式的信息索取函（RFI, request for information）。</strong>向符合采购需求的企业发调查问卷。</li>
+        <li><strong>供应商的市场宣传活动。</strong>包括广告、直销、宣传册、传单、公司网站、销售代表访问企业等。其中电子的或纸质的产品宣传册的作用非常重要，因为它包含详细的产品说明、交易条款、价目表等内容。</li>
+        <li><strong>互联网查询。</strong>包括专业的采购产品信息库、商品进出口数据库和企业网站等。</li>
+        <li><strong>在线商品交易场所。</strong>如拍卖网站、采购论坛等。</li>
+        <li><strong>正式出版的供应商名录以及行业指南等。</strong>供应商名录可以提供供应商所需的产品和服务等信息，有时还会提供关于企业财务状况的分析。</li>
+        <li><strong>行业出版物</strong>（报纸、杂志、公告）和专业采购期刊（如《供应链管理》《投标采购管理》等）。</li>
+        <li><strong>行业会展和行业会议。</strong>买方可以在展会和行业会议上看到供应商的产品，并收集需要的书面材料。在这个过程中，买方可以通过提前预约拜访供应商来充分利用时间。</li>
+        <li><strong>行业推介机构。</strong>如大使馆、商会和出口协会等，此外还包括这些机构的官方网站。</li>
+        <li><strong>与其他采购职业人之间的信息交流。</strong></li>
+      </ol>
+
+      <h3 class="subsection-title">二、供应商信息库的建立</h3>
+
+      <p>在与供应商建立联系时，为了科学且有效地管理采购数据信息，提高采购部门工作的效率，采购方需要建立供应商信息库，其目的有以下三方面：</p>
+
+      <ol class="info-list">
+        <li>采购业务涉及的招标等方式需要建立数据库以供查询和使用；</li>
+        <li>在经过一段时期的合作和交流后，采购方需要对供应商进行跟踪和评价；</li>
+        <li>从长远来说，采购方有必要加强对供应商的管理，从而优化采购行为。</li>
+      </ol>
+
+      <p>供应商信息库用以存储现有、过去和潜在供应商的信息。这些信息通常包括以下内容：</p>
+
+      <figure>
+        <figcaption><span class="fig-num">表 1—2</span>供应商数据信息库的建立</figcaption>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 80px">编号</th>
+              <th>供应商的信息涵盖内容</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="label-col">（一）</td><td>供应商具体联系方式</td></tr>
+            <tr><td class="label-col">（二）</td><td>供应商所能提供的产品和服务</td></tr>
+            <tr><td class="label-col">（三）</td><td>交易的标准条款与条件和特议条款与条件，包括价格、税率以及相关费用等内容</td></tr>
+            <tr><td class="label-col">（四）</td><td>是否为已批准的或首选的供应商</td></tr>
+            <tr><td class="label-col">（五）</td><td>现有供应商的平均交易额以及付款频率（用以确定关键供应商）</td></tr>
+            <tr><td class="label-col">（六）</td><td>供应商是否具备特殊能力，如提前供货的能力</td></tr>
+            <tr><td class="label-col">（七）</td><td>供应商评估、审计和等级评定结果</td></tr>
+            <tr><td class="label-col">（八）</td><td>供应商以往绩效，包括质量、前置期、产品交付情况、合规性和争议处理等内容</td></tr>
+            <tr><td class="label-col">（九）</td><td>当前交易体制、框架协议或总括合同</td></tr>
+          </tbody>
+        </table>
+      </figure>
+
+      <div class="thinking-box">
+        <div class="thinking-box-header">💭 想一想</div>
+        <p>如果一家公司想采购一批汽车零部件，该公司的采购人员可以从哪些渠道获取专业的采购信息？请说说这些信息渠道的优缺点，以及在获取信息时应考虑到哪些问题。</p>
+      </div>
+
+      <p>经过多次市场调查，找到能够为客户提供所需产品和服务的目标企业后，采购方会选择对其中的部分供应商进行进一步系统深入了解，以便择优。</p>
+
+      <p>对于特别重要的市场采购，需要使用系统的采购信息收集管理方法来负责整个供应商信息的收集和分析。供应管理系统方法可命名为"供应商资格预审和评估"，在本章的第四节中将进行重点讲解。</p>
+
+      <div class="supp-box">
+        <div class="supp-box-header">
+          <div class="supp-icon">补</div>
+          <div class="supp-box-title">补充知识：供应商资格审查和登记流程中的注意事项</div>
+        </div>
+        <p>供应商资格审查和登记是建立供应商信息库的基础工作，考虑到登记入供应商库后就平等地成为采购对象，因此资格审查工作务必严格认真。实际操作中应注意以下几点：</p>
+        <p><strong>首先，</strong>登记方必须是具备独立的法人资格并且能独立行使民事权利、独立承担民事责任的主体，尽量避免某些公司的个别部门或不具备法人资格的分公司、办事处来进行供应商登记。</p>
+        <p><strong>其次，</strong>《供应商登记表》应经登记方盖章确认，登记的供应商名称应与印章名称一致，防止有某部门或分公司、办事处以大公司的名义登记，从而在有条件抽取供应商时占有利地位。</p>
+        <p><strong>再次，</strong>供应商提供的产品和劳务范围应与其营业执照的经营范围相一致；其提供的产品或劳务应尽量详细，为软件实现查询、抽取和筛选某一特定的产品或劳务提供依据。举例来说，如果选择销售 X 品牌计算机的供应商，而在具有这种条件的供应商的记录中登记的仅仅是"计算机产品"，选择余地就十分有限。</p>
+        <p><strong>最后，</strong>进行资格审查时，对供应商提供的企业法人证、营业执照、财务报表应先确认与登记名称一致对应，其他提供的代理证书、资信证明和获奖证书等也应与登记供应商名称一致对应。在实际中，常有供应商登记时交付一些与本公司无关的资格证明证书，而这些不应该成为资格证明数据。</p>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 4 ============ -->
+    <section id="section-4" class="anchor-target">
+      <h2 class="section-title">
+        <span class="section-num">Section 04</span>
+        第四节　供应商资格预审和供应商评估
+      </h2>
+
+      <p>供应商资格预审和评估的目的是保证潜在供应商在达到适当的标准后有能力履行合同。供应商资格预审和评估的好处在于避免成本浪费、节约时间和精力，为企业带来附加值。</p>
+
+      <div class="thinking-box">
+        <div class="thinking-box-header">💭 想一想</div>
+        <p>在选择供应商时，可以按照最低价格的原则选择供应商吗？为什么？</p>
+      </div>
+
+      <h3 class="subsection-title">一、供应商资格预审</h3>
+
+      <p>供应商资格预审是指采购方根据既定的评估标准对供应商进行初步选择。当供应商达到买方规定的最低产能和兼容性标准后才能参与投标。资格预审是将具体选择标准纳入供应商筛选的过程。</p>
+
+      <p>供应商资格预审一般包括两个基本过程：</p>
+      <ol class="info-list">
+        <li>制定一套客观的评价标准，对潜在供应商进行评价；</li>
+        <li>根据获得的供应商信息，按照既定标准筛选潜在供应商。</li>
+      </ol>
+
+      <p>在采购过程中，对供应商进行资格预审并建立供应商资格预审名单，可以减少招标采购中的前期调查工作，因为买方明确知道名单上的供应商均通过预审，其供应可以达到自身的要求。当用户部门进行日常采购时，由于相关部门可能不具备评估和选择新供应商的专业知识，用户只需在通过资格预审的供应商名单中选择即可，采用该种方法可以提高工作效率。</p>
+
+      <h3 class="subsection-title">二、供应商评估</h3>
+
+      <p>并非所有采购都需要在授予合同之前进行供应商评估。通常，只有当供应商申请加入已批准的供应商名单时，或买方想采购未曾购买过或现有供应商无法提供的产品时，才进行供应商评估。</p>
+
+      <p>供应商评估有两种界定：</p>
+      <ol class="info-list">
+        <li>在合同授予前对潜在供应商的评价；</li>
+        <li>评估现有供应商合同的履行情况，业界通常将这种评估方式称为"<strong>供应商等级评定</strong>"（vendor rating）。</li>
+      </ol>
+
+      <p>全面的供应商评估是耗费精力和金钱的，一般不需要对一次性、标准化或低价值采购进行评估，而对战略性或重要的高价值采购、建立长期合作伙伴关系、国际供应源搜寻和产品的外包等采购进行评估。</p>
+
+      <h4 class="minor-title">（一）供应商评估的步骤</h4>
+
+      <p>在供应商评估规划阶段，采购人员应考虑以下问题：</p>
+      <ol class="info-list">
+        <li>评估的目的；</li>
+        <li>需要评估的供应商数量；</li>
+        <li>评估过程的范围、严格程度、正式程度；</li>
+        <li>评估过程所用的时间；</li>
+        <li>评估过程所需的资源；</li>
+        <li>供应商对该评估过程的回应；</li>
+        <li>评估行为的成本效益分析。</li>
+      </ol>
+
+      <p>供应商评估可分为四个阶段：</p>
+      <ol class="steps-list">
+        <li><strong>计划和准备阶段</strong><p>此过程包括选择供应商政策的审核，供应商以往反馈的审核和评估范围的界定。</p></li>
+        <li><strong>执行评估方案阶段</strong><p>即查阅供应商的相关信息，制定详细且科学的评估方案。</p></li>
+        <li><strong>执行评估和结果报告阶段</strong><p>按照评估方案，对供应商进行全面评估，并将评估结果清晰呈现。</p></li>
+        <li><strong>推荐与意见反馈阶段</strong><p>供应商的反馈可以帮助买方与未来潜在供应商建立友好关系。同时，供应商的反馈也可以使买卖双方认同供应商评估的目的是信息共享、互利互惠，达到双赢。</p></li>
+      </ol>
+
+      <h4 class="minor-title">（二）评估的主要内容</h4>
+
+      <p>供应商评估涉及的因素广泛而复杂，只要采购方认为重要的因素，都可能包括在内。下表举例了三组评价要素。</p>
+
+      <figure>
+        <figcaption><span class="fig-num">表 1—4</span>潜在供应商评估要素</figcaption>
+        <table class="center">
+          <thead>
+            <tr>
+              <th>第一组</th>
+              <th>第二组</th>
+              <th>第三组</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>个人态度</td><td>质量、服务以及价格</td><td>所提供产品的销售情况</td></tr>
+            <tr><td>生产设备的合适程度</td><td>财务情况</td><td>财务情况</td></tr>
+            <tr><td>质量控制方法和手段</td><td>管理情况</td><td>管理者的水平</td></tr>
+            <tr><td>生产场地的整洁程度</td><td>现场访问结果</td><td>现场调研结果</td></tr>
+            <tr><td>技术队伍的能力水平</td><td>支持电子数据交换的可能性</td><td>提供服务的质量</td></tr>
+            <tr><td>管理层的能力水平</td><td>准时交货能力</td><td>继续研发的可能性</td></tr>
+          </tbody>
+        </table>
+      </figure>
+
+      <p>评价标准应根据采购方的具体情况和采购类型而确定。雷·卡特尔提出的"<strong>10C</strong>"模型被采购界广泛应用：</p>
+
+      <div class="ten-c-grid">
+        <div class="ten-c-card">
+          <div class="ten-c-card-header">
+            <span class="c-letter">C</span>
+            <span class="c-name-cn">能力</span>
+            <span class="c-name-en">Competence</span>
+          </div>
+          <ul>
+            <li>供应商拥有履行合同的资源和专业知识</li>
+            <li>能够生产相应产品或提供所需服务</li>
+            <li>在管理创新、设计或其他相关领域的实力</li>
+          </ul>
+        </div>
+        <div class="ten-c-card">
+          <div class="ten-c-card-header">
+            <span class="c-letter">C</span>
+            <span class="c-name-cn">产能</span>
+            <span class="c-name-en">Capacity</span>
+          </div>
+          <ul>
+            <li>是否满足买方当前和未来的需求</li>
+            <li>供应商的能力</li>
+            <li>供应链的管理水平</li>
+          </ul>
+        </div>
+        <div class="ten-c-card">
+          <div class="ten-c-card-header">
+            <span class="c-letter">C</span>
+            <span class="c-name-cn">承诺</span>
+            <span class="c-name-en">Commitment</span>
+          </div>
+          <ul>
+            <li>对关键节点（质量、服务、成本、持续改进）的承诺</li>
+            <li>具有与采购方建立长期合作关系的意愿</li>
+          </ul>
+        </div>
+        <div class="ten-c-card">
+          <div class="ten-c-card-header">
+            <span class="c-letter">C</span>
+            <span class="c-name-cn">控制</span>
+            <span class="c-name-en">Control</span>
+          </div>
+          <ul>
+            <li>建立资源和风险监控管理体系</li>
+            <li>愿意遵守采购程序、规则或制度</li>
+            <li>建立财务控制、欺诈预防、风险评估体系</li>
+          </ul>
+        </div>
+        <div class="ten-c-card">
+          <div class="ten-c-card-header">
+            <span class="c-letter">C</span>
+            <span class="c-name-cn">现金</span>
+            <span class="c-name-en">Cash</span>
+          </div>
+          <ul>
+            <li>现金资源和现金管理能力</li>
+            <li>整体财务状况：现金流、自有资产、债务状况</li>
+            <li>成本结构和债务分摊情况</li>
+          </ul>
+        </div>
+        <div class="ten-c-card">
+          <div class="ten-c-card-header">
+            <span class="c-letter">C</span>
+            <span class="c-name-cn">一致性</span>
+            <span class="c-name-en">Consistency</span>
+          </div>
+          <ul>
+            <li>持续努力提升质量和服务水平</li>
+            <li>稳定可靠、流程顺畅无误</li>
+            <li>具备问题发现和防范能力</li>
+          </ul>
+        </div>
+        <div class="ten-c-card">
+          <div class="ten-c-card-header">
+            <span class="c-letter">C</span>
+            <span class="c-name-cn">成本</span>
+            <span class="c-name-en">Cost</span>
+          </div>
+          <ul>
+            <li>价格合理</li>
+            <li>全生命成本低</li>
+            <li>资金价值高</li>
+          </ul>
+        </div>
+        <div class="ten-c-card">
+          <div class="ten-c-card-header">
+            <span class="c-letter">C</span>
+            <span class="c-name-cn">兼容性</span>
+            <span class="c-name-en">Compatibility</span>
+          </div>
+          <ul>
+            <li>战略与文化兼容（价值观、道德观、管理风格）</li>
+            <li>操作和技术兼容（生产流程、组织架构、IT 系统）</li>
+          </ul>
+        </div>
+        <div class="ten-c-card">
+          <div class="ten-c-card-header">
+            <span class="c-letter">C</span>
+            <span class="c-name-cn">合规性</span>
+            <span class="c-name-en">Compliance</span>
+          </div>
+          <ul>
+            <li>遵循环境、企业社会责任和可持续发展标准</li>
+            <li>建立环境、企业社会责任和风险管理体系</li>
+            <li>遵从买方有关职业道德、CSR 政策</li>
+          </ul>
+        </div>
+        <div class="ten-c-card">
+          <div class="ten-c-card-header">
+            <span class="c-letter">C</span>
+            <span class="c-name-cn">沟通</span>
+            <span class="c-name-en">Communication</span>
+          </div>
+          <ul>
+            <li>供应链中的有效协调与协作</li>
+            <li>使用电子商务、外部网或 EDI 技术</li>
+            <li>愿意共享信息（需求、计划、成本）</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Case study: 江阴铁矿石 -->
+      <div class="case-box">
+        <div class="case-box-header">
+          <span class="case-tag">小案例</span>
+          <span class="case-title">江阴检验检疫局发现进口铁矿石质量异常</span>
+        </div>
+        <p>江阴检验检疫局通过检验发现一批从泰国进口的铁矿铁石含量为 53.8%，与装货港品质报告中铁矿铁石含量 65.8% 的检测值相比，该指标低了 12 个百分点。这是该局首次发现与国外装货港品质检验值差异超 10 个百分点的进口铁矿石。</p>
+        <p>统计数据显示，江阴港在 2008 年第一季度进口铁矿石为 70 批、160.73 万吨、货值 2.58 亿美元，进口量和货值分别比上一年增长了 40% 和 149%，检验中发现的不合格批已达 21 批，批次不合格率同比增长显著。</p>
+        <p>当前铁矿石在国际市场上处于供不应求局面，使处于强势地位的铁矿石供货商拥有较大的话语权。以该批铁矿石为例，在国内采购企业与卖方签订合同时，曾希望能将货物在装货港的检验工作委托给信誉好且资质较高的检验机构，但供货商坚持由当地的一家检验机构来办理。最终，急需原料进口的采购企业只能屈从于供应商的要求。事实证明，该检验机构出具的装货港检测报告存在明显造假欺诈嫌疑。</p>
+        <p>面对"强硬"的国外供货商和被动的索赔现状，采购企业发现进口铁矿石质量风险越来越大了。为此，检验检疫部门提醒相关企业，在进口铁矿贸易中需提升自我保护意识，货款不宜一次结清，应谨慎评估供应商的信誉度，依据风险等级预留一定比例货款以争取赔付主动权。同时，在纠纷发生时，采购方也应据理力争，在合同条款中明确以权威机构出具的检验报告作为买卖双方发生质量争议时的评定依据和货款结算依据。</p>
+        <div class="case-source">资料来源：徐盛洋，郭俊文. 进口铁矿石企业谨慎评估供应商信誉度 [N]. 中国国门时报, 2008—05—12 (007).</div>
+        <div class="case-questions">
+          <div class="case-questions-label">思考问题</div>
+          <ol>
+            <li>企业可以从哪些渠道获得供应商信息？</li>
+            <li>在选择供应商时，企业应怎样对供应商进行评估？</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 5 ============ -->
+    <section id="section-5" class="anchor-target">
+      <h2 class="section-title">
+        <span class="section-num">Section 05</span>
+        第五节　供应商信息的收集和验证
+      </h2>
+
+      <p>获取供应商信息的方式主要有六种：</p>
+      <ol class="info-list">
+        <li><strong>供应商问卷，</strong>即供应商填写的自我评价问卷。</li>
+        <li><strong>财务评价。</strong>采购方可以从供应商的财务报表、账目以及信用评级机构出具的分析报告中获取供应商的财务状况。</li>
+        <li><strong>检查供应商的认证资格凭证、鉴定证书、质量奖项和政策声明等凭证。</strong></li>
+        <li><strong>获取客户推荐、评价报告、表扬信等材料。</strong></li>
+        <li><strong>工作抽样，</strong>即对供应商生产的样品或系列产品进行检验。</li>
+        <li><strong>供应商审核，</strong>也称为实地考察或能力调查。这种评价方法需要耗费大量的资源，主要适用于对入围的供应商进行深入调查。</li>
+      </ol>
+
+      <p>下面详细介绍其中的四种方法：</p>
+
+      <h4 class="minor-title">第一种方法：供应商问卷</h4>
+      <p>买方主动向潜在供应商发送调查问卷，并在调查问卷中向供应商提出一系列评估问题。买方对供应商的回答进行分类、整理、汇总和分析，并根据预先绘制的评分表进行评分。对于特定的产品或过程，可将供应商审核分级为<strong>"完全批准""批准""有条件批准""不批准"</strong>四种类型。</p>
+
+      <h4 class="minor-title">第二种方法：客户推荐</h4>
+      <p>关于供应商的信息来源之一是咨询其当前或以前的客户。采购方可以要求潜在供应商提供一些客户的联系方式，并尝试联系客户，询问客户与供应商的合作情况；另一种形式是供应商向采购方提供其合作客户写的推荐信和表扬信，采购方联系客户了解更多情况。</p>
+      <p>客户推荐对供应商评价有很大帮助，采购员可以客观地了解供应商的能力和绩效。在与推荐人沟通时，买方可以提出如供应商的质量、服务水平、创新程度等问题，从而充分了解供应商的情况。</p>
+
+      <h4 class="minor-title">第三种方法：工作抽样</h4>
+      <p>工作抽样是通过检查供应商的产品或服务来评价供应商的质量水平，检验其质量是否真实的重要方法。具体方法有：</p>
+      <ol class="info-list">
+        <li>从供应商处获取产品样品进行质量评估；</li>
+        <li>现场考察时随机抽取生产线上的产品进行质量测评；</li>
+        <li>从供应商处购买少量产品，从而了解供应商所能提供产品和服务的水平；</li>
+        <li>对于提供服务的提供商而言，签订一份小型测试合同并商定试用期，从而测评服务质量。</li>
+      </ol>
+
+      <h4 class="minor-title">第四种方法：供应商审核</h4>
+      <p>采购方可以派遣一个跨职能的评估小组到供应商的现场进行考察，并根据评估小组了解到的信息，决定是否与供应商合作。供应商考察通常有以下目的：</p>
+      <ol class="info-list">
+        <li>核实供应商在评估问卷中提供的信息是否真实；</li>
+        <li>更加详细地了解供应商的设施、人员、设备、过程和产出等；</li>
+        <li>采购人员与供应商的工作人员现场接触，有利于日后合作的促成。</li>
+      </ol>
+
+      <p>供应商审核是供应商审计的一个组成部分，用于收集有关供应商生产能力的信息。一般调查以下方面的能力：</p>
+      <ol class="info-list">
+        <li><strong>技术或生产能力，</strong>如供应商的技术能力、运营能力、研发能力、质量管理能力等；</li>
+        <li><strong>财务能力，</strong>如显示企业效率的财务指标、现金流状况、负债与盈利能力等；</li>
+        <li><strong>商务能力，</strong>如客户管理能力、订单管理能力、电子商务运营能力、构建分销渠道能力等；</li>
+        <li><strong>环境能力，</strong>如污染防控能力、绿色供应源搜寻能力等。</li>
+      </ol>
+
+      <p>经过评审后，经正式认可能满足采购方标准和要求的供应商有资格被邀请报价或投标，满足要求的供应商被称为<strong>批准供应商</strong>。批准供应商可以对项目进行一次性投标，也可以列入被批准的供应商名单。用户部门的采购人员可以根据需要向列表中的供应商采购产品。</p>
+    </section>
+
+    <!-- ============ SECTION 6 ============ -->
+    <section id="section-6" class="anchor-target">
+      <h2 class="section-title">
+        <span class="section-num">Section 06</span>
+        第六节　供应商绩效评估
+      </h2>
+
+      <h3 class="subsection-title">一、供应商管理</h3>
+      <p>供应商管理是采购的一个组成部分，它涉及供应商的选择、协调、绩效评估、潜在开发以及适当的长期合作整个过程。因此，采购方在签订合同后应注意供应商关系的管理和绩效考核。</p>
+
+      <p>在合同授予后的供应商关系管理和绩效管理中，采购方可以通过以下六种途径创造更大的附加值：</p>
+      <ol class="info-list">
+        <li>降低新经销商的评估和培训成本，降低多供应源搜寻和竞标的成本；</li>
+        <li>逐步提升供应商的产品质量水平；</li>
+        <li>保持与供应商的良好关系，可能获得当供应商在发生紧急情况时仍可以给予的优惠待遇；</li>
+        <li>激励供应商发挥最佳业绩的动力，通过创新创造附加值；</li>
+        <li>激发供应商共同投资的意愿；</li>
+        <li>定期完善绩效标准，以降低供应失败的风险。</li>
+      </ol>
+
+      <h3 class="subsection-title">二、激励供应商绩效的措施</h3>
+      <p>对供应商的有效激励可以增强供应商之间的竞争，提高供应商的服务水平，降低公司的采购风险。对供应商来说，激励分为<strong>财务激励</strong>和<strong>非财务激励</strong>，激励措施主要包括以下九种：</p>
+      <ol class="info-list">
+        <li>按绩效付款或在提前交货时可以提前结款。</li>
+        <li>设定与奖励挂钩的关键绩效指标。如续签合同、列入批准供应商名单、公开表扬供应商、给予资金奖励等。</li>
+        <li>分享收入、利润或收益（将节省的成本按一定比例或金额反馈给供应商）。</li>
+        <li>加大下一次采购额，许诺长期合作协议。</li>
+        <li>保证最低订货量。</li>
+        <li>提供创新的机会。如可以向供应商提供创新解决方案的资金支持。</li>
+        <li>逐年降低产品或服务的最高价格。</li>
+        <li>支持产品研发，如人员培训或技术共享。</li>
+        <li>对优秀的供应商表示感谢，给予表扬。</li>
+      </ol>
+
+      <p>激励有<strong>积极激励</strong>和<strong>消极激励</strong>两种。积极激励是指对供应商的奖励和回报；消极激励是指对供应商的惩罚。一般对供应商采取以下惩罚措施：减少表现不佳供应商的交易量；将表现不佳的供应商移出批准供应的商家名单；公开表现不佳供应商的等级评分；在合同中明确惩罚规则。消极激励通常是迫使供应商达到最低绩效标准的短期改进措施，不能解决根本问题，反而损害了双方的关系。如果需要长期合作，应采取积极的激励措施。</p>
+
+      <h3 class="subsection-title">三、供应商的绩效评估</h3>
+      <p>供应商绩效评估有五个功能：</p>
+      <ol class="info-list">
+        <li>帮助识别具有优秀绩效的供应商；</li>
+        <li>通过加强供应商关系管理来提高供应商绩效；</li>
+        <li>有助于确保供应商能履行合同中的承诺；</li>
+        <li>鼓励供应商保持或改善其绩效；</li>
+        <li>发现问题及其原因，从而促使供应商提高未来绩效。</li>
+      </ol>
+
+      <h3 class="subsection-title">四、供应商绩效的测度方法</h3>
+      <p>供应商的绩效测度中包含多个关键因素，对于每个因素，采购商可以提出一系列关键绩效指标。对于普通的供应合同，采购方可参考下表中的关键绩效指标测度供应商绩效。</p>
+
+      <figure>
+        <figcaption><span class="fig-num">表 1—6</span>衡量供应商绩效的关键绩效指标</figcaption>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 130px">关键因素</th>
+              <th>关键绩效指标举例</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="label-col">价格</td><td>1. 基本采购价格高低（与其他供应商相比）<br>2. 全生命周期成本大小（与其他供应商相比）<br>3. 成本降低的绝对值和百分比</td></tr>
+            <tr><td class="label-col">质量</td><td>1. 不合格品、浪费比例、服务失误率<br>2. 客户投诉次数<br>3. 违反质量标准、环境以及企业社会责任等标准的情况</td></tr>
+            <tr><td class="label-col">交货情况</td><td>1. 迟交、误交或不足额提交发生的频率<br>2. 准时足量交货的比例</td></tr>
+            <tr><td class="label-col">服务</td><td>1. 客户经理的能力、态度、合作情况<br>2. 能否对问询和问题及时处理<br>3. 能否遵守售后服务协议</td></tr>
+            <tr><td class="label-col">财务</td><td>1. 能否兑现财务承诺<br>2. 能否保证质量并如约交货</td></tr>
+            <tr><td class="label-col">创新能力</td><td>1. 已施行的或协议中计划的创新项目的数量及研发投资金额<br>2. 是否愿意参加跨企业的创新团队</td></tr>
+            <tr><td class="label-col">技术水平</td><td>1. 电子化交易的比例<br>2. 出现技术故障的次数</td></tr>
+            <tr><td class="label-col">总体绩效</td><td>1. 与其他供应商相比较<br>2. 对持续改进的承诺</td></tr>
+          </tbody>
+        </table>
+      </figure>
+
+      <h3 class="subsection-title">五、绩效监控与绩效审核</h3>
+      <p>绩效监控是针对关键绩效指标对进度和绩效水平的审查。绩效审核是对计划期内业绩的审查。但是，大多数采购方仅在签订合同的某些关键阶段进行绩效监控。</p>
+
+      <p>审计分为两种：<strong>分阶段审计</strong>和<strong>项目和合同完成后的审计</strong>。前者是指在实施计划还可以调整时提供阶段性审核反馈；后者是指在项目完成后交流反馈意见，从而使采购商和供应商吸取教训，以备将来改进。</p>
+
+      <p>获取供应商绩效反馈的方式一般有九种：通过小组讨论、投诉处理、问卷调查和项目评审获得；通过对单据、交易记录和管理报告的观察、测试和分析获得；通过对项目预算进行控制获得；通过正式的绩效审查或评估获得；通过对合同进行管理获得，并按照合同条款进行持续合规监控；采购方和供应商的代表定期开会以核实绩效；按期对进行的项目展开管理获得；聘请顾问监督产品是否符合质量标准；当采购方没有适当的专业知识时，请技术专家监督供应商的绩效。</p>
+
+      <!-- Case study: 金陵石化 -->
+      <div class="case-box">
+        <div class="case-box-header">
+          <span class="case-tag">小案例</span>
+          <span class="case-title">让供应商多供煤供好煤的激励措施</span>
+        </div>
+        <p>2009 年 11 月中旬，一场大雪突袭河北、山西等北方地区。这场雪成为引发 2009 年 11—12 月全国性煤荒的导火索。由于冰天雪地、气温骤降，社会用电量剧增，但发电急需的煤炭不能及时进厂，各地大电厂原本不高的储煤堆变得越来越低。</p>
+        <p>与其他拥有自备电厂的企业一样，金陵石化也被突如其来的煤荒打乱了生产计划。尽管在 10 月底前，该公司电煤储量达到 25 天用量，但在占该公司供煤 70% 以上的安徽省三大煤矿相继停止省外供煤后，其储量急剧下降。12 月，金陵石化来自安徽煤矿的煤炭仅为月计划的 10%。当月，该公司电煤储量一度下降到仅够用 5 天的历史最低库存。</p>
+        <p>在严峻形势下，金陵石化一方面加大对秦皇岛港、芜湖港等煤炭水运中转地的关注，及时采购水路煤补充煤炭库存；另一方面，他们提前启动 2010 年度煤炭供应框架协议签约工作，运用经济杠杆，提高供应商的供应量。公司在进一步完善原框架协议条件基础上，调整采购合同中硫含量及热值封顶加扣款标准，<strong>增加合同价加激励机制的条款</strong>，并对铁路、水路、海进江来煤分别根据市场情况定价，鼓励供应商多供煤、供好煤。</p>
+        <p>新条款大大调动了供应商积极性，来自这些供应商组织的煤炭自 12 月起成倍增加，源源不断运往金陵石化煤堆场。公司 2009 年底统计数据显示，在鼓励超计划供煤措施激励下，金陵石化年度位列前三名的组采煤炭供应商超计划供煤分别达到 <strong>243%、57%、16%</strong>，有效弥补了煤炭停供的缺口。</p>
+        <p>2010 年 1 月份，这三家供应商供应的煤炭合计达到 9.5 万吨，创历史新高，为金陵石化储煤量重新跃上 20 天库存量、确保春节期间主业生产平稳奠定了基础。</p>
+        <div class="case-source">资料来源：黄律己. 激励：让供应商多供煤供好煤 [N]. 中国石化报, 2010—03—04 (006).</div>
+      </div>
+
+      <h3 class="subsection-title">六、评定供应商等级</h3>
+      <p>供应商等级评定是根据双方商定的供应商等级评定标准衡量供应商绩效的一种手段，通常包含三个因素：<strong>价格</strong>（如资本价值、市场价格、竞争价格、盈利能力等）；<strong>质量</strong>（如不良品的数量或比例、质量保证程序等）；<strong>交货</strong>（如准时交货的比例、交货提前期的延长或缩短等）。其他可衡量的因素包括售后服务、合同管理的效率和准确性、联系和沟通的质量、对紧急或异常要求的响应能力等。</p>
+
+      <p>供应商等级评定的常用方法有<strong>供应商绩效评定表</strong>和<strong>要素评级法</strong>。</p>
+
+      <figure>
+        <figcaption><span class="fig-num">图 1—2</span>要素评级法分析图</figcaption>
+        <table class="center" style="margin: 0;">
+          <thead>
+            <tr>
+              <th>绩效要素</th>
+              <th>权重</th>
+              <th>评分</th>
+              <th>供应商得分</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>价格</td><td>0.4</td><td>0.90</td><td>0.360</td></tr>
+            <tr><td>质量</td><td>0.4</td><td>0.95</td><td>0.380</td></tr>
+            <tr><td>交货</td><td>0.2</td><td>0.70</td><td>0.140</td></tr>
+            <tr style="background: var(--accent-soft); font-weight: 600;"><td>总评</td><td>1.0</td><td>—</td><td style="color: var(--accent);">0.880</td></tr>
+          </tbody>
+        </table>
+      </figure>
+
+      <p>采购方可以通过比较每个供应商最后得出的分数选择供应商。采购方也可以通过同一个供应商以往几年的分数，判断供应商的绩效较前期是提高还是降低。</p>
+
+      <p>然而，供应商绩效评定表和要素评级法均不能完全解释供应商绩效低下的原因。因此，应将供应商等级评定纳入绩效管理过程。绩效管理过程包括<strong>制定计划、前期铺垫、行动监控反馈、流程再造、行动监控反馈、结束</strong>六个环节。</p>
+
+      <p>供应商"绩效记分卡"逐渐让位于更加完整的供应商绩效管理体系。供应商绩效管理体系是使用信息通信技术（ICT, information and communications technology）软件包实现以下功能：实时查看所有产品和供应商；基于供应商绩效的数据进行供应商评估；当供应商绩效偏离关键绩效指标要求时，系统发出警告；及时与供应商就绩效问题进行沟通。</p>
+    </section>
+
+    <!-- ============ SECTION 7 ============ -->
+    <section id="section-7" class="anchor-target">
+      <h2 class="section-title">
+        <span class="section-num">Section 07</span>
+        第七节　实践指导
+      </h2>
+
+      <h3 class="subsection-title">一、实践任务</h3>
+      <p>通过本章学习，引导学生了解供应源搜寻的基本概念和供应商绩效管理的基本含义，要求学生掌握供应源的搜寻过程，并尝试运用实践案例分析供应商评估的方法和作用。收集有关案例资料，借助案例分析法加强对供应源搜寻的认识，从而更好地实现课程教学目标。</p>
+
+      <h3 class="subsection-title">二、实践步骤</h3>
+      <ol class="info-list">
+        <li>分组讨论并交流，找出分析案例中的关键问题。</li>
+        <li>确定是否还需查找与已找出关键问题相关的背景资料。</li>
+        <li>筛选并优化分析此案例的答题思路。</li>
+        <li>明确构成小组分析逻辑的依据，并展开进一步的逻辑整理。</li>
+        <li>小组形成文字报告并汇报。</li>
+      </ol>
+
+      <h3 class="subsection-title">三、实践要求</h3>
+      <ol class="info-list">
+        <li><strong>彻底读懂案例</strong>——对案例进行反复阅读，对案例中的背景资料、主要事实、面临的难题及难点、重要论点、重要结论和针对性的对策建议等内容进行——记录。</li>
+        <li><strong>分组交流讨论，大胆提出自己对问题的看法</strong>——对案例中的主要角色所面临的问题进行分析，尝试对案例所给的背景资料进行仔细阅读、筛选分类，归纳总结。</li>
+        <li><strong>全面并正确概括问题</strong>——根据案例的相关资料找出问题的症结所在，并对需要解决的问题进行正确概括，注意概括问题的逻辑性与针对性。</li>
+        <li><strong>撰写分析报告</strong>——报告中对资料的分析运用要求准确，以所学理论为指导分析资料；资料分析要求全面充实，紧扣主题，结构合理，层次清楚，中心突出。</li>
+      </ol>
+
+      <h3 class="subsection-title">四、实践内容</h3>
+      <p>A 公司对四家原材料供应商进行考评。公司按照以下标准来评价（各项指标所占比重，以百分制计算）：合格率 40%，价格状况 30%，管理体系 30%。</p>
+
+      <figure>
+        <figcaption><span class="fig-num">表</span>各供应商各项指标得分</figcaption>
+        <table class="center">
+          <thead>
+            <tr>
+              <th>供应商</th>
+              <th>价格（元）</th>
+              <th>提供的原材料数量（件）</th>
+              <th>符合标准的原材料数量（件）</th>
+              <th>管理体系得分</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>甲</td><td>80</td><td>100</td><td>95</td><td>85</td></tr>
+            <tr><td>乙</td><td>95</td><td>100</td><td>86</td><td>90</td></tr>
+            <tr><td>丙</td><td>80</td><td>100</td><td>93</td><td>73</td></tr>
+            <tr><td>丁</td><td>85</td><td>100</td><td>97</td><td>100</td></tr>
+          </tbody>
+        </table>
+      </figure>
+
+      <p>评价结果大于等于 90 分的为优秀供应商，80 ～ 89 分之间的为合格供应商，60 ～ 79 分之间的为不合格供应商，将直接解除合同。</p>
+
+      <div class="case-questions">
+        <div class="case-questions-label">思考问题</div>
+        <ol>
+          <li>请计算各供应商绩效得分。</li>
+          <li>A 公司因其他原因，需要减少一家供应商，它应该与哪家供应商解除合同？请说明理由。</li>
+        </ol>
+      </div>
+
+      <h3 class="subsection-title">五、实践范例：GSN 计划与供应商评估</h3>
+
+      <div class="case-box">
+        <div class="case-box-header">
+          <span class="case-tag">前沿研究</span>
+          <span class="case-title">绿色供应商网络（Green Suppliers Network, GSN）计划</span>
+        </div>
+        <p>绿色供应商网络（GSN）计划是由美国商务部牵头组织、美国环境保护署与国家标准与技术研究院共同提出的制造合作计划。该计划致力于帮助生产商在减少环境污染的同时提升自身竞争力。</p>
+        <p>GSN 计划的实施，改变了企业长期采用传统技术导致环境污染加剧的现状，同时加强了制造企业和公用事业公司之间的联系，由此促进了供应商改进制造工艺、公用事业公司降低成本和更加有效地利用物资原料。</p>
+        <p>目前，美国有 30 家供应商和大型企业参与了 GSN 计划。其中，美国电力公司（AEP）作为第一家参与该计划的公用电力事业公司，承诺为供应商提供尽可能多的有效资源，督促其中主要的五家供应商在一年内完成 GSN 的技术评估，为每家供应商确定其成本效益改进流程。AEP 还制定了相应的措施，对完成 GSN 评估并执行 GSN 建议的供应商给予奖励。</p>
+        <p>AEP 负责服务管理的副总裁认为：供应商是企业的重要利益相关者，帮助供应商提高可持续发展能力的同时，也能帮助企业实现环保以及持续发展的目标。</p>
+        <p>通过执行和完成 GSN 的建议项目，AEP 可以大幅度节省开支。据统计，迄今为止，GSN 所设定的总计 49 项技术评估项目将为计划参与者每年节省将近 270 万美元成本。</p>
+        <div class="case-source">资料来源：李春光. GSN 计划和供应商评估 [N]. 国家电网报, 2009—07—07 (008).</div>
+        <div class="case-questions">
+          <div class="case-questions-label">思考问题</div>
+          <ol>
+            <li>论述利益相关者参与规格拟定和供应源搜寻的途径。</li>
+            <li>供应商评估有什么作用？供应商评估的步骤是什么？</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Case study: BP -->
+      <div class="case-box">
+        <div class="case-box-header">
+          <span class="case-tag">案例分析</span>
+          <span class="case-title">BP 战略采购的供应商绩效管理</span>
+        </div>
+        <p>2006 年的欧洲领导论坛上，英国石油（BP）的一位副总裁在介绍该公司的供应商管理经验时说："战略采购项目选择合适的供应商会使供应商绩效提高；但若缺乏持续的绩效管理或绩效管理不得力，绩效随后会逐渐下降。"</p>
+        <p>不同的行业、公司，战略采购的概念不一定相同。像 BP 这样的大公司，采购额动辄成千上亿美元，传统上实行分散采购管理的模式不能直接套用在该公司的采购行为中。</p>
+        <p>战略采购往往是集中各部门、分部的采购量，统一选择供应商，以取得更好的价格、交货与其他合同条款；其往往是以项目的方式进行，由专门的人员筛选供应商，谈判、签订合同，然后再转交给公司内的具体用户执行合同。</p>
+        <p>战略采购项目刚完成时，当选供应商的价格、总体绩效当然是最好的，因为只有综合绩效最好的供应商符合当选条件。但是，像 BP 这样的大公司，各分部、部门在执行合同、管理供应商时，缺乏统一的系统和方法，所以在管理上产生了脱节的问题。</p>
+        <p><strong>持久的供应商管理才是保证持久绩效的关键。</strong>供应商管理的一般流程——供应商现状分析、确定供应商绩效标准（价格、质量、交货、服务等）、定期反馈（定期评估绩效、例会）、纠偏措施（供应商开发、寻找新供应商等）是需要大型企业高度重视的。在这个过程中，制定合适的绩效指标，持续搜集数据，定期评估指标，就成了供应商管理不可或缺的一部分。</p>
+        <div class="case-source">资料来源：刘宝红. 绩效管理：战略采购成果持久的关键 [N]. 现代物流报, 2017—05—10 (A06).</div>
+        <div class="case-questions">
+          <div class="case-questions-label">思考问题</div>
+          <ol>
+            <li>持久的供应商管理需要考虑哪些方面？</li>
+            <li>小组尝试为 B 公司设计一套供应商管理的考核指标。</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EXERCISES ============ -->
+    <section id="exercises" class="exercises anchor-target">
+      <div class="exercises-header">
+        <div class="icon">练</div>
+        <h2>练习与思考</h2>
+      </div>
+
+      <div class="ex-section">
+        <h3 class="ex-section-title"><span class="ex-num">一</span>名词解释</h3>
+        <ol class="term-list">
+          <li>供应商资格预审</li>
+          <li>供应商管理</li>
+          <li>供应商评估</li>
+          <li>供应商激励</li>
+        </ol>
+      </div>
+
+      <div class="ex-section">
+        <h3 class="ex-section-title"><span class="ex-num">二</span>单项选择题</h3>
+
+        <div class="quiz-question">
+          <div class="q-stem"><span class="q-num">1.</span>下列采购过程属于合同授予前的是（　　）。</div>
+          <ul class="q-options">
+            <li><span class="opt-letter">A.</span>催货</li>
+            <li><span class="opt-letter">B.</span>付款</li>
+            <li><span class="opt-letter">C.</span>合同与供应商管理</li>
+            <li><span class="opt-letter">D.</span>接受和评估报价</li>
+          </ul>
+        </div>
+
+        <div class="quiz-question">
+          <div class="q-stem"><span class="q-num">2.</span>下列关于战略层面供应源搜寻说法正确的是（　　）。</div>
+          <ul class="q-options">
+            <li><span class="opt-letter">A.</span>需求和规格都很清晰</li>
+            <li><span class="opt-letter">B.</span>所形成的是短期决策</li>
+            <li><span class="opt-letter">C.</span>着眼于满足具体确切的要求</li>
+            <li><span class="opt-letter">D.</span>事关高利润、高风险或低利润、高风险的顶层、长期决策</li>
+          </ul>
+        </div>
+
+        <div class="quiz-question">
+          <div class="q-stem"><span class="q-num">3.</span>向供应商再次采购已经采购过的物品的采购类型是（　　）。</div>
+          <ul class="q-options">
+            <li><span class="opt-letter">A.</span>直接的再次采购</li>
+            <li><span class="opt-letter">B.</span>修正后的再次采购</li>
+            <li><span class="opt-letter">C.</span>新的采购</li>
+            <li><span class="opt-letter">D.</span>旧的采购</li>
+          </ul>
+        </div>
+
+        <div class="quiz-question">
+          <div class="q-stem"><span class="q-num">4.</span>帕累托原理可以解读为：（　　）的支出、风险或价值来自（　　）的供应商或供应品。</div>
+          <ul class="q-options">
+            <li><span class="opt-letter">A.</span>80%；20%</li>
+            <li><span class="opt-letter">B.</span>20%；80%</li>
+            <li><span class="opt-letter">C.</span>70%；30%</li>
+            <li><span class="opt-letter">D.</span>30%；70%</li>
+          </ul>
+        </div>
+
+        <div class="quiz-question">
+          <div class="q-stem"><span class="q-num">5.</span>帕累托原理是（　　）。</div>
+          <ul class="q-options">
+            <li><span class="opt-letter">A.</span>90/10 法则</li>
+            <li><span class="opt-letter">B.</span>80/20 法则</li>
+            <li><span class="opt-letter">C.</span>60/40 法则</li>
+            <li><span class="opt-letter">D.</span>70/30 法则</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ex-section">
+        <h3 class="ex-section-title"><span class="ex-num">三</span>多项选择题</h3>
+
+        <div class="quiz-question">
+          <div class="q-stem"><span class="q-num">1.</span>下列属于合同授予前阶段的是（　　）。</div>
+          <ul class="q-options">
+            <li><span class="opt-letter">A.</span>识别需求</li>
+            <li><span class="opt-letter">B.</span>定义需求</li>
+            <li><span class="opt-letter">C.</span>市场调查研究</li>
+            <li><span class="opt-letter">D.</span>评估和选择供应商</li>
+            <li><span class="opt-letter">E.</span>催款、付款</li>
+          </ul>
+        </div>
+
+        <div class="quiz-question">
+          <div class="q-stem"><span class="q-num">2.</span>下列关于战略层面供应源搜寻说法错误的是（　　）。</div>
+          <ul class="q-options">
+            <li><span class="opt-letter">A.</span>决策层级较低</li>
+            <li><span class="opt-letter">B.</span>主要是低利润、低风险、例行性的采购</li>
+            <li><span class="opt-letter">C.</span>形成的是短期决策</li>
+            <li><span class="opt-letter">D.</span>需求和规格都很明晰</li>
+            <li><span class="opt-letter">E.</span>形成的是可持续的长期、高层决策</li>
+          </ul>
+        </div>
+
+        <div class="quiz-question">
+          <div class="q-stem"><span class="q-num">3.</span>供应商搜寻基本通用模型包括（　　）。</div>
+          <ul class="q-options">
+            <li><span class="opt-letter">A.</span>识别需求</li>
+            <li><span class="opt-letter">B.</span>拟定供应源搜寻计划</li>
+            <li><span class="opt-letter">C.</span>市场分析</li>
+            <li><span class="opt-letter">D.</span>供应商资格预审</li>
+            <li><span class="opt-letter">E.</span>供应商报价和选择的评估</li>
+          </ul>
+        </div>
+
+        <div class="quiz-question">
+          <div class="q-stem"><span class="q-num">4.</span>潜在供应商信息来源有（　　）。</div>
+          <ul class="q-options">
+            <li><span class="opt-letter">A.</span>正式的信息索取函</li>
+            <li><span class="opt-letter">B.</span>潜在供应商的市场宣传活动</li>
+            <li><span class="opt-letter">C.</span>互联网查询</li>
+            <li><span class="opt-letter">D.</span>在线商品交易所</li>
+            <li><span class="opt-letter">E.</span>采购方的供应商数据库</li>
+          </ul>
+        </div>
+
+        <div class="quiz-question">
+          <div class="q-stem"><span class="q-num">5.</span>供应商信息的获得途径包括（　　）。</div>
+          <ul class="q-options">
+            <li><span class="opt-letter">A.</span>自我评估问卷</li>
+            <li><span class="opt-letter">B.</span>财务评估</li>
+            <li><span class="opt-letter">C.</span>检查供应商的认证、鉴定书</li>
+            <li><span class="opt-letter">D.</span>他人的推荐材料</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ex-section">
+        <h3 class="ex-section-title"><span class="ex-num">四</span>简答题</h3>
+        <div class="essay-q"><span class="q-num">1.</span>试述战略供应源搜寻与战术供应源搜寻的区别。</div>
+        <div class="essay-q"><span class="q-num">2.</span>潜在供应商的信息来源有哪些？</div>
+      </div>
+
+      <div class="ex-section">
+        <h3 class="ex-section-title"><span class="ex-num">五</span>论述题</h3>
+        <div class="essay-q"><span class="q-num">1.</span>CIPS 建议的供应商评估的四个阶段分别是什么？</div>
+      </div>
+    </section>
+
+    <!-- Pagination -->
+    <nav class="pagination">
+      <a href="#" class="pag-card disabled">
+        <div class="pag-label">← 上一章</div>
+        <div class="pag-title">前言</div>
+      </a>
+      <a href="#" class="pag-card next">
+        <div class="pag-label">下一章 →</div>
+        <div class="pag-title">第二章 需求识别与规格制定</div>
+      </a>
+    </nav>
+
+  </main>
+
+  <!-- ============ TOC (RIGHT) ============ -->
+  <aside class="toc">
+    <div class="toc-label">本页目录</div>
+    <ul class="toc-list">
+      <li><a href="#section-1" class="active">第一节　供应源搜寻的界定</a></li>
+      <li><a href="#section-2">第二节　供应源搜寻过程</a></li>
+      <li><a href="#section-3">第三节　潜在供应商的选择</a></li>
+      <li><a href="#section-4">第四节　资格预审与评估</a></li>
+      <li><a href="#section-5">第五节　信息收集与验证</a></li>
+      <li><a href="#section-6">第六节　供应商绩效评估</a></li>
+      <li><a href="#section-7">第七节　实践指导</a></li>
+      <li><a href="#exercises">★ 练习与思考</a></li>
+    </ul>
+  </aside>
+
+</div>
+
+<script>
+  // Active section tracking on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-list a, .toc-list a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
